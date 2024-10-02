@@ -1,0 +1,48 @@
+.cabecalho {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    text-transform: uppercase;
+    padding: 5px 20px;
+    background-color: #d8e6aa;
+}
+
+.cabecalho * {
+    color: #1d3a1e;
+}
+
+.cabecalho h1, .cabecalho h2 {
+    font-weight: 400;
+}
+
+.cabecalho > * {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cabecalho > :first-child {
+    justify-content: flex-start;"
+}
+
+.containerLogo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    background-color: #fdfcda;
+}
+
+.containerLogo img {
+    max-width: 55px;
+    aspect-ratio: 1 / 1;
+}
+
+.containerNavegacao {
+    display: flex;
+    justify-content: space-around;
+}
