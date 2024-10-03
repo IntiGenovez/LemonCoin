@@ -13,7 +13,6 @@ import Categorias from "./telas/Categorias"
 import Contas from "./telas/Contas"
 import Relatorios from "./telas/Relatorios"
 import Pagina404 from "./telas/Pagina404"
-
 import Login from "./telas/Login"
 
 import "./App.css"
@@ -48,12 +47,12 @@ function App() {
         {
           path: '/relatorios',
           Component: Relatorios
+        },
+        {
+          path: '/login',
+          Component: Login
         }
       ]
-    },
-    {
-      path: '/login',
-      Component: Login
     }
   ])
 

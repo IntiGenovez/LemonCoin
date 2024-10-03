@@ -7,8 +7,8 @@ export default function Rodape() {
                 <h3>LemonCoin&#169;</h3>
             </div>
             <div className={styles.containerRedesSociais}>
-                <i class='bx bxl-facebook-square' ></i>
-                <i class='bx bxl-instagram' ></i>
+                <i className='bx bxl-facebook-square' ></i>
+                <i className='bx bxl-instagram' ></i>
             </div>
         </footer>
     )

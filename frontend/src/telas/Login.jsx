@@ -1,33 +1,30 @@
-// import React from "react";
-import Cabecalho from '../surface/Cabecalho';
-import Rodape from "../surface/Rodape";
+import { useState } from 'react'
 
 import globalStyle from "../estilos/Global.module.css"
 
 export default function Login() {
+    const [usuario, setUsuario] = useState('')
+    const [senha, setSenha] = useState('')
+
+    function tratarInput(setVariavel, e) {
+        setVariavel(e.target.value)
+    }
     return (
-        <>
-            <Cabecalho />
+        <form className={globalStyle.formulario}>
+            <h1>Usuário</h1>
+            <input type="text" value={ usuario } onChange={ e => tratarInput(setUsuario, e) }/>
 
-            <body className={globalStyle.body}>
-                <div className={globalStyle.formulario}>
-                    <h1>Usuário</h1>
-                    <input type="text" />
+            <h1>Senha</h1>
+            <input type="text" value={ senha } onChange={ e => tratarInput(setSenha, e) }/>
+            <br />
 
-                    <h1>Senha</h1>
-                    <input type="text" />
-                    <br />
+            <a href="">Esqueci minha senha</a>
+            <br />
 
-                    <a href="">Esqueci minha senha</a>
-                    <br />
+            <button>Entrar</button>
+            <br />
 
-                    <button>Entrar</button>
-                    <br />
-
-                    <a href="">Ainda não possuo conta</a>
-                </div>
-            </body>
-            <Rodape />
-        </>
+            <a href="">Ainda não possuo conta</a>
+        </form>
     );
 }
