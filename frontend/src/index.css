@@ -1,12 +1,15 @@
 :root {
     --cor-fonte-principal: #1d3a1e;
     --cor-fonte-secundaria: #fdfcda;
+    --background-telas: #fffff2;
+    --background-botoes: #799a36;
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    list-style: none;
     font-family: "Bahnschrift Condensed";
     text-decoration: none;
 }
@@ -16,4 +19,23 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+.tela-padrao {
+    flex-grow: 1;
+    background-color: var(--cor-fonte-secundaria);
+    padding: 20px 0;
+    overflow-y: hidden;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.tela-padrao > * {
+    width: 90%;
+    background-color: var(--background-telas);
+    padding: 30px;
+    border-radius: 20px;
 }

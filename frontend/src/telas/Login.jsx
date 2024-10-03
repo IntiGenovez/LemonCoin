@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import globalStyle from "../estilos/Global.module.css"
+import globalStyle from "../estilos/Login.module.css"
 
 export default function Login() {
     const [usuario, setUsuario] = useState('')

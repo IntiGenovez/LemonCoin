@@ -1,3 +1,5 @@
+import Movimentacoes from "../componentes/Movimentacoes";
+
 export default function Despesas() {
-    return <div>página de Despesas</div>
+    return (<div className="tela-padrao"><Movimentacoes tipo="Despesas" /></div>)
 }

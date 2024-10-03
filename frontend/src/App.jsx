@@ -3,6 +3,8 @@ import  {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom"
+import { useReducer } from "react"
+import { DadosContexto, reducer, initialState } from "./store/index.js"
 
 //importações de telas
 import Layout from "./telas/Layout"
@@ -18,6 +20,10 @@ import Login from "./telas/Login"
 import "./App.css"
 
 function App() {
+
+  
+  const [ state, dispatch ] = useReducer(reducer, initialState)
+
   const router = createBrowserRouter([
     {
       path: '/',
@@ -57,9 +63,9 @@ function App() {
   ])
 
   return (
-    <>
+    <DadosContexto.Provider value={{ state, dispatch }}>
       <RouterProvider router={router} />
-    </>
+    </DadosContexto.Provider>
   )
 }
 

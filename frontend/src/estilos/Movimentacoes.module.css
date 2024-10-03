@@ -1,0 +1,105 @@
+.containerMovimentacoes {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.containerMovimentacoes ul {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-grow: 1;
+
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+}
+
+.seletores, .seletores div  {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.seletores {
+    justify-content: space-around;
+    scrollbar-gutter: stable;
+    overflow-y: hidden;
+    min-height: 30px;
+}
+
+.seletores > div {
+    justify-content: flex-start;
+    flex-basis: 18%;
+}
+
+.seletores > div:last-child {
+    flex-basis: 10%;
+    justify-content: center;
+}
+
+.seletores label {
+    text-transform: uppercase;
+    font-size: 25px;
+    font-weight: 600;
+    color: var(--cor-fonte-principal);
+
+    margin-right: 5px;
+
+    user-select: none;
+}
+
+.seletores i {
+    padding-bottom: 8px;
+    font-size: 19px;
+
+    color: var(--background-botoes);
+}
+
+.seletores i.selecionado {
+    color: var(--cor-fonte-principal);
+    scale: 130%;
+}
+
+.movimentacao {
+    display: flex;
+    flex-direction: row;
+}
+
+.movimentacao span {
+    flex-basis: 18%;
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--background-botoes);
+}
+
+.movimentacao span:last-child {
+    flex-basis: 10%;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    font-size: 20px;
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    min-height: 60px;
+
+    font-size: 30px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.total span {
+    color: var(--background-botoes);
+}
+
+.total button {
+    color: var(--cor-fonte-principal);
+    border: none;
+    text-transform: uppercase;
+    font-size: 17px;
+    background-color: #ddeac4;
+    padding: 13px 20px 10px;
+}

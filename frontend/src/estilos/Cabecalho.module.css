@@ -33,7 +33,7 @@
 }
 
 .cabecalho > :last-child a {
-    background-color:#799a36;
+    background-color: var(--background-botoes);
     color: var(--cor-fonte-secundaria);
     border: none;
     font-size: 23px;
