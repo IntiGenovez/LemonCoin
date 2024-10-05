@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from "react-router-dom"
 
 import globalStyle from "../estilos/Login.module.css"
 
@@ -24,7 +25,7 @@ export default function Login() {
             <button>Entrar</button>
             <br />
 
-            <a href="">Ainda não possuo conta</a>
+            <Link to="/cadastro">Ainda não possuo conta</Link>
         </form>
     );
 }

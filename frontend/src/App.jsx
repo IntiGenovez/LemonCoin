@@ -16,6 +16,7 @@ import Contas from "./telas/Contas"
 import Relatorios from "./telas/Relatorios"
 import Pagina404 from "./telas/Pagina404"
 import Login from "./telas/Login"
+import Cadastro from "./telas/Cadastro.jsx"
 
 import "./App.css"
 
@@ -57,6 +58,10 @@ function App() {
         {
           path: '/login',
           Component: Login
+        },
+        {
+          path: '/cadastro',
+          Component: Cadastro
         }
       ]
     }
