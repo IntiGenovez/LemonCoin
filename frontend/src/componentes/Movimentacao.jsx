@@ -4,13 +4,13 @@ import styles from "../estilos/Movimentacoes.module.css"
 
 import { DadosContexto } from "../store/index.js"
 
-export default function Movimentacao({ tipo, id, data, categoria, valor, descricao, conta, movimentacaoEditavel, setMovimentacaoEditavel }) {
+export default function Movimentacao({ tipo, id, data, categoria, valor, nome, conta, movimentacaoEditavel, setMovimentacaoEditavel }) {
     const contexto = useContext(DadosContexto)
     const [ despesa, setDespesa ] = useState({
         id,
         data,
         valor,
-        descricao,
+        nome,
         categoria,
         conta
     })
@@ -21,7 +21,7 @@ export default function Movimentacao({ tipo, id, data, categoria, valor, descric
         <li className={ styles.movimentacao }>
             { movimentacaoEditavel ? 
                 (<> <input value={despesa.data} onChange={ e => setDespesa({ ...despesa, data: e.target.value }) } />
-                    <input value={despesa.descricao} onChange={ e => setDespesa({ ...despesa, descricao: e.target.value }) } />
+                    <input value={despesa.nome} onChange={ e => setDespesa({ ...despesa, nome: e.target.value }) } />
                     <input value={despesa.valor} onChange={ e => setDespesa({ ...despesa, valor: +e.target.value }) } />
                     <input value={despesa.categoria} onChange={ e => setDespesa({ ...despesa, categoria: e.target.value }) } />
                     <input value={despesa.conta} onChange={ e => setDespesa({ ...despesa, conta: e.target.value }) } />
@@ -40,7 +40,7 @@ export default function Movimentacao({ tipo, id, data, categoria, valor, descric
                     </span></>)
             : 
                 (<> <span>{ data }</span>
-                    <span>{ descricao }</span>
+                    <span>{ nome }</span>
                     <span>{ valor }</span>
                     <span>{ categoria }</span>
                     <span>{ conta }</span>

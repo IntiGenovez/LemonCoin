@@ -1,4 +1,4 @@
-import { useState, useContext, useReducer } from "react";
+import { useState, useContext, useReducer, useEffect } from "react";
 import Movimentacao from "../componentes/Movimentacao";
 import Seletor from "../componentes/Seletor";
 import BotaoAcao from "../componentes/BotaoAcao";
@@ -9,22 +9,24 @@ import { DadosContexto } from "../store/index.js"
 
 export default function Movimentacoes({ tipo }) {
     const [ seletorAtivo, setSeletorAtivo ] = useState(null)
-    const [ isUp, setIsUp ] = useState(null)
+    const [ isUp, setIsUp ] = useState(false)
     const [ movimentacaoEditavel, setMovimentacaoEditavel ] = useState(null)
-    const seletores = ['Data', 'Nome', 'Valor', 'Categoria', 'Conta', 'Filtro']
+    const seletores = ['data', 'nome', 'valor', 'categoria', 'conta', 'Filtro']
     
     const contexto = useContext(DadosContexto)
-    const [ total, setTotal ] = useState()
     
 
     const tratarClique = (seletor) => {
         if (seletor === seletorAtivo) {
             setIsUp(prev => !prev)
         } else {
-            setIsUp(false)
             setSeletorAtivo(seletor)
+            setIsUp(false)
         }
+        contexto.dispatch( { type: 'ordenarDespesas', payload: { seletorOrdenador: seletor, invertido: isUp } } )
     }
+
+    useEffect(() => contexto.dispatch( { type: 'ordenarDespesas', payload: { seletorOrdenador: seletorAtivo, invertido: isUp } } ), [isUp, seletorAtivo])
     
     return (
         <section className={ styles.containerMovimentacoes }>
@@ -45,7 +47,7 @@ export default function Movimentacoes({ tipo }) {
                         tipo="despesa" 
                         key={ despesa.id } 
                         id={ despesa.id }
-                        descricao={ despesa.descricao }
+                        nome={ despesa.nome }
                         categoria={ despesa.categoria } 
                         valor={ despesa.valor } 
                         data={ despesa.data } 
