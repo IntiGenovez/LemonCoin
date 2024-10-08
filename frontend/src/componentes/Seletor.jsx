@@ -1,5 +1,4 @@
 import styles from "../estilos/Movimentacoes.module.css"
-import { useState } from "react"
 
 export default function Seletor({ nome, isAtivo, isUp, setAtivo }) {
     return (
@@ -12,7 +11,7 @@ export default function Seletor({ nome, isAtivo, isUp, setAtivo }) {
             </div>)
             :
             (<div>
-                <i class='bx bx-filter-alt'></i>
+                <i className='bx bx-filter-alt'></i>
             </div>)
         }
         </>

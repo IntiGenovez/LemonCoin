@@ -1,16 +1,61 @@
+import { useContext, useState } from 'react'
+
 import styles from "../estilos/Movimentacoes.module.css"
 
-export default function Movimentacao({ tipo, data, categoria, valor, descricao, conta }) {
+import { DadosContexto } from "../store/index.js"
+
+export default function Movimentacao({ tipo, id, data, categoria, valor, descricao, conta, movimentacaoEditavel, setMovimentacaoEditavel }) {
+    const contexto = useContext(DadosContexto)
+    const [ despesa, setDespesa ] = useState({
+        id,
+        data,
+        valor,
+        descricao,
+        categoria,
+        conta
+    })
+
     valor = valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 
     return (
         <li className={ styles.movimentacao }>
-            <span>{ data }</span>
-            <span>{ descricao }</span>
-            <span>{ valor }</span>
-            <span>{ categoria }</span>
-            <span>{ conta }</span>
-            <span><i class='bx bx-edit-alt' ></i><i class='bx bx-trash' ></i></span>
+            { movimentacaoEditavel ? 
+                (<> <input value={despesa.data} onChange={ e => setDespesa({ ...despesa, data: e.target.value }) } />
+                    <input value={despesa.descricao} onChange={ e => setDespesa({ ...despesa, descricao: e.target.value }) } />
+                    <input value={despesa.valor} onChange={ e => setDespesa({ ...despesa, valor: +e.target.value }) } />
+                    <input value={despesa.categoria} onChange={ e => setDespesa({ ...despesa, categoria: e.target.value }) } />
+                    <input value={despesa.conta} onChange={ e => setDespesa({ ...despesa, conta: e.target.value }) } />
+                    <span>
+                        <i 
+                            className='bx bx-check'
+                            onClick={() => {
+                                setMovimentacaoEditavel(null)
+                                contexto.dispatch({ type: 'atualizarDespesa', payload: { despesa } })
+                            }}
+                        ></i>
+                        <i 
+                            className='bx bx-trash' 
+                            onClick={() => contexto.dispatch({ type: 'atualizarDespesa', payload: { despesa } })}
+                        ></i>
+                    </span></>)
+            : 
+                (<> <span>{ data }</span>
+                    <span>{ descricao }</span>
+                    <span>{ valor }</span>
+                    <span>{ categoria }</span>
+                    <span>{ conta }</span>
+                    <span>
+                        <i 
+                            className='bx bx-edit-alt'
+                            onClick={() => setMovimentacaoEditavel(id)}
+                        ></i>
+                        <i 
+                            className='bx bx-trash' 
+                            onClick={() => contexto.dispatch({ type: 'removerDespesa', payload: { id: id } })}
+                        ></i>
+                    </span></>)
+            }
+            
         </li>
     )
 }
