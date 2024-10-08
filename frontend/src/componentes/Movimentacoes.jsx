@@ -8,8 +8,18 @@ import { despesas } from "../store"
 
 export default function Movimentacoes({ tipo }) {
     const [ seletorAtivo, setSeletorAtivo ] = useState(null)
+    const [ isUp, setIsUp ] = useState(false)
     const seletores = ['Data', 'Nome', 'Valor', 'Categoria', 'Conta', 'Filtro']
 
+    const tratarClique = (seletor) => {
+        if (seletor === seletorAtivo) {
+            setIsUp(prev => !prev)
+        } else {
+            setIsUp(false)
+            setSeletorAtivo(seletor)
+        }
+    }
+    
     return (
         <section className={ styles.containerMovimentacoes }>
             <div className={ styles.seletores }>
@@ -18,7 +28,8 @@ export default function Movimentacoes({ tipo }) {
                         nome={ seletor }
                         key={ seletor } 
                         isAtivo={ seletorAtivo === seletor }
-                        setAtivo={ setSeletorAtivo }
+                        isUp= { isUp && seletorAtivo === seletor }
+                        setAtivo={ tratarClique }
                     />)
                 )}
             </div>

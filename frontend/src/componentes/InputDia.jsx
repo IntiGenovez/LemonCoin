@@ -1,5 +1,5 @@
 
-const DiaSelect = () => {
+const InputDia = () => {
     const dias = Array.from({ length: 31 }, (_, i) => i + 1);
 
     return (
@@ -14,4 +14,4 @@ const DiaSelect = () => {
       );
 };
 
-export default DiaSelect;
+export default InputDia;
