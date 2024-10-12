@@ -13,7 +13,7 @@ create table if not exists usuarios (
     UNIQUE KEY (telefone)
 );
 
-create table if not exists conta (
+create table if not exists contas (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     nome VARCHAR(45) NOT NULL,
     saldo DECIMAL(10,2) NOT NULL,
@@ -22,7 +22,7 @@ create table if not exists conta (
     FOREIGN KEY (fk_usuario_id) REFERENCES usuarios (id)
 );
 
-create table if not exists categoria (
+create table if not exists categorias (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     nome VARCHAR(45),
     fk_usuario_id INT UNSIGNED NOT NULL,
@@ -30,7 +30,7 @@ create table if not exists categoria (
     FOREIGN KEY (fk_usuario_id) REFERENCES usuarios (id)
 );
 
-create table if not exists movimentacao (
+create table if not exists movimentacoes (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     valor DECIMAL (10,2),
     recorrencia ENUM('Diaria, Semanal, Mensal, Trimestral, Quadrimestral, Semestral, Anual') NOT NULL,
