@@ -44,12 +44,20 @@ module.exports = app => {
         }
     }
 
-    const get = (req, res) => {
+    const obter = (req, res) => {
         app.bd('usuarios')
             .select('id', 'nome', 'email')
             .then(usuarios => res.json(usuarios))
             .catch(err => res.status(500).send(err))
     }
 
-    return { salvar, get }
+    const obterPorId = (req, res) => {
+        app.bd('usuarios')
+            .select('id', 'nome', 'email')
+            .where({ id: req.params.id }).first()
+            .then(usuario => res.json(usuario))
+            .catch(err => res.status(500).send(err))
+    }
+
+    return { salvar, obter, obterPorId }
 }
