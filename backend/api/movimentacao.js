@@ -35,12 +35,15 @@ module.exports = app => {
     }
 
     const obter = async (req, res) => {
-        
+        app.bd('movimentacoes')
+            .select()
+            .then(movimentacoes => res.json(movimentacoes))        
+            .catch(err => res.status(500).send(err))
     }
 
     const obterPorId = async (req, res) => {
 
     }
 
-    return { salvar }
+    return { salvar, obter }
 }

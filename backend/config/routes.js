@@ -9,6 +9,7 @@ module.exports = app => {
 
     app.route('/movimentacoes')
         .post(app.api.movimentacao.salvar)
+        .get(app.api.movimentacao.obter)
         
     app.route('/contas')
         .post(app.api.conta.salvar)
