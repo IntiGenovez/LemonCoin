@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import InputDia from '../componentes/InputDia';
+import InputAno from '../componentes/InputAno';
 import InputMes from '../componentes/InputMes';
-import InputAno from '../componentes/InputAno'
 
-import Styles from "../estilos/Cadastro.module.css"
+import styles from "../estilos/Cadastro.module.css"
 
 export default function Cadastro(){
     const [nome, setNome] = useState('')
@@ -15,32 +15,35 @@ export default function Cadastro(){
     }
 
     return (
-        <form className={Styles.formulario}>
+        <form className={styles.formulario}>
             <h1>CADASTRE-SE AQUI</h1>
             <input type="text" value={ nome } placeholder='Nome Completo: ' onChange={ e => tratarInput(setNome, e) } />
             <input type="text" value={ email } placeholder='Email: ' onChange={ e => tratarInput(setEmail, e) } />
             <input type="text" value={ telefone } placeholder='Telefone: ' onChange={ e => tratarInput(setTelefone, e) }/>
-            <br />
-
+            
             <div>
-                <span>Data de Nascimento: </span>
-                <br />
-                <InputDia />
-                <InputMes />
-                <InputAno />
+                <h2>Data de Nascimento: </h2>
+                <div className={styles.inputSelect}>
+                    <InputDia />
 
+                    <InputMes />
+
+                    <InputAno />
+                </div>
             </div>
-            <div>
-                <span>Gênero</span>
-                <br />
-                <span>F <input type='radio' name='Genero' id='GeneroM'></input></span>
-                <span>M <input type='radio' name='Genero' id='GeneroF'></input></span>
-                <br />
-                <div>
+            <div> 
+                <h2>Gênero</h2>
+                <div className={styles.genero}>
+                    <span className={styles.margin} style={{fontWeight: '600'}}>FEMININO <input type='radio' name='Genero' id='GeneroM'></input></span>
+                    <span className={styles.margin} style={{fontWeight: '600'}}>MASCULINO <input type='radio' name='Genero' id='GeneroF'></input></span>
+                    <span className={styles.margin} style={{fontWeight: '600'}}>OUTRO <input type='radio' name='Genero' id='GeneroF'></input></span>
+                </div>
+                
+                <div className={styles.divSenha}>
                     <span>Senha</span>
-                    <input type="text" name="Senha" id="Senha" />                
+                    <input type="password" name="Senha" id="Senha" />                
                     <span>Confirmar Senha</span>
-                    <input type="text" name="Confirm-senha" id="Confirm-senha" />
+                    <input type="password" name="Confirm-senha" id="Confirm-senha" />
                 </div>
                 <button>Cadastrar</button>
 

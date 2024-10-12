@@ -4,31 +4,77 @@
     margin: auto;
     padding-top: 5%;
     /* width: 350px; */
-    height: 400px;
-
 }
 
 .formulario h1 {
     margin: 10px;
-    font-size: 1.5em;
+    font-size: 40px;
     /* border: red solid 1px; */
 }
 
 .formulario h2 {
-    font-size: 1.2em;
+    font-size: 20px;
+    margin: 7px 0px 10px;  
+    display: flex;
+    align-items: center;
+    margin: auto;
+    width: 70%;
+    margin-top: 5px;
+}
+.formulario h3 {
+    font-size: 20px;
+    margin: 7px 0px 10px;  
+    margin-right: 350px; 
 }
 
 .formulario a {
+    display: flex;
     margin: 5px;
     color: var(--background-botoes);
     text-decoration: underline;
 }
 
+.inputSelect {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    gap: 15px;
+}
+
+.inputSelect > * {
+    font-size: 15px;
+    padding: 5px 20px;
+    flex-grow: 1;
+    margin: 0;
+
+}
+
+.formulario select{
+    /* width: 70%;
+    font-size: 15px;
+    padding: 5px 20px;
+    margin-bottom: 5px;
+    margin: 8px; */
+}
+
 .formulario input[type="text"]{
     /* border: solid red 1px; */
     width: 70%;
-    height: 23px;
+    font-size: 15px;
+    padding: 5px 20px;
     margin-bottom: 5px;
+    margin: 8px;
+}
+
+.formulario input[type="password"]{
+    /* border: solid red 1px; */
+    width: 70%;
+    font-size: 15px;
+    padding: 5px 4px;
+    margin-bottom: 5px;
+    margin: 8px;
+
 }
 
 .formulario button{
@@ -43,9 +89,41 @@
     border-radius: 10px;
 }
 
-.formulario select {
-    /* border: solid red 1px; */
-    margin: 3px;
+.margin{
+    margin: 10px;
 }
+
+.genero{
+    display: flex;
+    align-items: center;
+    margin: auto;
+    width: 70%;
+    margin-top: 5px;
+}
+
+.tamanho{
+    margin-top: 5px;
+}
+
+.divSenha{
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    margin: auto;
+    width: 70%;
+
+}
+
+.divSenha span {
+    font-weight: 700;
+}
+.tituloSenha{
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    margin: auto;
+    width: 7%;
+}
+
 
 

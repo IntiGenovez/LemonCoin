@@ -17,6 +17,8 @@ import Relatorios from "./telas/Relatorios"
 import Pagina404 from "./telas/Pagina404"
 import Login from "./telas/Login"
 import Cadastro from "./telas/Cadastro.jsx"
+import AdicionarDespesa from "./telas/AdicionarDespesa.jsx"
+import adicionarReceita from "./telas/AdicionarReceita.jsx"
 
 import "./App.css"
 
@@ -62,6 +64,14 @@ function App() {
         {
           path: '/cadastro',
           Component: Cadastro
+        },
+        {
+          path: '/adicionar-receita',
+          Component: adicionarReceita
+        },
+        {
+          path: '/adicionar-despesa',
+          Component: AdicionarDespesa
         }
       ]
     }
