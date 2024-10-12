@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt-nodejs")
 
 module.exports = app => {
-    const { existeOuErro, naoExisteOuErro, igualOuErro } = app.api.validacao
+    const { existeOuErro, naoExisteOuErro, igualOuErro, validarGenero, validarEmail, validarTelefone } = app.api.validacao
     const criptografarSenha = password => {
         const salt = bcrypt.genSaltSync(10)
         return bcrypt.hashSync(password, salt)
@@ -14,15 +14,21 @@ module.exports = app => {
         try {
             existeOuErro(usuario.nome, 'Nome não informado')
             existeOuErro(usuario.email, 'Email não informado')
+            validarEmail(usuario.email, 'Email não tem um formato válido')
             existeOuErro(usuario.senha, 'Senha não informado')
             existeOuErro(usuario.confirmarSenha, 'Confirmar senha não informado')
             igualOuErro(usuario.senha, usuario.confirmarSenha, 'Senhas diferentes')
             existeOuErro(usuario.telefone, 'Telefone não informado')
+            validarTelefone(usuario.telefone, 'Telefone não tem um formato válido')
             existeOuErro(usuario.genero, 'Gênero não informado')
+            validarGenero(usuario.genero, 'Gênero não é um valor válido')
 
-            const usuarioDoBD = await app.bd('usuarios')
+            let usuarioDoBD = await app.bd('usuarios')
                 .where({ email: usuario.email }).first()
-            if (!usuario.id) naoExisteOuErro(usuarioDoBD, 'Usuário já cadastrado')
+            if (!usuario.id) naoExisteOuErro(usuarioDoBD, 'Email já cadastrado')
+            usuarioDoBD = await app.bd('usuarios')
+                .where({ telefone: usuario.telefone }).first()
+            if (!usuario.id) naoExisteOuErro(usuarioDoBD, 'Telefone já cadastrado')
         } catch (msg) {
             return res.status(400).send(msg)
         }
