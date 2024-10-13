@@ -64,7 +64,7 @@ module.exports = app => {
             .join('usuarios', 'movimentacoes.usuarioId', '=', 'usuarios.id')
             .join('contas', 'movimentacoes.contaId', '=', 'contas.id')
             .join('categorias', 'movimentacoes.categoriaId', '=', 'categorias.id')
-            .where('movimentacoes.usuarioId', req.params.usuarioId)
+            .where('movimentacoes.usuarioId', req.user.id)
             .then(movimentacoes => res.json(movimentacoes))        
             .catch(err => res.status(500).send(err))
     }
