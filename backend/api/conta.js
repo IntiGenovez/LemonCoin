@@ -28,16 +28,32 @@ module.exports = app => {
     }
 
     const deletar = async (req, res) => {
+        try {
+            existeOuErro(req.params.id, 'Código da conta não infomado')
 
+            const movimentacao = await app.db('movimentacoes')
+                .where({ contaId: req.params.id })
+
+            naoExisteOuErro(movimentacao, 'Há movimentações associadas à categoria')
+
+            const registroDeletado = await app.db('contas')
+                .where({ id: req.params.id }).del()
+            existeOuErro(registroDeletado, 'A conta não foi encontrada.')
+
+            res.status(204).send()
+        } catch (msg) {
+            return res.status(400).send(msg)
+        }
     }
 
-    const obter = async (req, res) => {
-        
+    const obter = (req, res) => {
+        app.bd('contas')
+            .join('usuarios', 'contas.usuarioId', '=', 'usuarios.id')
+            .select('contas.*')
+            .select('usuarios.nome as usuario_nome')
+            .then(contas => res.json(contas))
+            .catch(err => res.status(500).send(err))
     }
 
-    const obterPorId = async (req, res) => {
-
-    }
-
-    return { salvar }
+    return { salvar, obter, deletar }
 }

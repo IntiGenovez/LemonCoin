@@ -31,19 +31,43 @@ module.exports = app => {
     }
 
     const deletar = async (req, res) => {
+        try {
+            const registroDeletado = await app.db('movimentacoes')
+                .where({ id: req.params.id }).del()
+            existeOuErro(registroDeletado, "Movimentação não encontrada")
 
+            res.status(204).send()
+        } catch (msg) {
+            return res.status(400).send(msg)
+        }
     }
 
-    const obter = async (req, res) => {
+    const obter = (req, res) => {
         app.bd('movimentacoes')
-            .select()
+            .join('contas', 'movimentacoes.contaId', '=', 'contas.id')
+            .join('categorias', 'movimentacoes.categoriaId', '=', 'categorias.id')
+            .join('usuarios', 'movimentacoes.usuarioId', '=', 'usuarios.id')
+            .select('movimentacoes.*')
+            .select('contas.nome as conta')
+            .select('categorias.nome as categoria')
+            .select('usuarios.nome as usuario')
             .then(movimentacoes => res.json(movimentacoes))        
             .catch(err => res.status(500).send(err))
     }
 
-    const obterPorId = async (req, res) => {
-
+    const obterPorIddoUsuario = (req, res) => {
+        app.bd('movimentacoes')
+            .select('movimentacoes.*')
+            .select('usuarios.nome as usuario_nome')
+            .select('contas.nome as conta_nome')
+            .select('categorias.nome as categoria_nome')
+            .join('usuarios', 'movimentacoes.usuarioId', '=', 'usuarios.id')
+            .join('contas', 'movimentacoes.contaId', '=', 'contas.id')
+            .join('categorias', 'movimentacoes.categoriaId', '=', 'categorias.id')
+            .where('movimentacoes.usuarioId', req.params.usuarioId)
+            .then(movimentacoes => res.json(movimentacoes))        
+            .catch(err => res.status(500).send(err))
     }
 
-    return { salvar, obter }
+    return { salvar, obter, deletar, obterPorIddoUsuario }
 }

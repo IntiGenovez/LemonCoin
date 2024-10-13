@@ -27,16 +27,32 @@ module.exports = app => {
     }
 
     const deletar = async (req, res) => {
+        try {
+            existeOuErro(req.params.id, 'Código da categoria não infomado')
 
+            const movimentacao = await app.db('movimentacoes')
+                .where({ categoriaId: req.params.id })
+
+            naoExisteOuErro(movimentacao, 'Há movimentações associadas à categoria')
+
+            const registroDeletado = await app.db('categorias')
+                .where({ id: req.params.id }).del()
+            existeOuErro(registroDeletado, 'A categoria não foi encontrada.')
+
+            res.status(204).send()
+        } catch (msg) {
+            return res.status(400).send(msg)
+        }
     }
 
-    const obter = async (req, res) => {
-        
+    const obter = (req, res) => {
+        app.bd('categorias')
+            .join('usuarios', 'categorias.usuarioId', '=', 'usuarios.id')
+            .select('categorias.*')
+            .select('usuarios.nome as usuario_nome')
+            .then(categorias => res.json(categorias))
+            .catch(err => res.status(500).send(err))
     }
 
-    const obterPorId = async (req, res) => {
-
-    }
-
-    return { salvar }
+    return { salvar, deletar, obter }
 }

@@ -63,5 +63,5 @@ module.exports = app => {
         if (segundo < 0 || segundo > 59) throw msg
     }
 
-    return { existeOuErro, naoExisteOuErro, igualOuErro, validarGenero, validarEmail, validarTelefone, validarHora }
+    return { existeOuErro, naoExisteOuErro, igualOuErro, validarGenero, validarEmail, validarTelefone, validarData }
 }

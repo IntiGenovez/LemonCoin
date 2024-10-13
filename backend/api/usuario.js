@@ -52,14 +52,14 @@ module.exports = app => {
 
     const obter = (req, res) => {
         app.bd('usuarios')
-            .select('id', 'nome', 'email')
+            .select()
             .then(usuarios => res.json(usuarios))
             .catch(err => res.status(500).send(err))
     }
 
     const obterPorId = (req, res) => {
         app.bd('usuarios')
-            .select('id', 'nome', 'email')
+            .select()
             .where({ id: req.params.id }).first()
             .then(usuario => res.json(usuario))
             .catch(err => res.status(500).send(err))
