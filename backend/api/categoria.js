@@ -5,6 +5,8 @@ module.exports = app => {
         const categoria = { ...req.body }
         if (req.params.id) categoria.id = req.params.id
 
+        console.log(req.user.id)
+
         try {
             existeOuErro(categoria.nome, "Nome não informado")
             existeOuErro(categoria.usuarioId, "Usuário não informado")
@@ -30,12 +32,12 @@ module.exports = app => {
         try {
             existeOuErro(req.params.id, 'Código da categoria não infomado')
 
-            const movimentacao = await app.db('movimentacoes')
+            const movimentacao = await app.bd('movimentacoes')
                 .where({ categoriaId: req.params.id })
 
             naoExisteOuErro(movimentacao, 'Há movimentações associadas à categoria')
 
-            const registroDeletado = await app.db('categorias')
+            const registroDeletado = await app.bd('categorias')
                 .where({ id: req.params.id }).del()
             existeOuErro(registroDeletado, 'A categoria não foi encontrada.')
 

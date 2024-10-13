@@ -6,6 +6,7 @@ const bd = require("./config/bd")
 app.bd = bd
 
 consign()
+    .include('./config/passport.js')
     .then('./config/middlewares.js')
     .then('./api/validacao.js')
     .then('./api')
