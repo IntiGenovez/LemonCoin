@@ -1,5 +1,7 @@
 node_modules
 *.log
+frontend.zip
+.env
 
 # Output directory
 dist
@@ -11,5 +13,3 @@ dist
 stats.html
 
 .eslintcache
-
-frontend.zip
