@@ -1,5 +1,13 @@
 module.exports = app => {
 /************* ENDPOINTS DE USUARIOS *************/
+//esses endpoints não passam pela validação de token, são os únicos endpoints públicos
+
+    app.post('/signup', app.api.usuario.salvar)
+    app.post('/signin', app.api.autenticacao.signin)
+    app.post('/validartoken', app.api.autenticacao.validarToken)
+
+
+/************* ENDPOINTS DE USUARIOS *************/
 
     app.route('/usuarios')
         .post(app.api.usuario.salvar)
