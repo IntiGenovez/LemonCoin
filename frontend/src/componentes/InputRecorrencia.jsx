@@ -1,5 +1,6 @@
 const InputRecorrencia = () => (
     <select name="recorrencia" id="recorrencia">
+        <option value="">Recorrência</option>
         <option value="diaria">Diária</option>
         <option value="semanal">Semanal</option>
         <option value="mensal">Mensal</option>

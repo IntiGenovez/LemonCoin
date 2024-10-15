@@ -18,7 +18,8 @@ import Pagina404 from "./telas/Pagina404"
 import Login from "./telas/Login"
 import Cadastro from "./telas/Cadastro.jsx"
 import AdicionarDespesa from "./telas/AdicionarDespesa.jsx"
-import adicionarReceita from "./telas/AdicionarReceita.jsx"
+import AdicionarReceita from "./telas/AdicionarReceita.jsx"
+import AdicionarConta from "./telas/AdicionarConta.jsx"
 
 import "./App.css"
 
@@ -71,11 +72,15 @@ function App() {
         },
         {
           path: '/adicionar-receita',
-          Component: adicionarReceita
+          Component: AdicionarReceita
         },
         {
           path: '/adicionar-despesa',
           Component: AdicionarDespesa
+        },
+        {
+          path: '/adicionar-conta',
+          Component: AdicionarConta
         }
       ]
     }
