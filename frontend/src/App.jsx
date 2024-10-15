@@ -3,7 +3,7 @@ import  {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom"
-import { useReducer } from "react"
+import { useEffect, useReducer } from "react"
 import { DadosContexto, reducer, initialState } from "./store/index.js"
 
 //importações de telas
@@ -23,14 +23,17 @@ import AdicionarConta from "./telas/AdicionarConta.jsx"
 
 import "./App.css"
 
-import urlBaseAPI from "./global.js"
+import { urlBaseAPI } from "./global.js"
 
 function App() {
   const [ state, dispatch ] = useReducer(reducer, initialState)
 
-  async function obterDados() {
-    
-  }
+
+  useEffect(() => {
+    fetch(urlBaseAPI + '/movimentacoes')
+      .then(resposta => resposta.json())
+      .then(console.log)
+  }, [])  
 
   const router = createBrowserRouter([
     {

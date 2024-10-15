@@ -49,12 +49,13 @@ module.exports = app => {
     /************* ENDPOINTS DE MOVIMENTAÇÕES *************/
 
     app.route('/movimentacoes')
-        .all(app.config.passport.autenticador())
+        // .all(app.config.passport.autenticador())
         .post(app.api.movimentacao.salvar)
-        .get(app.api.movimentacao.obterPorIddoUsuario)
+        .get(app.api.movimentacao.obter)
 
     app.route('/movimentacoes/:id')
         .all(app.config.passport.autenticador())
         .put(app.api.movimentacao.salvar)
         .delete(app.api.movimentacao.deletar)
+        .get(app.api.movimentacao.obterPorIddoUsuario)
 }

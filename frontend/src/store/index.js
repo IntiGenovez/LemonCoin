@@ -1,9 +1,7 @@
 import { createContext } from "react"
 
 export const initialState = {
-    despesas: 
-    
-    
+    movimentacoes: null
   }
 
 export function reducer(state, action) {
