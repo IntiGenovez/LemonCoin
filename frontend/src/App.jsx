@@ -22,10 +22,14 @@ import adicionarReceita from "./telas/AdicionarReceita.jsx"
 
 import "./App.css"
 
-function App() {
+import urlBaseAPI from "./global.js"
 
-  
+function App() {
   const [ state, dispatch ] = useReducer(reducer, initialState)
+
+  async function obterDados() {
+    
+  }
 
   const router = createBrowserRouter([
     {
