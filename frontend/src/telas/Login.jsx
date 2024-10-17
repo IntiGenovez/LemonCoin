@@ -11,21 +11,16 @@ export default function Login() {
         setVariavel(e.target.value)
     }
     return (
-        <form className={globalStyle.formulario}>
-            <h1>Usuário</h1>
-            <input type="text" value={ usuario } onChange={ e => tratarInput(setUsuario, e) }/>
-
-            <h1>Senha</h1>
-            <input type="text" value={ senha } onChange={ e => tratarInput(setSenha, e) }/>
-            <br />
-
-            <a href="">Esqueci minha senha</a>
-            <br />
-
-            <button>Entrar</button>
-            <br />
-
-            <Link to="/cadastro">Ainda não possuo conta</Link>
+        <form>
+            <div className={globalStyle.formulario}>
+                <h1>Usuário</h1>
+                <input type="text" value={ usuario } onChange={ e => tratarInput(setUsuario, e) }/>
+                <h1>Senha</h1>
+                <input type="text" value={ senha } onChange={ e => tratarInput(setSenha, e) }/>
+                <a href="">Esqueci minha senha</a>
+                <button>Entrar</button>
+                <Link to="/cadastro">Ainda não possuo conta</Link>
+            </div>
         </form>
     );
 }
