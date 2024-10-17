@@ -1,11 +1,11 @@
-import { useState, useContext, useReducer, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import Movimentacao from "../componentes/Movimentacao";
 import Seletor from "../componentes/Seletor";
 import BotaoAcao from "../componentes/BotaoAcao";
 import styles from "../estilos/Movimentacoes.module.css"
 
 
-import { DadosContexto } from "../store/index.js"
+import { DadosContexto } from "../store"
 
 export default function Movimentacoes({ tipo }) {
     const [ seletorAtivo, setSeletorAtivo ] = useState(null)
@@ -14,7 +14,6 @@ export default function Movimentacoes({ tipo }) {
     const seletores = ['data', 'nome', 'valor', 'categoria', 'conta', 'Filtro']
     
     const contexto = useContext(DadosContexto)
-    
 
     const tratarClique = (seletor) => {
         if (seletor === seletorAtivo) {

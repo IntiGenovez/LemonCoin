@@ -4,7 +4,8 @@ import  {
   RouterProvider,
 } from "react-router-dom"
 import { useEffect, useReducer } from "react"
-import { DadosContexto, reducer, initialState } from "./store/index.js"
+import { DadosContexto, initialState } from "./store"
+import { allReducers } from "./store/reducer"
 
 //importações de telas
 import Layout from "./telas/Layout"
@@ -23,17 +24,9 @@ import AdicionarConta from "./telas/AdicionarConta.jsx"
 
 import "./App.css"
 
-import { urlBaseAPI } from "./global.js"
-
 function App() {
-  const [ state, dispatch ] = useReducer(reducer, initialState)
+  const [ state, dispatch ] = useReducer(allReducers, initialState)
 
-
-  useEffect(() => {
-    fetch(urlBaseAPI + '/movimentacoes')
-      .then(resposta => resposta.json())
-      .then(console.log)
-  }, [])  
 
   const router = createBrowserRouter([
     {

@@ -1,5 +1,5 @@
 module.exports = app => {
-    const { existeOuErro, naoExisteOuErro } = app.api.validacao
+    const { existeOuErro } = app.api.validacao
 
     const salvar = async (req, res) => {
         const movimentacao = { ...req.body }
@@ -64,7 +64,7 @@ module.exports = app => {
             .join('usuarios', 'movimentacoes.usuarioId', '=', 'usuarios.id')
             .join('contas', 'movimentacoes.contaId', '=', 'contas.id')
             .join('categorias', 'movimentacoes.categoriaId', '=', 'categorias.id')
-            .where('movimentacoes.usuarioId', req.user.id)
+            .where('movimentacoes.usuarioId', req.params.id)
             .then(movimentacoes => res.json(movimentacoes))        
             .catch(err => res.status(500).send(err))
     }
