@@ -53,8 +53,8 @@ module.exports = app => {
         .post(app.api.movimentacao.salvar)
         .get(app.api.movimentacao.obter)
 
-    app.route('/movimentacoes/:id')
-        .all(app.config.passport.autenticador())
+    app.route('/:id/movimentacoes')
+        // .all(app.config.passport.autenticador())
         .put(app.api.movimentacao.salvar)
         .delete(app.api.movimentacao.deletar)
         .get(app.api.movimentacao.obterPorIddoUsuario)
