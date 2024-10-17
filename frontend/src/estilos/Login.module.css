@@ -1,11 +1,14 @@
 .formulario{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
     background-color: #fffcf4;
     text-align: center;
-    margin: auto;
     padding-top: 5%;
     width: 350px;
     height: 400px;
-
 }
 
 .formulario h1 {
@@ -14,7 +17,7 @@
 }
 
 .formulario a {
-    margin: 5px;
+
     color: var(--background-botoes);
     text-decoration: underline;
 }
@@ -30,10 +33,9 @@
     background-color: #809c34;
     border: 0;
     width: 28%;
-    height: 40px;
+    height: 30px;
     font: bolder;
     color: white;
     font-size: 18px;
-    margin: 20px;
     border-radius: 10px;
 }
