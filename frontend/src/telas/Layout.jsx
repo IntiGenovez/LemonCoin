@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react"
 import { Outlet } from "react-router-dom"
 import { movementsActions } from "../store/action"
+import Voltar from "../componentes/BotaoVoltar"
 
 import { DadosContexto } from "../store"
 
@@ -13,11 +14,13 @@ export default function Layout() {
 
     useEffect(() => {
         movementsActions.obterDespesas(contexto.dispatch, 8)
+        console.log(contexto)
     }, [])
 
     return (
         <>
             <Cabecalho />
+            <Voltar />
             <Outlet />
             <Rodape />
         </>
