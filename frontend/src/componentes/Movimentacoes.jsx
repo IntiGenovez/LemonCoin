@@ -58,7 +58,7 @@ export default function Movimentacoes({ tipo }) {
             <div className={styles.total}>
                 <p>Total: <span>{ contexto.state.despesas.reduce((acc, atual) => acc + atual.valor, 0)
                     .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }) }</span></p>
-                <BotaoAcao>Adicionar { tipo }</BotaoAcao>
+                <BotaoAcao link='/adicionar-despesa'>Adicionar { tipo }</BotaoAcao>
             </div>
         </section>
     )

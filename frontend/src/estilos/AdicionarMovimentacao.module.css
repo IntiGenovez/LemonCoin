@@ -1,44 +1,52 @@
-form{
+form {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.formulario{
+.formulario {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 10px;
     width: 50%;
-    border: solid red 1px;
+
+    & input {
+        width: 80%;
+        height: 30px;
+        flex-grow: 1;
+    }
+
+    & div {
+        width: 80%;
+        display: flex;
+        gap: 7px;
+    }
 }
 
-.formulario input{
-    width: 80%;
-}
-
-.formulario div {
-    width: 80%;
-    display: flex;
-    gap: 7px;
-}
-
-.Botoes{
+.Botoes {
     display: flex;
     justify-content: right;
-}
-.Botoes button{
-    background-color: #809c34;
-    border: 0;
-    width: 28%;
-    height: 40px;
-    font: bolder;
-    color: white;
-    font-size: 18px;
-    border-radius: 10px;
+
+    & button {
+        background-color: #809c34;
+        border: 0;
+        width: 28%;
+        height: 40px;
+        font: bolder;
+        color: white;
+        font-size: 18px;
+        border-radius: 10px;
+    }
 }
 
-.divData select{
-    width: 100%;
+.divData {
+    display: flex;
+    align-items: center;
+
+    & select {
+        width: 100%;
+        height: 30px;
+    }
 }
