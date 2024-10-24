@@ -21,6 +21,11 @@ function movimentacoesReducer(estado, action) {
                     despesa
                 )}
             break
+        case 'adicionarDespesa':
+            console.log(action.payload.despesa)
+            // novoEstado = { ...estado, despesas: estado.despesas.push(action.payload.despesa) }
+            // console.log(novoEstado)
+            break
         default:
             novoEstado: estado      
     }

@@ -9,7 +9,7 @@ export default function Movimentacao({ tipo, id, data, categoria, valor, nome, c
     const [ despesa, setDespesa ] = useState({
         id,
         data,
-        valor,
+        valor: valor.toFixed(2),
         nome,
         categoria,
         conta

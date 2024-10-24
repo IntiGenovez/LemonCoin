@@ -50,13 +50,13 @@
 
 }
 
-.formulario select{
-    /* width: 70%;
+/* .formulario select{
+    width: 70%;
     font-size: 15px;
     padding: 5px 20px;
     margin-bottom: 5px;
-    margin: 8px; */
-}
+    margin: 8px;
+} */
 
 .formulario input[type="text"]{
     /* border: solid red 1px; */
@@ -82,7 +82,7 @@
     border: 0;
     width: 28%;
     height: 40px;
-    font: bolder;
+    font-weight: bolder;
     color: white;
     font-size: 18px;
     margin: 20px;
