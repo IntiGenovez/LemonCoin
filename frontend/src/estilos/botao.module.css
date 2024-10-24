@@ -1,11 +1,46 @@
 .btnAcao {
-    background-color: #809c34;
+    background-color: #e7efc4;
     border: 0;
     width: 35%;
     height: 40px;
     font: bolder;
     color: white;
     font-size: 18px;
-    /* margin: 20px; */
     border-radius: 10px;
 }
+
+.btnNavegar {
+    border: none;
+    font-size: 17px;
+    background-color: #ddeac4;
+    padding: 13px 20px 10px;
+
+    & * {
+        color: var(--cor-fonte-principal);
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+}
+
+.btnVoltar {
+    background-color: #809c34;
+    border: 0;
+    color: white;
+    font-size: 18px;
+    border-radius: 50%;
+    
+    position: absolute;
+    width: 35px;
+    aspect-ratio: 1/1;
+    display: grid;
+    place-items: center;
+
+    top: 115px;
+    left: 9px;
+    cursor: pointer;
+
+    & * {
+        font-size: 30px;
+    }
+}
+

@@ -1,8 +1,9 @@
-import styles from '../estilos/botao.module.css'
 import { Link } from 'react-router-dom'
+import styles from '../estilos/Botao.module.css'
 
-export default function BotaoAcao({ link, children }) {
+export default function BotaoAcao({ link }) {
     return (
-        <button className={styles.btnAcao}><Link to={link}>{ children }</Link></button>
+        <button className={styles.btnAcao} onClick={() => console.log('executar acao')}><i className='bx bx-chevron-left'></i></button>
+        
     )
 }

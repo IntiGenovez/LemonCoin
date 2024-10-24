@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import Movimentacao from "../componentes/Movimentacao";
 import Seletor from "../componentes/Seletor";
-import BotaoAcao from "../componentes/BotaoAcao";
+import BotaoNavegar from "../componentes/BotaoNavegar";
 import styles from "../estilos/Movimentacoes.module.css"
 
 
@@ -58,7 +58,7 @@ export default function Movimentacoes({ tipo }) {
             <div className={styles.total}>
                 <p>Total: <span>{ contexto.state.despesas.reduce((acc, atual) => acc + atual.valor, 0)
                     .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }) }</span></p>
-                <BotaoAcao link='/adicionar-despesa'>Adicionar { tipo }</BotaoAcao>
+                <BotaoNavegar link='/adicionar-despesa'>Adicionar { tipo }</BotaoNavegar>
             </div>
         </section>
     )
