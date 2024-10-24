@@ -2,24 +2,25 @@ import InputAno from "./InputAno";
 import InputMes from "./InputMes";
 import InputDia from "./InputDia";
 import InputRecorrencia from "./InputRecorrencia";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
-import Styles from '../estilos/AdicionarMovimentacao.module.css';
+import { DadosContexto } from "../store"
+
+import styles from '../estilos/AdicionarMovimentacao.module.css';
 
 export default function AdicionarMovimentacao({ tipo }){
+    const contexto = useContext(DadosContexto)
 
-    const [nome, setNome] = useState('');
-    const [valor, setValor] = useState('');
-    const [categoria, setCategoria] = useState('');
-    const [conta, setConta] = useState('');
-
-    const tratarInput = (setter, event) => {
-        setter(event.target.value);
-    };
+    const [ despesa, setDespesa ] = useState({
+        nome: '',
+        valor: 0,
+        categoria: '',
+        conta: ''
+    })
 
     return(
-        <form className={Styles}>
-                <div className={Styles.formulario}>
+        <form className={styles}>
+                <div className={styles.formulario}>
                     <h1>Adicionar {tipo}</h1>
 
                     <input 
@@ -27,8 +28,8 @@ export default function AdicionarMovimentacao({ tipo }){
                         name="nome" 
                         id="nome" 
                         placeholder="Nome: " 
-                        value={nome} 
-                        onChange={e => tratarInput(setNome, e)} 
+                        value={despesa.nome} 
+                        onChange={e => setDespesa(d => { return { ...d, nome: e.target.value } })} 
                     />
 
                     <div>
@@ -37,8 +38,8 @@ export default function AdicionarMovimentacao({ tipo }){
                             name="valor" 
                             id="valor" 
                             placeholder="Valor: R$" 
-                            value={valor} 
-                            onChange={e => tratarInput(setValor, e)} 
+                            value={despesa.valor} 
+                            onChange={e => setDespesa(d => { return { ...d, valor: e.target.value } })} 
                         />
 
                         <input 
@@ -46,8 +47,8 @@ export default function AdicionarMovimentacao({ tipo }){
                             name="categoria" 
                             id="categoria" 
                             placeholder="Categoria: " 
-                            value={categoria} 
-                            onChange={e => tratarInput(setCategoria, e)} 
+                            value={despesa.categoria} 
+                            onChange={e => setDespesa(d => { return { ...d, categoria: e.target.value } })} 
                         />
 
                     </div>
@@ -58,18 +59,23 @@ export default function AdicionarMovimentacao({ tipo }){
                             name="conta" 
                             id="conta" 
                             placeholder="Conta: " 
-                            value={conta} 
-                            onChange={e => tratarInput(setConta, e)} 
+                            value={despesa.conta} 
+                            onChange={e => setDespesa(d => { return { ...d, conta: e.target.value } })} 
                         />
                     </div>
-                    <div className={Styles.divData}>
+                    <div className={styles.divData}>
                         <span>Data: </span>
                         <InputDia />
                         <InputMes />
                         <InputAno />
                     </div>
-                    <div className={Styles.Botoes}>
-                        <button>Confirmar</button>
+                    <div className={styles.Botoes}>
+                        <button onClick={
+                            e => {
+                                e.preventDefault()
+                                contexto.dispatch({ type: 'adicionarDespesa', payload: { despesa } })
+                            }
+                        }>Confirmar</button>
                         <button>Cancelar</button>
                     </div>
                 </div>      

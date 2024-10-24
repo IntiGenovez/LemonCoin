@@ -14,6 +14,9 @@ const movementsActions = {
     },
     atualizarDespesa: (dispatch, despesa) => {
         dispatch({ type: 'atualizarDespesa', payload: { despesa }})
+    },
+    adicionarDespesa: (dispatch, despesa) => {
+        dispatch({ type: 'adicionarDespesa', payload: { despesa }})
     }
 }
 

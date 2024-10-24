@@ -14,7 +14,7 @@ export default function Layout() {
 
     useEffect(() => {
         movementsActions.obterDespesas(contexto.dispatch, 8)
-        console.log(contexto)
+        console.log('requisitou de novo')
     }, [])
 
     return (
