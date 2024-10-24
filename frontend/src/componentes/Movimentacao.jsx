@@ -15,6 +15,8 @@ export default function Movimentacao({ tipo, id, data, categoria, valor, nome, c
         conta
     })
 
+    let dataFormatada = data.split('T')[0].split('-').reverse().join('/')
+
     valor = valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 
     return (
@@ -22,7 +24,7 @@ export default function Movimentacao({ tipo, id, data, categoria, valor, nome, c
             { movimentacaoEditavel ? 
                 (<> <input value={despesa.data} onChange={ e => setDespesa({ ...despesa, data: e.target.value }) } />
                     <input value={despesa.nome} onChange={ e => setDespesa({ ...despesa, nome: e.target.value }) } />
-                    <input value={despesa.valor} onChange={ e => setDespesa({ ...despesa, valor: +e.target.value }) } />
+                    <input type='number' value={despesa.valor} onChange={ e => setDespesa({ ...despesa, valor: +e.target.value }) } step={0.01}/>
                     <input value={despesa.categoria} onChange={ e => setDespesa({ ...despesa, categoria: e.target.value }) } />
                     <input value={despesa.conta} onChange={ e => setDespesa({ ...despesa, conta: e.target.value }) } />
                     <span>
@@ -39,7 +41,7 @@ export default function Movimentacao({ tipo, id, data, categoria, valor, nome, c
                         ></i>
                     </span></>)
             : 
-                (<> <span>{ data }</span>
+                (<> <span>{ dataFormatada }</span>
                     <span>{ nome }</span>
                     <span>{ valor }</span>
                     <span>{ categoria }</span>
