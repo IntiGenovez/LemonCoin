@@ -13,7 +13,7 @@ export default function AdicionarMovimentacao({ tipo }){
 
     const [ despesa, setDespesa ] = useState({
         nome: '',
-        valor: 0,
+        valor: '',
         categoria: '',
         conta: ''
     })
@@ -70,13 +70,13 @@ export default function AdicionarMovimentacao({ tipo }){
                         <InputAno />
                     </div>
                     <div className={styles.Botoes}>
-                        <button onClick={
-                            e => {
-                                e.preventDefault()
-                                contexto.dispatch({ type: 'adicionarDespesa', payload: { despesa } })
-                            }
-                        }>Confirmar</button>
-                        <button>Cancelar</button>
+                    <button>Cancelar</button>
+                    <button onClick={
+                        e => {
+                            e.preventDefault()
+                            contexto.dispatch({ type: 'adicionarDespesa', payload: { despesa } })
+                        }
+                    }>Confirmar</button>
                     </div>
                 </div>      
                     

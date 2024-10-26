@@ -1,0 +1,14 @@
+.contas{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container {
+    /* border: solid red; */
+    width: 90%;
+    margin-top: 80px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 150px;
+}
