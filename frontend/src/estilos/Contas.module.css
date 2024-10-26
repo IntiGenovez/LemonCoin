@@ -11,4 +11,10 @@
     display: flex;
     flex-wrap: wrap;
     gap: 150px;
+    justify-content: space-between;
+}
+
+.container::after {
+    content: '';
+    flex: auto; /* Faz com que o espaço restante da linha final seja preenchido */
 }
