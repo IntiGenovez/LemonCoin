@@ -1,5 +1,7 @@
+import Movimentacoes from "../componentes/Movimentacoes";
+
 export default function Receitas() {
     return ( 
-        <div>receitas</div>
+        <div className="tela-padrao"><Movimentacoes tipo="Receitas" /></div>
     )
 }
