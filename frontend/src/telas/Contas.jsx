@@ -1,4 +1,5 @@
 import Card from '../componentes/Card'
+import BotaoAdicionar from '../componentes/BotaoAdicionar'
 
 import styles from '../estilos/Contas.module.css'
 
@@ -19,6 +20,7 @@ export default function Contas() {
                 <Card />
                 <Card />
             </div>
+            <BotaoAdicionar />
         </div>
     )
 }
