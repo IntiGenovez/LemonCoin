@@ -1,0 +1,11 @@
+.iconeAdd {
+    position: fixed;
+    width: 90px;
+    bottom: 20px;        
+    right: 20px;         
+    background-color: #799a36;
+    border-radius: 20%;  
+    padding: 10px;      
+    cursor: pointer;   
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
