@@ -1,9 +1,22 @@
 import { Link } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 
 import styles from "../estilos/Cabecalho.module.css"
 import logo from "../assets/logo.png"
 
 export default function Cabecalho() {
+
+    let location = useLocation();
+
+    // Pega o nome do path atual
+    let titulo = location.pathname;
+    if(titulo === "/"){
+        titulo = "HOME"
+    } else {
+        titulo.toUpperCase()
+        titulo = titulo.replace('/', '').replace('-', ' ')
+    }
+
     return (
         <header>
             <div className={styles.cabecalho}>
@@ -14,7 +27,7 @@ export default function Cabecalho() {
                     </Link>
                 </div>
                 <div>
-                    <h2>Home</h2>
+                    <h2>{titulo}</h2>
                 </div>
                 <div>
                     <Link to='/login'>Login</Link>

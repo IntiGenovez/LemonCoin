@@ -24,4 +24,10 @@
 
 .containerRedesSociais {
     justify-content: flex-end;
+
+    & a{
+        margin: 0;
+        padding: 0;
+    }
 }
+

@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react"
 import { Outlet } from "react-router-dom"
 import { movementsActions } from "../store/action"
 import Voltar from "../componentes/BotaoVoltar"
+import { useLocation } from "react-router-dom"
 
 import { DadosContexto } from "../store"
 
@@ -17,10 +18,24 @@ export default function Layout() {
         console.log('requisitou de novo')
     }, [])
 
+    let titulo = useLocation().pathname
+
     return (
         <>
             <Cabecalho />
-            <Voltar />
+            {
+                titulo === '/' ? 
+                    (
+                        
+                        <></>
+                    )
+                    :
+                    (
+                        <>
+                            <Voltar/>
+                        </>
+                    )
+            }
             <Outlet />
             <Rodape />
         </>
