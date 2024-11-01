@@ -15,6 +15,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "backend": "file:",
     "bcrypt-nodejs": "^0.0.3",
     "consign": "^0.1.6",
     "cors": "^2.8.5",

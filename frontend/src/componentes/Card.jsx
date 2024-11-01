@@ -13,7 +13,7 @@ import styles from '../estilos/card.module.css'
 export default function Card() {
     const icone = (
         <>
-            <img src={nubank} alt="Icone" className={styles.icone} />
+            <img src={itau} alt="Icone" className={styles.icone} />
         </>
     );
     const nome = (
