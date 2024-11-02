@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Link } from "react-router-dom"
+import BotaoAcao from '../componentes/BotaoAcao'
+import Home from './Home'
 
 import globalStyle from "../estilos/Login.module.css"
 
@@ -17,8 +19,8 @@ export default function Login() {
                 <input type="text" value={ usuario } onChange={ e => tratarInput(setUsuario, e) }/>
                 <h1>Senha</h1>
                 <input type="text" value={ senha } onChange={ e => tratarInput(setSenha, e) }/>
-                <a href="">Esqueci minha senha</a>
-                <button>Entrar</button>
+                <Link to="">Esqueci minha senha</Link>
+                <BotaoAcao to="/home">Entrar</BotaoAcao>
                 <Link to="/cadastro">Ainda não possuo conta</Link>
             </div>
         </form>

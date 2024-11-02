@@ -22,7 +22,7 @@ export default function Cadastro(){
             <input type="text" value={ telefone } placeholder='Telefone: ' onChange={ e => tratarInput(setTelefone, e) }/>
             
             <div>
-                <h2>Data de Nascimento: </h2>
+                <h2>Data de Nascimento:</h2>
                 <div className={styles.inputSelect}>
                     <InputDia />
 

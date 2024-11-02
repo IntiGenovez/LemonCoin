@@ -50,21 +50,13 @@
 
 }
 
-/* .formulario select{
-    width: 70%;
-    font-size: 15px;
-    padding: 5px 20px;
-    margin-bottom: 5px;
-    margin: 8px;
-} */
-
 .formulario input[type="text"]{
     /* border: solid red 1px; */
     width: 70%;
     font-size: 15px;
     padding: 5px 20px;
     margin-bottom: 5px;
-    margin: 8px;
+    margin: 3px;
 }
 
 .formulario input[type="password"]{
