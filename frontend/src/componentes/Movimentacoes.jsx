@@ -3,6 +3,7 @@ import Movimentacao from "../componentes/Movimentacao";
 import Seletor from "../componentes/Seletor";
 import BotaoNavegar from "../componentes/BotaoNavegar";
 import styles from "../estilos/Movimentacoes.module.css"
+import { useLocation } from "react-router-dom";
 
 
 import { DadosContexto } from "../store"
@@ -12,6 +13,11 @@ export default function Movimentacoes({ tipo }) {
     const [ isUp, setIsUp ] = useState(false)
     const [ movimentacaoEditavel, setMovimentacaoEditavel ] = useState(null)
     const seletores = ['data', 'nome', 'valor', 'categoria', 'conta', 'Filtro']
+
+    const location = useLocation()
+    let linkAdicionar = location.pathname
+    linkAdicionar = linkAdicionar.replace('/', '').slice(0, -1)
+    linkAdicionar = "/adicionar-" + linkAdicionar
     
     const contexto = useContext(DadosContexto)
 
@@ -58,7 +64,7 @@ export default function Movimentacoes({ tipo }) {
             <div className={styles.total}>
                 <p>Total: <span>{ contexto.state.despesas.reduce((acc, atual) => acc + atual.valor, 0)
                     .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }) }</span></p>
-                <BotaoNavegar link='/adicionar-despesa'>Adicionar { tipo }</BotaoNavegar>
+                <BotaoNavegar link={ linkAdicionar }>Adicionar { tipo }</BotaoNavegar>
             </div>
         </section>
     )
