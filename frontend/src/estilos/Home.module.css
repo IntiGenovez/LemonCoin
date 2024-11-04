@@ -1,0 +1,47 @@
+
+.container {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    gap: 30px;
+
+    & .divGrafico{
+        width: 40%;
+
+        & .grafico {
+            border: black solid 1px;
+        }
+    }
+
+    & .containerContas {
+        display: flex;
+        flex-direction: row;
+        gap: 3px;
+
+        & button {
+            background-color: #ffffdd;
+            border: black 1px solid;
+            width: 70px;
+        }
+    }
+
+    & .containerGastos {
+        width: 50%;
+        background-color: #ffffdd;
+        text-align: center;
+
+        & .valores{
+            display: block;
+            width: 100%;
+        }
+    }
+
+    & .containerBotoes {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+    }
+}

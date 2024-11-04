@@ -1,15 +1,15 @@
 
-.card {
-    --tamanho-card: 120px;
+.CardConta {
+    --tamanho-CardConta: 120px;
 
     /* border: blue solid 1px; */
-    width: var(--tamanho-card);
+    width: var(--tamanho-CardConta);
     display: flex;
     flex-direction: column;
     justify-content: center; 
     align-items: center; 
 
     & .icone {
-        width: var(--tamanho-card);
+        width: var(--tamanho-CardConta);
     }
 }
