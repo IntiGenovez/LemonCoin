@@ -8,9 +8,9 @@ import santander from '../assets/Santander.png';
 import picpay from '../assets/PicPay.png';
 import sicredi from '../assets/Sicredi.png';
 
-import styles from '../estilos/card.module.css'
+import styles from '../estilos/CardConta.module.css'
 
-export default function Card() {
+export default function CardConta() {
     const icone = (
         <>
             <img src={itau} alt="Icone" className={styles.icone} />
@@ -23,7 +23,7 @@ export default function Card() {
         <span>R$1.000,00</span>
     )
     return (
-        <div className={styles.card}>
+        <div className={styles.CardConta}>
             {icone}
             {nome}
             {saldo}
