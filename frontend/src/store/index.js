@@ -6,11 +6,11 @@ export const initialState = {
     categorias: [],
     usuario: {
         id: null,
-        nome: null,
-        email: null,
-        telefone: null,
-        genero: null,
-        token: null
+        nome: '',
+        email: '',
+        telefone: '',
+        genero: '',
+        token: ''
     }
 }
 
