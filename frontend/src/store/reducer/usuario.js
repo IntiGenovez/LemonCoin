@@ -8,11 +8,11 @@ function usuarioReducer(estado, action) {
             novoEstado = { ...estado, usuario: action.payload.usuario }
             break
         default:
-            novoEstado: estado      
+            novoEstado = estado      
     }
 
     return {
-        next: nextReducer => nextReducer(estado, action),
+        next: nextReducer => nextReducer(novoEstado, action),
         end: () => novoEstado
     }
 }

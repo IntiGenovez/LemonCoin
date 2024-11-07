@@ -1,26 +1,44 @@
-import { useState } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { Link } from "react-router-dom"
 import BotaoAcao from '../componentes/BotaoAcao'
-import Home from './Home'
 
 import globalStyle from "../estilos/Login.module.css"
 
-export default function Login() {
-    const [usuario, setUsuario] = useState('')
-    const [senha, setSenha] = useState('')
+import { DadosContexto } from "../store"
+import { userActions } from "../store/action"
 
-    function tratarInput(setVariavel, e) {
-        setVariavel(e.target.value)
+export default function Login() {
+    const contexto = useContext(DadosContexto)
+
+    const [usuario, setUsuario] = useState({
+        email: 'inti@inti.comm',
+        senha: '123'
+    })
+
+    const handleClick = e => {
+        e.preventDefault()
+        userActions.signin(contexto.dispatch, usuario)
     }
+
+    useEffect(() => {
+        console.log(contexto)
+    }, [contexto.state])
+
+
     return (
         <form>
+
             <div className={globalStyle.formulario}>
                 <h1>Usuário</h1>
-                <input type="text" value={ usuario } onChange={ e => tratarInput(setUsuario, e) }/>
+                <input type="text" value={ usuario.email } onChange={ e => setUsuario(prev => ({...prev, email: e.target.value})) }/>
+
                 <h1>Senha</h1>
-                <input type="text" value={ senha } onChange={ e => tratarInput(setSenha, e) }/>
+                <input type="text" value={ usuario.senha } onChange={ e => setUsuario(prev => ({...prev, senha: e.target.value})) }/>
+
                 <Link to="">Esqueci minha senha</Link>
-                <BotaoAcao to="/home">Entrar</BotaoAcao>
+
+                <BotaoAcao onClick={ handleClick }>Entrar</BotaoAcao>
+
                 <Link to="/cadastro">Ainda não possuo conta</Link>
             </div>
         </form>
