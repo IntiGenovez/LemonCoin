@@ -68,7 +68,7 @@
                 flex-direction: row;
                 gap: 5px;
 
-                & .botao {
+                & BotaoNavegar {
                     background-color: #799a36;
                     color: white;
                     font-weight: 600;
