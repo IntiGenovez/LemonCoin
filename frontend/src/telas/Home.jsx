@@ -1,12 +1,10 @@
 import GraficoBarra from "../componentes/GraficoBarra"
 import CardContaText from "../componentes/CardContaText"
-
+import TextGasto from "../componentes/TextGasto"
 
 import styles from "../estilos/Home.module.css"
 
 export default function Home(){
-    let despesa = "Steam"
-    let valorDespesa = "R$ 100,00"
     return (
         <div className={styles.container}>
             <div className={styles.divGrafico}>
@@ -14,25 +12,33 @@ export default function Home(){
                     <GraficoBarra />
                 </div>
 
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit unde voluptatem provident ipsa voluptate iusto excepturi aut, distinctio qui quis nam ipsam velit animi alias nihil aspernatur inventore delectus molestias.</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
             </div>
 
-            <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div className={styles.divDados}>
                 <div className={styles.containerContas}>
-                    <CardContaText conta="Felipe" saldo="R$ 1.000,00" />
+                    <CardContaText conta="Felipe" saldo="R$ 10.000,00" />
                     <CardContaText conta="Inti" saldo="R$ 1.000,00" />
                     <CardContaText conta="Hebert" saldo="R$ 2,00" />
                     <button>Ver mais...</button>
                 </div>
 
-                <div style={{display: 'flex', flexDirection: 'row', gap: '30px'}}>
-                    <div className={styles.containerGastos}>
+                <div className={styles.containerGastos}>
+
+                    <div className={styles.containerHistorico}>
                         <h3>HISTÓRICO DE GASTOS</h3>
 
-                        <div className={styles.valores}>
-                            {despesa} {valorDespesa}
+                        <div style={{display: 'flex', gap: '3px', flexDirection: 'column'}}>
+                            <TextGasto despesa='Steam' valorDespesa='R$ 1.000,00' />
+                            <TextGasto despesa='Xbox' valorDespesa='R$ 3.000,00' />
+                            <TextGasto despesa='Tênis' valorDespesa='R$ 5.000,00' />
+                            <TextGasto despesa='Comida do bebê' valorDespesa='R$ 200,00' />
+                            <TextGasto despesa='Despesa mensal' valorDespesa='R$ 500,00' />
+                            <TextGasto despesa='Curso da Udemy' valorDespesa='R$ 50,00' />
+                            <TextGasto despesa='Agiota' valorDespesa='R$ 700,00' />
+                            <TextGasto despesa='Curso do Marçal' valorDespesa='R$ 5.000,00' />
                         </div>
-                    </div>
+                    </div> 
 
                     <div className={styles.containerBotoes}>
                         <button>Adicionar Receita</button>
