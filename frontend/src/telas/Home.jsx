@@ -1,7 +1,7 @@
 import GraficoBarra from "../componentes/GraficoBarra"
 import CardContaText from "../componentes/CardContaText"
 import TextGasto from "../componentes/TextGasto"
-import botaoAcao from "../componentes/BotaoAcao"
+import BotaoNavegar from "../componentes/BotaoNavegar"
 
 import styles from "../estilos/Home.module.css"
 
@@ -42,8 +42,8 @@ export default function Home(){
                     </div> 
 
                     <div className={styles.containerBotoes}>
-                        <botaoAcao>Adicionar Receita</botaoAcao>
-                        <botaoAcao>Adicionar Despesa</botaoAcao>                        
+                        <BotaoNavegar link="">Adicionar Receita</BotaoNavegar>
+                        <BotaoNavegar link="">Adicionar Despesa</BotaoNavegar>                        
                     </div>
                 </div>
             </div>
