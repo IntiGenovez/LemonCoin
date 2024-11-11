@@ -6,9 +6,17 @@ import InputMes from '../componentes/InputMes';
 import styles from "../estilos/Cadastro.module.css"
 
 export default function Cadastro(){
-    const [nome, setNome] = useState('')
-    const [email, setEmail] = useState('')
-    const [telefone, setTelefone] = useState('')
+    const [usuario, setUsuario] = useState({
+        nome: '',
+        email: '',
+        telefone: '',
+        dia: 0,
+        mes: 0,
+        ano: 0,
+        genero: '',
+        senha: '',
+        confirmarSenha: ''
+    })
 
     function tratarInput(setVariavel, e) {
         setVariavel(e.target.value)
@@ -17,18 +25,18 @@ export default function Cadastro(){
     return (
         <form className={styles.formulario}>
             <h1>CADASTRE-SE AQUI</h1>
-            <input type="text" value={ nome } placeholder='Nome Completo: ' onChange={ e => tratarInput(setNome, e) } />
-            <input type="text" value={ email } placeholder='Email: ' onChange={ e => tratarInput(setEmail, e) } />
-            <input type="text" value={ telefone } placeholder='Telefone: ' onChange={ e => tratarInput(setTelefone, e) }/>
+            <input type="text" value={ usuario.nome } placeholder='Nome Completo: ' onChange={ e => tratarInput(setNome, e) } />
+            <input type="text" value={ usuario.email } placeholder='Email: ' onChange={ e => tratarInput(setEmail, e) } />
+            <input type="text" value={ usuario.telefone } placeholder='Telefone: ' onChange={ e => tratarInput(setTelefone, e) }/>
             
             <div>
                 <h2>Data de Nascimento:</h2>
                 <div className={styles.inputSelect}>
-                    <InputDia />
+                    <InputDia value={usuario.dia} />
 
-                    <InputMes />
+                    <InputMes value={usuario.mes} />
 
-                    <InputAno />
+                    <InputAno value={usuario.ano} />
                 </div>
             </div>
             <div> 
@@ -41,9 +49,9 @@ export default function Cadastro(){
                 
                 <div className={styles.divSenha}>
                     <span>Senha</span>
-                    <input type="password" name="Senha" id="Senha" />                
+                    <input type="password" name="Senha" id="Senha" value={usuario.senha} />                
                     <span>Confirmar Senha</span>
-                    <input type="password" name="Confirm-senha" id="Confirm-senha" />
+                    <input type="password" name="Confirm-senha" id="Confirm-senha" value={usuario.confirmarSenha} />
                 </div>
                 <button>Cadastrar</button>
 

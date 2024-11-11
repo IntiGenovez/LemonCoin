@@ -24,6 +24,8 @@ import AdicionarConta from "./telas/AdicionarConta.jsx"
 import EditarConta from "./telas/EditarConta.jsx"
 import Home from "./telas/Home.jsx"
 
+import ComponentePrivado from "./componentes/ComponentePrivado.jsx"
+
 import "./App.css"
 
 function App() {
@@ -38,55 +40,55 @@ function App() {
       children: [
         {
           index: true,
-          Component: Apresentacao
+          element: <Apresentacao />
         },
         {
           path: '/despesas',
-          Component: Despesas
+          element:<ComponentePrivado><Despesas /></ComponentePrivado> 
         },
         {
           path: '/receitas',
-          Component: Receitas
+          element:<ComponentePrivado><Receitas /></ComponentePrivado> 
         },
         {
           path: '/categorias',
-          Component: Categorias
+          element:<ComponentePrivado><Categorias /></ComponentePrivado> 
         },
         {
           path: '/contas',
-          Component: Contas
+          element:<ComponentePrivado><Contas /></ComponentePrivado> 
         },
         {
           path: '/relatorios',
-          Component: Relatorios
+          element:<ComponentePrivado><Relatorios /></ComponentePrivado> 
         },
         {
           path: '/login',
-          Component: Login
+          element: <Login />
         },
         {
           path: '/cadastro',
-          Component: Cadastro
+          element: <Cadastro />
         },
         {
           path: '/adicionar-receita',
-          Component: AdicionarReceita
+          element: <ComponentePrivado><AdicionarReceita /></ComponentePrivado>
         },
         {
           path: '/adicionar-despesa',
-          Component: AdicionarDespesa
+          element: <ComponentePrivado><AdicionarDespesa /></ComponentePrivado>
         },
         {
           path: '/adicionar-conta',
-          Component: AdicionarConta
+          element: <ComponentePrivado><AdicionarConta /></ComponentePrivado>
         },
         {
           path: '/editar-conta',
-          Component: EditarConta
+          element: <ComponentePrivado><EditarConta /></ComponentePrivado>
         },
         {
           path: '/home',
-          Component: Home
+          element: <Home />
         }
       ]
     }
