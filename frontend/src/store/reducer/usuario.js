@@ -4,6 +4,18 @@ function usuarioReducer(estado, action) {
         case 'signin':
             novoEstado = { ...estado, usuario: action.payload.usuario }
             break
+        case 'signout': 
+            novoEstado = { 
+                ...estado, 
+                usuario: {
+                    id: null,
+                    nome: '',
+                    email: '',
+                    telefone: '',
+                    genero: '',
+                    token: null
+                } }
+            break
         default:
             novoEstado = estado      
     }

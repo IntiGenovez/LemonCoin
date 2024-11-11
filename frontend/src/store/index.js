@@ -10,7 +10,7 @@ export const initialState = {
         email: '',
         telefone: '',
         genero: '',
-        token: ''
+        token: null
     }
 }
 

@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react'
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import BotaoAcao from '../componentes/BotaoAcao'
 
 import globalStyle from "../estilos/Login.module.css"
@@ -9,15 +9,21 @@ import { userActions } from "../store/action"
 
 export default function Login() {
     const contexto = useContext(DadosContexto)
+    const navigate = useNavigate()
 
     const [usuario, setUsuario] = useState({
         email: 'inti@inti.comm',
         senha: '123'
     })
 
-    const handleClick = e => {
+    const handleClick = async e => {
         e.preventDefault()
-        userActions.signin(contexto.dispatch, usuario)
+        const sucesso = await userActions.signin(contexto.dispatch, usuario)
+        
+        if (sucesso)
+            navigate('/home')
+        else 
+            alert('Usuário inválido')
     }
 
     useEffect(() => {

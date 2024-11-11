@@ -1,10 +1,14 @@
-import { Link } from "react-router-dom"
-import { useLocation } from "react-router-dom"
+import { useContext } from "react"
+import { Link, useLocation } from "react-router-dom"
+
+import { DadosContexto } from "../store"
+import { userActions } from "../store/action"
 
 import styles from "../estilos/Cabecalho.module.css"
 import logo from "../assets/logo.png"
 
 export default function Cabecalho() {
+    const contexto = useContext(DadosContexto)
     
     let location = useLocation(); //usado para saber o path atual
     let btnLogin //define se botao de login vai estar escrito login ou logout
@@ -13,19 +17,19 @@ export default function Cabecalho() {
 
     // Pega o nome do path atual
     let titulo = location.pathname;
-    if(titulo === "/"){
-        titulo = ""
+    if(titulo === '/'){
+        titulo = ''
     } else {
         titulo = titulo.replace('/', '').replace('-', ' ')
     }
 
     // muda o cabecalho de acordo com a tela atual
-    if (titulo === "" || titulo === "login" || titulo === "cadastro"){
+    if (titulo === '' || titulo === 'login' || titulo === 'cadastro'){
         lista = (
             <></>
         )
-        btnLogin = "LOGIN"
-        linkLogo = "/"
+        btnLogin = 'LOGIN'
+        linkLogo = '/'
     } else {
         lista = (
             <>
@@ -36,8 +40,14 @@ export default function Cabecalho() {
                 <Link to='/relatorios'>Relatórios</Link>
             </>
         )
-        btnLogin = "LOGOUT"
-        linkLogo = "/home"
+        btnLogin = 'LOGOUT'
+        linkLogo = '/home'
+    }
+
+    const handleClick = () => {
+        if (btnLogin === 'LOGOUT') {
+            userActions.signout(contexto.dispatch)
+        }
     }
 
     return (
@@ -53,7 +63,7 @@ export default function Cabecalho() {
                     <h2>{titulo}</h2>
                 </div>
                 <div>
-                    <Link to='/login'>{btnLogin}</Link>
+                    <Link to='/login' onClick={handleClick}>{btnLogin}</Link>
                 </div>
             </div>
             <nav className={styles.containerNavegacao}>
