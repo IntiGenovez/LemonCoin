@@ -8,8 +8,15 @@
     flex-direction: column;
     justify-content: center; 
     align-items: center; 
+    text-align: center;
 
     & .icone {
         width: var(--tamanho-CardConta);
+    }
+
+    & .divTexto{
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
     }
 }

@@ -16,5 +16,7 @@
 
 .container::after {
     content: '';
-    flex: auto; /* Faz com que o espaço restante da linha final seja preenchido */
+    /* flex: auto;  */
+    flex-grow: 1;
+    border: red solid 1px;
 }
