@@ -21,6 +21,7 @@ export default function Home(){
                     <CardContaText conta="Felipe" saldo="R$ 10.000,00" />
                     <CardContaText conta="Inti" saldo="R$ 1.000,00" />
                     <CardContaText conta="Hebert" saldo="R$ 2,00" />
+                    <CardContaText conta="João" saldo="R$ -50,00" />
                     <button>Ver mais...</button>
                 </div>
 

@@ -1,32 +1,16 @@
-import lapis from '../assets/lapis.png';
-import nubank from '../assets/nubank.png';
-import bancoDoBrasil from '../assets/Banco-do-Brasil.png';
-import bradesco from '../assets/Bradesco.png';
-import caixa from '../assets/Caixa.png';
-import itau from '../assets/Itau.png';
-import santander from '../assets/Santander.png';
-import picpay from '../assets/PicPay.png';
-import sicredi from '../assets/Sicredi.png';
+
 
 import styles from '../estilos/CardConta.module.css'
 
-export default function CardConta() {
-    const icone = (
-        <>
-            <img src={itau} alt="Icone" className={styles.icone} />
-        </>
-    );
-    const nome = (
-        <span>Padrão</span>
-    )
-    const saldo = (
-        <span>R$1.000,00</span>
-    )
+export default function CardConta({icone, nome, saldo}) {
+    
     return (
         <div className={styles.CardConta}>
-            {icone}
-            {nome}
-            {saldo}
+            <img src={icone} alt="Icone" className={styles.icone} />
+            <div className={styles.divTexto}>
+                <span>{nome}</span>
+                <span>{saldo}</span>
+            </div>
         </div>
     )
 }
