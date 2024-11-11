@@ -27,7 +27,7 @@ export default function Contas() {
                 <CardConta icone={santander} nome="Santander Paulo" saldo="R$ 750,00" />
                 <CardConta icone={MercadoPago} nome="Mercado Pago André" saldo="R$ 400,00" />
                 <CardConta icone={nubank} nome="XP Investimentos Marina" saldo="R$ 5.000,00" />
-                <CardConta icone={picpay} nome="PicPay Tiago" saldo="R$ 1.800,00" />
+                <CardConta icone={picpay} nome="PicPay Tiago" saldo="R$ 1.800,00" /> 
             </div>
             <BotaoAdicionar />
         </div>
