@@ -10,9 +10,6 @@ const userActions = {
             body: JSON.stringify(usuario),
         })
         .then(resp => resp.json())
-        .then(usuario => {
-            localStorage.setItem(userKey, JSON.stringify(usuario))
-        })
     },
     signin: async (dispatch, usuario) => {
         try {
