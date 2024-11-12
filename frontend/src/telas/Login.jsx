@@ -12,7 +12,7 @@ export default function Login() {
     const navigate = useNavigate()
 
     const [usuario, setUsuario] = useState({
-        email: 'inti@inti.comm',
+        email: 'usuario@email.com',
         senha: '123'
     })
 

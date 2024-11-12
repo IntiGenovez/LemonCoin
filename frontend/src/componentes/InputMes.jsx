@@ -1,8 +1,7 @@
-
-const InputMes = () => {
+export default function InputMes ({ valor, onChange }) {
 
     return (
-      <select name="Mes-nasc" id="Mes-nasc">
+      <select name="Mes-nasc" id="Mes-nasc" value={ valor } onChange={ e => onChange(e.target.value) } >
       <option value="">Mês</option>
       <option value="1">Janeiro</option>
       <option value="2">Fevereiro</option>
@@ -19,5 +18,3 @@ const InputMes = () => {
   </select>
       );
 };
-
-export default InputMes;

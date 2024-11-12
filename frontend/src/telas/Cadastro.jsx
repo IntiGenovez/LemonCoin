@@ -1,59 +1,92 @@
-import { useState } from 'react';
-import InputDia from '../componentes/InputDia';
-import InputAno from '../componentes/InputAno';
-import InputMes from '../componentes/InputMes';
+import { useContext, useState } from "react";
+import { DadosContexto } from "../store"
+import { userActions } from "../store/action"
+
+import InputDia from "../componentes/InputDia";
+import InputAno from "../componentes/InputAno";
+import InputMes from "../componentes/InputMes";
 
 import styles from "../estilos/Cadastro.module.css"
+import BotaoAcao from "../componentes/BotaoAcao";
 
 export default function Cadastro(){
+    const contexto = useContext(DadosContexto)
     const [usuario, setUsuario] = useState({
-        nome: '',
-        email: '',
-        telefone: '',
-        dia: 0,
-        mes: 0,
-        ano: 0,
-        genero: '',
-        senha: '',
-        confirmarSenha: ''
+        nome: 'usuario',
+        email: 'usuario@email.com',
+        telefone: '(11) 91234-1234',
+        dia: '',
+        mes: '',
+        ano: '',
+        genero: 'M',
+        senha: '123',
+        confirmarSenha: '123'
     })
 
-    function tratarInput(setVariavel, e) {
-        setVariavel(e.target.value)
+    const handleClick = e => {
+        e.preventDefault()
+        userActions.signup(contexto.dispatch, {
+            nome: usuario.nome,
+            email: usuario.email,
+            senha: usuario.senha,
+            confirmarSenha: usuario.confirmarSenha,
+            telefone: usuario.telefone,
+            genero: usuario.genero
+        })
     }
 
     return (
         <form className={styles.formulario}>
             <h1>CADASTRE-SE AQUI</h1>
-            <input type="text" value={ usuario.nome } placeholder='Nome Completo: ' onChange={ e => tratarInput(setNome, e) } />
-            <input type="text" value={ usuario.email } placeholder='Email: ' onChange={ e => tratarInput(setEmail, e) } />
-            <input type="text" value={ usuario.telefone } placeholder='Telefone: ' onChange={ e => tratarInput(setTelefone, e) }/>
+            <input type="text" value={ usuario.nome } placeholder='Nome Completo: ' 
+                onChange={ e => setUsuario({ ...usuario, nome: e.target.value}) } />
+            <input type="text" value={ usuario.email } placeholder='Email: ' 
+                onChange={ e => setUsuario({ ...usuario, email: e.target.value}) } />
+            <input type="text" value={ usuario.telefone } placeholder='Telefone: ' 
+                onChange={ e => setUsuario({ ...usuario, telefone: e.target.value}) } />
             
             <div>
                 <h2>Data de Nascimento:</h2>
                 <div className={styles.inputSelect}>
-                    <InputDia value={usuario.dia} />
+                    <InputDia valor={usuario.dia} onChange={valor => setUsuario({ ...usuario, dia: valor})} />
 
-                    <InputMes value={usuario.mes} />
+                    <InputMes valor={usuario.mes} onChange={valor => setUsuario({ ...usuario, mes: valor})} />
 
-                    <InputAno value={usuario.ano} />
+                    <InputAno valor={usuario.ano} onChange={valor => setUsuario({ ...usuario, ano: valor})} />
                 </div>
             </div>
             <div> 
                 <h2>Gênero</h2>
                 <div className={styles.genero}>
-                    <span className={styles.margin} style={{fontWeight: '600'}}>FEMININO <input type='radio' name='Genero' id='GeneroM'></input></span>
-                    <span className={styles.margin} style={{fontWeight: '600'}}>MASCULINO <input type='radio' name='Genero' id='GeneroF'></input></span>
-                    <span className={styles.margin} style={{fontWeight: '600'}}>OUTRO <input type='radio' name='Genero' id='GeneroF'></input></span>
+                    <label className={styles.margin} style={{fontWeight: '600'}}>
+                        Masculino 
+                        <input type='radio' value='M' 
+                            checked={ usuario.genero === 'M'} 
+                            onChange={ e => setUsuario({ ...usuario, genero: e.target.value }) }/>
+                    </label>
+                    <label className={styles.margin} style={{fontWeight: '600'}}>
+                        Feminino 
+                        <input type='radio' value='F' 
+                            checked={ usuario.genero === 'F'} 
+                            onChange={ e => setUsuario({ ...usuario, genero: e.target.value }) }/>
+                    </label>
+                    <label className={styles.margin} style={{fontWeight: '600'}}>
+                        Outro 
+                        <input type='radio' value='O' 
+                            checked={ usuario.genero === 'O'} 
+                            onChange={ e => setUsuario({ ...usuario, genero: e.target.value }) }/>
+                    </label>
                 </div>
                 
                 <div className={styles.divSenha}>
                     <span>Senha</span>
-                    <input type="password" name="Senha" id="Senha" value={usuario.senha} />                
+                    <input type="password" name="Senha" id="Senha" value={usuario.senha} 
+                        onChange={ e => setUsuario({ ...usuario, senha: e.target.value}) } />                
                     <span>Confirmar Senha</span>
-                    <input type="password" name="Confirm-senha" id="Confirm-senha" value={usuario.confirmarSenha} />
+                    <input type="password" name="Confirm-senha" id="Confirm-senha" value={usuario.confirmarSenha} 
+                        onChange={ e => setUsuario({ ...usuario, confirmarSenha: e.target.value}) } />
                 </div>
-                <button>Cadastrar</button>
+                <BotaoAcao onClick={ handleClick }>Cadastrar</BotaoAcao>
 
             </div>
 
