@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react"
 import { Outlet } from "react-router-dom"
-import { movementsActions } from "../store/action"
-import Voltar from "../componentes/BotaoVoltar"
+import { movementsActions, accountsActions } from "../store/action"
+import BotaoVoltar from "../componentes/BotaoVoltar"
 import { useLocation } from "react-router-dom"
 
 import { DadosContexto } from "../store"
@@ -15,7 +15,7 @@ export default function Layout() {
 
     useEffect(() => {
         movementsActions.obterDespesas(contexto.dispatch, 8)
-        console.log('requisitou de novo')
+        accountsActions.obterContas(contexto.dispatch)
     }, [])
 
     let titulo = useLocation().pathname
@@ -32,7 +32,7 @@ export default function Layout() {
                     :
                     (
                         <>
-                            <Voltar/>
+                            <BotaoVoltar />
                         </>
                     )
             }

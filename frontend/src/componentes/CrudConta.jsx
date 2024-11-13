@@ -1,4 +1,7 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
+import { DadosContexto } from "../store"
+import { accountsActions } from "../store/action"
+
 import lapis from '../assets/lapis.png'
 import InputNomeConta from "./InputNomeConta"
 import BotaoAcao from "./BotaoAcao"
@@ -7,6 +10,7 @@ import styles from '../estilos/CrudConta.module.css'
 
 
 export default function CrudConta({ tipo }){
+    const contexto = useContext(DadosContexto)
 
     const [saldo, setSaldo] = useState('');
     const [proprietario, setProprietario] = useState('');
@@ -23,7 +27,7 @@ export default function CrudConta({ tipo }){
     const handleProprietarioChange = (event) => setProprietario(event.target.value);
     const handleDescricaoChange = (event) => setDescricao(event.target.value);
 
-    const handleSubmit = (event) => {
+    const handleConfirm = (event) => {
         event.preventDefault();
 
         const dadosConta = {
@@ -31,10 +35,14 @@ export default function CrudConta({ tipo }){
             saldo,
             proprietario,
             descricao
-        };
-        console.log(dadosConta);
-
-    };
+        }
+        if (tipo === 'Adicionar') {
+            accountsActions.adicionarConta(contexto.dispatch, {
+                nome: dadosConta.descricao,
+                saldo: dadosConta.saldo
+            })
+        }
+    }
 
     let fotoConta
     
@@ -54,7 +62,7 @@ export default function CrudConta({ tipo }){
     
 
     return(
-        <form className={styles} onSubmit={handleSubmit}>
+        <form className={styles}>
             <h1>{tipo} Conta</h1>
             <div className={styles.formulario}>
                 { fotoConta }
@@ -75,8 +83,8 @@ export default function CrudConta({ tipo }){
                             tipo  == "Adicionar" ?
                                 (
                                     <>
-                                        <BotaoAcao>Cancelar</BotaoAcao>
-                                        <BotaoAcao>Confirmar</BotaoAcao>
+                                        <BotaoAcao onClick={ () => history.back() }>Cancelar</BotaoAcao>
+                                        <BotaoAcao onClick={ handleConfirm }>Confirmar</BotaoAcao>
                                         
                                     </>
                                 )
