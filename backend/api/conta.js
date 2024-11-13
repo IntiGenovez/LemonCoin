@@ -3,6 +3,7 @@ module.exports = app => {
 
     const salvar = async (req, res) => {
         const conta = { ...req.body }
+        conta.usuarioId = req.user.id
         if (req.params.id) conta.id = req.params.id
 
         try {
@@ -46,14 +47,15 @@ module.exports = app => {
         }
     }
 
-    const obter = (req, res) => {
+    const obterPorId = (req, res) => {
         app.bd('contas')
             .join('usuarios', 'contas.usuarioId', '=', 'usuarios.id')
             .select('contas.*')
             .select('usuarios.nome as usuario_nome')
+            .where({ usuarioId: req.user.id })
             .then(contas => res.json(contas))
             .catch(err => res.status(500).send(err))
     }
 
-    return { salvar, obter, deletar }
+    return { salvar, obterPorId, deletar }
 }

@@ -25,7 +25,7 @@ module.exports = app => {
     app.route('/contas')
         .all(app.config.passport.autenticador())
         .post(app.api.conta.salvar)
-        .get(app.api.conta.obter)
+        .get(app.api.conta.obterPorId)
 
     app.route('/contas/:id')
         .all(app.config.passport.autenticador())
