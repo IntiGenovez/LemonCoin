@@ -12,6 +12,7 @@ import mercadoPago from '../assets/Mercado-Pago.png'
 import styles from '../estilos/CardConta.module.css'
 
 export default function CardConta({icone, proprietario, nome, saldo}) {
+
     // Mapeamento de nome de ícone para imagem importada
     const iconeMap = {
         lapis: lapis,
@@ -30,6 +31,7 @@ export default function CardConta({icone, proprietario, nome, saldo}) {
     const iconeSrc = iconeMap[icone] || lapis; 
 
     nome = nome.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, (letra) => letra.toUpperCase())
+    saldo = saldo.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 
     return (
         <div className={styles.CardConta}>
