@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { DadosContexto } from '../store';
 
 import CardConta from '../componentes/CardConta'
@@ -7,6 +7,7 @@ import BotaoAdicionar from '../componentes/BotaoAdicionar'
 import styles from '../estilos/Contas.module.css'
 
 export default function Contas() {
+
     const contexto = useContext(DadosContexto)
 
     return (
@@ -16,8 +17,9 @@ export default function Contas() {
                     return (
                         <CardConta 
                             key={conta.id} 
-                            icone={conta.icone} 
+                            icone={conta.icone}
                             nome={conta.nome} 
+                            proprietario={conta.proprietario} 
                             saldo={conta.saldo}                             
                         />
                     )
