@@ -1,5 +1,5 @@
 import { urlBaseAPI, userKey } from "../../global.js"
-const jwt = JSON.parse(localStorage.getItem(userKey)).token
+const jwt = JSON.parse(localStorage.getItem(userKey))?.token
 
 const accountsActions = {
     obterContas: (dispatch) => {
