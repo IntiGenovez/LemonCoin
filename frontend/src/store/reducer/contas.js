@@ -4,6 +4,9 @@ function contasReducer(estado, action) {
         case 'obterContas':
             novoEstado = { ...estado, contas: action.payload.contas }
             break
+        case 'adicionarConta':
+            novoEstado = { ...estado, contas: [ ...estado.contas, action.payload.conta ]}
+            console.log(novoEstado)
         default:
             novoEstado = estado      
     }
