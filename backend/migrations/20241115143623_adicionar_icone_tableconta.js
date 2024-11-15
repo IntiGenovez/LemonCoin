@@ -14,6 +14,6 @@ exports.up = function(knex) {
  */
 exports.down = function(knex) {
     return knex.schema.table('contas', table => {
-        dropColumn('icones')
+        table.dropColumn('icones')
       })
 };

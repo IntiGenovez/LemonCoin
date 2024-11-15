@@ -17,6 +17,7 @@ const accountsActions = {
         dispatch({ type: 'atualizarConta', payload: { conta }})
     },
     adicionarConta: (dispatch, conta) => {
+        console.log(JSON.stringify(conta))
         fetch(`${urlBaseAPI}/contas`, { 
             method: "POST",
             headers: {
@@ -25,8 +26,17 @@ const accountsActions = {
             },
             body: JSON.stringify(conta)
         })
-            .then(resp => resp.json())
-            .then(data => dispatch({ type: 'adicionarConta', payload: { conta: data }}))
+            .then(resp => {
+                if (!resp.ok) {
+                    throw new Error(`Erro na requisição: ${resp.statusText}`);
+                }
+                return resp.status === 204 ? null : resp.json();
+            })    
+            .then(_ => {
+                dispatch({ type: 'adicionarConta', payload: { conta } });
+                console.log("Conta adicionada com sucesso");
+            })
+            .catch(error => console.error("Erro ao adicionar conta:", error));
         
     }
 }
