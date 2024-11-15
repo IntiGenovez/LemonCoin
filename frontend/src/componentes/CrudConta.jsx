@@ -1,6 +1,7 @@
 import { useState, useContext } from "react"
 import { DadosContexto } from "../store"
 import { accountsActions } from "../store/action"
+import Mensagem from "./mensagem";
 
 import lapis from '../assets/lapis.png';
 import nubank from '../assets/nubank.png';
@@ -43,23 +44,46 @@ export default function CrudConta({ tipo }){
     const handleProprietarioChange = (event) => setProprietario(event.target.value);
     const handleDescricaoChange = (event) => setDescricao(event.target.value);
 
-    const handleConfirm = (event) => {
+   
+    const [openDialog, setOpenDialog] = useState(false);
+
+    // Função para abrir o popUp
+    const handleOpenDialog = () => {
+        setOpenDialog(true);
+    };
+
+    // Função para fechar o popUp
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    };
+
+    const handleConfirm = (event) => { //quando o botão de confirmar é precionado
         event.preventDefault();
 
         const dadosConta = {
             conta,
-            tipo,
             saldo,
             icone,
             proprietario,
             descricao
         }
         if (tipo === 'Adicionar') {
-            accountsActions.adicionarConta(contexto.dispatch, {
-                nome: dadosConta.descricao,
-                saldo: dadosConta.saldo
-            })
+            try{
+                accountsActions.adicionarConta(contexto.dispatch, {
+                    nome: dadosConta.conta,
+                    saldo: dadosConta.saldo,
+                    proprietario: dadosConta.proprietario,
+                    descricao: dadosConta.descricao,
+                    icone: dadosConta.icone
+                })
+                handleOpenDialog()
+            } catch(e){
+                return 0
+            }
         }
+
+        //espaço reservado para o if editar
+
     }
 
     // Mapeamento de nome de ícone para imagem importada
@@ -77,30 +101,13 @@ export default function CrudConta({ tipo }){
     };
 
     // Obtém a imagem correspondente ao nome da variavel icone, ou ícone lápis padrão se não for encontrado
-    const iconeSrc = iconeMap[icone] || lapis; 
-
-    let fotoConta
-    
-    if (tipo === "Adicionar") {
-        fotoConta = (
-            <>
-                <img src={iconeSrc} alt="imagem-conta adicionar" />
-            </>
-        );
-    } else {
-        fotoConta = (
-            <>
-                <img src={iconeSrc} alt="imagem-conta editar" />
-            </>
-        );
-    }
-    
+    const iconeSrc = iconeMap[icone] || lapis;     
 
     return(
         <form className={styles}>
             <h1>{tipo} Conta</h1>
             <div className={styles.formulario}>
-                { fotoConta }
+                <img src={iconeSrc} alt="imagem da conta" style={{width: "200px", height:"200px"}}/>
                 <div className={styles.containerForm}>
                     <div className={styles.dados}>
                         <div className={styles.cabecalho}>
@@ -122,7 +129,15 @@ export default function CrudConta({ tipo }){
                                     <>
                                         <BotaoAcao onClick={ () => history.back() }>Cancelar</BotaoAcao>
                                         <BotaoAcao onClick={ handleConfirm }>Confirmar</BotaoAcao>
-                                        
+                                        <Mensagem
+                                            open={openDialog}
+                                            onClose={handleCloseDialog}
+                                            textoBotao="Fechar"
+                                            link="/contas"
+                                            tipo="success"
+                                            titulo="Conta adicionada!!!!"
+                                            mensagem="Você adicionou uma nova conta"
+                                        />
                                     </>
                                 )
                                 :

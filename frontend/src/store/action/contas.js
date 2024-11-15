@@ -24,7 +24,7 @@ const accountsActions = {
                 "Authorization": `bearer ${jwt}`
             },
             body: JSON.stringify(conta)
-         })
+        })
             .then(resp => resp.json())
             .then(data => dispatch({ type: 'adicionarConta', payload: { conta: data }}))
         
