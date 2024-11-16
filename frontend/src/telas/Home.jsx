@@ -4,8 +4,12 @@ import TextGasto from "../componentes/TextGasto"
 import BotaoNavegar from "../componentes/BotaoNavegar"
 
 import styles from "../estilos/Home.module.css"
+import { useContext } from "react"
+import { DadosContexto } from "../store"
 
 export default function Home(){
+    const contexto = useContext(DadosContexto)
+
     return (
         <div className={styles.container}>
             <div className={styles.divGrafico}>
@@ -18,10 +22,21 @@ export default function Home(){
 
             <div className={styles.divDados}>
                 <div className={styles.containerContas}>
-                    <CardContaText conta="Felipe" saldo="R$ 10.000,00" />
-                    <CardContaText conta="Inti" saldo="R$ 1.000,00" />
-                    <CardContaText conta="Hebert" saldo="R$ 2,00" />
-                    <CardContaText conta="João" saldo="R$ -50,00" />
+                    { contexto.state.contas
+                        .sort((a, b) => parseFloat(b.saldo) - parseFloat(a.saldo)) //oredena pelos maiores saldos
+                        .slice(0, 4) 
+                        .map(conta => {
+                            return (
+                                <CardContaText 
+                                    key={conta.id} 
+                                    icone={conta.icone}
+                                    conta={conta.proprietario} 
+                                    proprietario={conta.proprietario} 
+                                    saldo={conta.saldo}                             
+                                />
+                            );
+                        })
+                    }
                     <button>Ver mais...</button>
                 </div>
 
@@ -43,8 +58,8 @@ export default function Home(){
                     </div> 
 
                     <div className={styles.containerBotoes}>
-                        <BotaoNavegar link="">Adicionar Receita</BotaoNavegar>
-                        <BotaoNavegar link="">Adicionar Despesa</BotaoNavegar>                        
+                        <BotaoNavegar link="/adicionar-receita">Adicionar Receita</BotaoNavegar>
+                        <BotaoNavegar link="/adicionar-despesa">Adicionar Despesa</BotaoNavegar>                        
                     </div>
                 </div>
             </div>
