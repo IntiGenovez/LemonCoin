@@ -15,6 +15,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^6.1.7",
     "backend": "file:",
     "bcrypt-nodejs": "^0.0.3",
     "consign": "^0.1.6",
