@@ -17,8 +17,10 @@ create table if not exists contas (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     nome VARCHAR(45) NOT NULL,
     saldo DECIMAL(10,2) NOT NULL,
+    proprietario VARCHAR(45),
     fk_usuario_id INT UNSIGNED NOT NULL,
     icone VARCHAR(20),
+    descricao VARCHAR(50)
     PRIMARY KEY (id),
     FOREIGN KEY (fk_usuario_id) REFERENCES usuarios (id)
 );
