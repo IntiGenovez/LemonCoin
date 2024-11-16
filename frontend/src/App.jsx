@@ -83,7 +83,7 @@ function App() {
           element: <ComponentePrivado><AdicionarConta /></ComponentePrivado>
         },
         {
-          path: '/editar-conta',
+          path: '/editar-conta/:id',
           element: <ComponentePrivado><EditarConta /></ComponentePrivado>
         },
         {

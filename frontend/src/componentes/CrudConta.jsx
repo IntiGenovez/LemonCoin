@@ -1,4 +1,5 @@
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
+import { useParams } from "react-router-dom";
 import { DadosContexto } from "../store"
 import { accountsActions } from "../store/action"
 import Mensagem from "./mensagem";
@@ -22,12 +23,14 @@ import styles from '../estilos/CrudConta.module.css'
 
 export default function CrudConta({ tipo }){
     const contexto = useContext(DadosContexto)
+    const { id } = useParams(); //id para quando for tela de editar
 
     const [conta, setConta] = useState('');
     const [saldo, setSaldo] = useState('');
     const [icone, setIcone] = useState('');
     const [proprietario, setProprietario] = useState('');
     const [descricao, setDescricao] = useState('');
+    const [openDialog, setOpenDialog] = useState(false);
 
     const handleSaldoChange = (event) =>{
         setSaldo(event.target.value);
@@ -45,7 +48,38 @@ export default function CrudConta({ tipo }){
     const handleDescricaoChange = (event) => setDescricao(event.target.value);
 
    
-    const [openDialog, setOpenDialog] = useState(false);
+
+    // Mapeamento de nome de ícone para imagem importada
+    const iconeMap = {
+        lapis: lapis,
+        nubank: nubank,
+        'banco_do_brasil': bancoDoBrasil,
+        bradesco: bradesco,
+        caixa: caixa,
+        itau: itau,
+        santander: santander,
+        picpay: picpay,
+        sicredi: sicredi,
+        'mercado_pago': mercadoPago
+    };
+
+    // Obtém a imagem correspondente ao nome da variavel icone, ou ícone lápis padrão se não for encontrado
+    const iconeSrc = iconeMap[icone] || lapis; 
+
+    //puxa dados do id caso seja tela de editar
+    useEffect(() => {
+        if (tipo === "Editar" && id) {
+          const contaParaEditar = contexto.state.contas.find(conta => conta.id === Number(id));
+          console.log(contaParaEditar)
+          if (contaParaEditar) {
+            setConta(contaParaEditar.nome);
+            setSaldo(contaParaEditar.saldo);
+            setIcone(contaParaEditar.icone);
+            setProprietario(contaParaEditar.proprietario);
+            setDescricao(contaParaEditar.descricao);
+          }
+        }
+      }, [id, tipo, contexto.state.contas]);
 
     // Função para abrir o popUp
     const handleOpenDialog = () => {
@@ -67,6 +101,7 @@ export default function CrudConta({ tipo }){
             proprietario,
             descricao
         }
+
         if (tipo === 'Adicionar') {
             try{
                 accountsActions.adicionarConta(contexto.dispatch, {
@@ -80,28 +115,17 @@ export default function CrudConta({ tipo }){
             } catch(e){
                 return 0
             }
+        } 
+        else if(tipo === "Editar"){
+            console.log(tipo)                        
+            console.log(conta)                        
+            console.log(saldo)                        
+            console.log(proprietario)                        
+            console.log(id)                                    
+            console.log(contexto.state.contas)                                    
         }
 
-        //espaço reservado para o if editar
-
-    }
-
-    // Mapeamento de nome de ícone para imagem importada
-    const iconeMap = {
-        lapis: lapis,
-        nubank: nubank,
-        'banco_do_brasil': bancoDoBrasil,
-        bradesco: bradesco,
-        caixa: caixa,
-        itau: itau,
-        santander: santander,
-        picpay: picpay,
-        sicredi: sicredi,
-        'mercado_pago': mercadoPago
-    };
-
-    // Obtém a imagem correspondente ao nome da variavel icone, ou ícone lápis padrão se não for encontrado
-    const iconeSrc = iconeMap[icone] || lapis;     
+    }    
 
     return(
         <form className={styles}>
@@ -111,7 +135,7 @@ export default function CrudConta({ tipo }){
                 <div className={styles.containerForm}>
                     <div className={styles.dados}>
                         <div className={styles.cabecalho}>
-                            <InputNomeConta
+                            <InputNomeConta value={tipo === "Editar" ? {conta} : ""}
                                  change={(event) => {handleContaChange(event); handleIconeChange(event);}} 
                             /> 
                             <input type="text" name="saldo" id="saldo" placeholder="Saldo: R$" value={saldo} onChange={handleSaldoChange} onBlur={mascara} />
@@ -145,6 +169,25 @@ export default function CrudConta({ tipo }){
                                     <>
                                         <BotaoAcao>Relatório de conta</BotaoAcao>
                                         <BotaoAcao>Excluir conta</BotaoAcao>
+                                        <BotaoAcao onClick={handleConfirm}>Editar conta</BotaoAcao>
+                                        <Mensagem
+                                            open={openDialog}
+                                            onClose={handleCloseDialog}
+                                            textoBotao="Fechar"
+                                            link="/contas"
+                                            tipo="success"
+                                            titulo="Conta editada!!!!"
+                                            mensagem={"Você editou a conta de " + {proprietario}}
+                                        />
+                                        <Mensagem
+                                            open={openDialog}
+                                            onClose={handleCloseDialog}
+                                            textoBotao="Fechar"
+                                            link="/contas"
+                                            tipo="info"
+                                            titulo="Conta deletada!!!!"
+                                            mensagem={"Você deletou a conta de " + {proprietario}}
+                                        />
                                     </>
                                 )
                         }

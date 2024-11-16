@@ -23,6 +23,7 @@ export default function Contas() {
                     return (
                         <CardConta 
                             key={conta.id} 
+                            id={conta.id}
                             icone={conta.icone}
                             nome={conta.nome} 
                             proprietario={conta.proprietario} 

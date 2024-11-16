@@ -9,9 +9,11 @@ import picpay from '../assets/PicPay.png';
 import sicredi from '../assets/Sicredi.png';
 import mercadoPago from '../assets/Mercado-Pago.png'
 
+import { useNavigate } from 'react-router-dom';
+
 import styles from '../estilos/CardConta.module.css'
 
-export default function CardConta({icone, proprietario, nome, saldo}) {
+export default function CardConta({icone, proprietario, nome, saldo, id}) {
 
     // Mapeamento de nome de ícone para imagem importada
     const iconeMap = {
@@ -30,16 +32,21 @@ export default function CardConta({icone, proprietario, nome, saldo}) {
     // Obtém a imagem correspondente ao nome da variavel icone, ou ícone lápis padrão se não for encontrado
     const iconeSrc = iconeMap[icone] || lapis; 
 
-    nome = nome.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, (letra) => letra.toUpperCase())
-    saldo = saldo.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+    let newNome = nome.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, (letra) => letra.toUpperCase())
+    let newSaldo = saldo.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+
+    const navigate = useNavigate()
+    const handleClick = () => {
+        navigate(`/editar-conta/${id}`)
+    }
 
     return (
-        <div className={styles.CardConta}>
-            <img src={iconeSrc} alt="Icone" className={styles.icone} />
+        <div className={styles.CardConta} onClick={handleClick}>
+            <img src={iconeSrc} alt="Icone" className={styles.icone}/>
             <div className={styles.divTexto}>
-                <span>{nome}</span>
+                <span>{newNome}</span>
                 <span>{proprietario}</span>
-                <span>{saldo}</span>
+                <span>{newSaldo}</span>
             </div>
         </div>
     )
