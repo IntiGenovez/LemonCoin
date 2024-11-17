@@ -40,7 +40,7 @@ module.exports = app => {
         .post(app.api.categoria.salvar)
         .get(app.api.categoria.obter)
 
-    app.route('/categoria/:id')
+    app.route('/categorias/:id')
         .all(app.config.passport.autenticador())
         .put(app.api.categoria.salvar)
         .delete(app.api.categoria.deletar)

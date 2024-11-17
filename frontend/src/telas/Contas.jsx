@@ -14,20 +14,20 @@ export default function Contas() {
     return (
         <div className={styles.contas}>
             <div className={styles.container}>
-                { contexto.state.contas.map((conta, i) => {
-                    console.log('conta: ' + i)
-                    console.log(conta)
-                    return (
-                        <CardConta 
-                            key={i} 
-                            id={conta.id}
-                            icone={conta.icone}
-                            nome={conta.nome} 
-                            proprietario={conta.proprietario} 
-                            saldo={conta.saldo}                             
-                        />
-                    )
-                })}
+                { 
+                    contexto.state.contas.map((conta, i) => {
+                        return (
+                            <CardConta 
+                                key={i} 
+                                id={conta.id}
+                                icone={conta.icone}
+                                nome={conta.nome} 
+                                proprietario={conta.proprietario} 
+                                saldo={conta.saldo}                             
+                            />
+                        )
+                    })
+                }
                 
             </div>
             <BotaoAdicionar path="/adicionar-conta" />
