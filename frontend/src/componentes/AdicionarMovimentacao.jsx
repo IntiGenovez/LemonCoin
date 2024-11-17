@@ -2,21 +2,53 @@ import InputAno from "./InputAno";
 import InputMes from "./InputMes";
 import InputDia from "./InputDia";
 import InputRecorrencia from "./InputRecorrencia";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom"
 
 import { DadosContexto } from "../store"
+import { movementsActions } from "../store/action";
 
-import styles from '../estilos/AdicionarMovimentacao.module.css';
+import styles from "../estilos/AdicionarMovimentacao.module.css";
 
 export default function AdicionarMovimentacao({ tipo }){
     const contexto = useContext(DadosContexto)
-
-    const [ despesa, setDespesa ] = useState({
+    const navigate = useNavigate()
+    const [ movimentacao, setMovimentacao ] = useState({
         nome: '',
         valor: '',
         categoria: '',
-        conta: ''
+        categoriaId: '',
+        conta: '',
+        contaId: '',
+        data: '',
+        tipo
     })
+
+    const [ categoriaSelecionada, setCategoriaSelecionada ] = useState({ 
+        nome: '',
+        id: '',
+    })
+
+    const handleChangeCategoria = e => {
+        setCategoriaSelecionada({
+            nome: e.target.value,
+            id: e.target[e.target.selectedIndex].id
+        })
+    }
+    
+    const [ contaSelecionada, setContaSelecionada ] = useState({ 
+        nome: '',
+        id: '',
+    })
+
+    const handleChangeConta = e => {
+        setContaSelecionada({
+            nome: e.target.value,
+            id: e.target[e.target.selectedIndex].id
+        })
+    }
+
+    useEffect(() => console.log(movimentacao))
 
     return(
         <form className={styles}>
@@ -28,8 +60,8 @@ export default function AdicionarMovimentacao({ tipo }){
                         name="nome" 
                         id="nome" 
                         placeholder="Nome: " 
-                        value={despesa.nome} 
-                        onChange={e => setDespesa(d => { return { ...d, nome: e.target.value } })} 
+                        value={movimentacao.nome} 
+                        onChange={e => setMovimentacao(prev => ({ ...prev, nome: e.target.value }))}
                     />
 
                     <div>
@@ -38,30 +70,21 @@ export default function AdicionarMovimentacao({ tipo }){
                             name="valor" 
                             id="valor" 
                             placeholder="Valor: R$" 
-                            value={despesa.valor} 
-                            onChange={e => setDespesa(d => { return { ...d, valor: e.target.value } })} 
+                            value={movimentacao.valor} 
+                            onChange={e => setMovimentacao(prev => ({ ...prev, valor: e.target.value }))}
                         />
-
-                        <input 
-                            type="text" 
-                            name="categoria" 
-                            id="categoria" 
-                            placeholder="Categoria: " 
-                            value={despesa.categoria} 
-                            onChange={e => setDespesa(d => { return { ...d, categoria: e.target.value } })} 
-                        />
+                        <select value={ categoriaSelecionada.nome } onChange={ handleChangeCategoria }>
+                            <option value={null}>Selecione uma opção</option>
+                            { contexto.state.categorias.map((categoria, i) => (<option key={i} id={categoria.id}>{categoria.nome}</option>)) }
+                        </select>
 
                     </div>
                     <div>
                         <InputRecorrencia />
-                        <input 
-                            type="text" 
-                            name="conta" 
-                            id="conta" 
-                            placeholder="Conta: " 
-                            value={despesa.conta} 
-                            onChange={e => setDespesa(d => { return { ...d, conta: e.target.value } })} 
-                        />
+                        <select value={ contaSelecionada.nome } onChange={ handleChangeConta }>
+                            <option value={null}>Selecione uma opção</option>
+                            { contexto.state.contas.map((conta, i) => (<option key={i} id={conta.id}>{conta.nome}</option>)) }
+                        </select>
                     </div>
                     <div className={styles.divData}>
                         <span>Data: </span>
@@ -74,7 +97,14 @@ export default function AdicionarMovimentacao({ tipo }){
                     <button onClick={
                         e => {
                             e.preventDefault()
-                            contexto.dispatch({ type: 'adicionarDespesa', payload: { despesa } })
+                            movimentacao.categoria = categoriaSelecionada.nome
+                            movimentacao.categoriaId = categoriaSelecionada.id
+                            movimentacao.conta = contaSelecionada.nome
+                            movimentacao.contaId = contaSelecionada.id
+                            const now = new Date()
+                            movimentacao.data = now.toISOString().slice(0, 19).replace('T', ' ')
+                            movementsActions.adicionarMovimentacao(contexto.dispatch, movimentacao)
+                            navigate(`/${tipo.toLowerCase()}s`)
                         }
                     }>Confirmar</button>
                     </div>

@@ -26,7 +26,11 @@ module.exports = app => {
         } else {
             app.bd('movimentacoes')
                 .insert(movimentacao)
-                .then(_ => res.status(204).send())
+                .returning('id')
+                .then(ids => {
+                    const id = ids[0]
+                    res.json(id)
+                })
                 .catch(err => res.status(500).send(err))
         }
     }
