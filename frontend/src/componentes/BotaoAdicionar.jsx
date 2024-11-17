@@ -3,10 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import iconeAdd from '../assets/add_box.png'
 import styles from '../estilos/BotaoAdicionar.module.css'
 
-export default function BotaoAdicionar({ path }) {
+export default function BotaoAdicionar({ path, onClick }) {
     const navigate = useNavigate()
     const handleClick = e => {
-        navigate(`${path}`)
+        if (path) {
+            navigate(`${path}`)
+        } else {
+            onClick(e)
+        }
     }
     return <img 
         src={iconeAdd} 

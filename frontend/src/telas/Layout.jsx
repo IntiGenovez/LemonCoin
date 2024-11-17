@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react"
 import { Outlet } from "react-router-dom"
-import { movementsActions, accountsActions } from "../store/action"
+import { movementsActions, accountsActions, categoriesActions } from "../store/action"
 import BotaoVoltar from "../componentes/BotaoVoltar"
 import { useLocation } from "react-router-dom"
 
@@ -16,6 +16,7 @@ export default function Layout() {
     useEffect(() => {
         movementsActions.obterDespesas(contexto.dispatch, 8)
         accountsActions.obterContas(contexto.dispatch)
+        categoriesActions.obterCategorias(contexto.dispatch)
     }, [])
 
     let titulo = useLocation().pathname

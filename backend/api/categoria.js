@@ -3,9 +3,8 @@ module.exports = app => {
 
     const salvar = async (req, res) => {
         const categoria = { ...req.body }
+        categoria.usuarioId = req.user.id
         if (req.params.id) categoria.id = req.params.id
-
-        console.log(req.user.id)
 
         try {
             existeOuErro(categoria.nome, "Nome não informado")
@@ -23,7 +22,11 @@ module.exports = app => {
         } else {
             app.bd('categorias')
                 .insert(categoria)
-                .then(_ => res.status(204).send())
+                .returning('id')
+                .then(ids => {
+                    const id = ids[0]
+                    res.json(id)
+                })
                 .catch(err => res.status(500).send(err))
         }
     }
