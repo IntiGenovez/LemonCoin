@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 
 
 import { DadosContexto } from "../store"
+import { movementsActions } from "../store/action"
 
 export default function Movimentacoes({ tipo }) {
     const [ seletorAtivo, setSeletorAtivo ] = useState(null)
@@ -28,11 +29,14 @@ export default function Movimentacoes({ tipo }) {
             setSeletorAtivo(seletor)
             setIsUp(false)
         }
-        contexto.dispatch( { type: 'ordenarDespesas', payload: { seletorOrdenador: seletor, invertido: isUp } } )
+        movementsActions.ordenarMovimentacoes(contexto.dispatch, {seletorOrdenador: seletor, invertido: isUp })
     }
 
-    useEffect(() => contexto.dispatch( { type: 'ordenarDespesas', payload: { seletorOrdenador: seletorAtivo, invertido: isUp } } ), [isUp, seletorAtivo])
-    
+    useEffect(() => 
+        movementsActions.ordenarMovimentacoes(contexto.dispatch, seletorAtivo, isUp), 
+        [isUp, seletorAtivo]
+    )
+
     return (
         <section className={ styles.containerMovimentacoes }>
             <div className={ styles.seletores }>
@@ -47,22 +51,25 @@ export default function Movimentacoes({ tipo }) {
                 )}
             </div>
             <ul>
-                { contexto.state.despesas.map(despesa => 
-                    (<Movimentacao  
-                        tipo="despesa" 
-                        key={ despesa.id } 
-                        id={ despesa.id }
-                        nome={ despesa.nome }
-                        categoria={ despesa.categoria } 
-                        valor={ despesa.valor } 
-                        data={ despesa.data } 
-                        conta={ despesa.conta }
-                        movimentacaoEditavel={ movimentacaoEditavel === despesa.id }
-                        setMovimentacaoEditavel={ setMovimentacaoEditavel }
-                />)) }
+                { contexto.state.movimentacoes
+                    .filter(movimentacao => {
+                        return movimentacao.tipo === tipo
+                    })
+                    .map(movimentacao => {
+                        return (<Movimentacao  
+                            tipo={ tipo } 
+                            key={ movimentacao.id } 
+                            movimentacaoListada={ movimentacao }
+                            movimentacaoEditavel={ movimentacaoEditavel === movimentacao.id }
+                            setMovimentacaoEditavel={ setMovimentacaoEditavel }
+                        />)
+                }
+                ) }
             </ul>
             <div className={styles.total}>
-                <p>Total: <span>{ contexto.state.despesas.reduce((acc, atual) => acc + atual.valor, 0)
+                <p>Total: <span>{ contexto.state.movimentacoes
+                    .filter(movimentacao => movimentacao.tipo === tipo)
+                    .reduce((acc, atual) => +acc + +atual.valor, 0)
                     .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }) }</span></p>
                 <BotaoNavegar link={ linkAdicionar }>Adicionar { tipo }</BotaoNavegar>
             </div>

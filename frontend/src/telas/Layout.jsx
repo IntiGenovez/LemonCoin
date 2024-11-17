@@ -14,7 +14,7 @@ export default function Layout() {
     const contexto = useContext(DadosContexto)
 
     useEffect(() => {
-        movementsActions.obterDespesas(contexto.dispatch, 8)
+        movementsActions.obterMovimentacoes(contexto.dispatch)
         accountsActions.obterContas(contexto.dispatch)
         categoriesActions.obterCategorias(contexto.dispatch)
     }, [])

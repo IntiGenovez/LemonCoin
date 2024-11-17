@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "createbd": "knex migrate:latest",
+    "cm": "knex migrate:make add_nome_movimentacoes",
     "dev": "nodemon",
     "production": "pm2 start index.js --name lemoncoin-backend",
     "monit": "pm2 monit",

@@ -1,22 +1,65 @@
-import { urlBaseAPI } from "../../global.js"
+import { urlBaseAPI, userKey } from "../../global.js"
+const jwt = JSON.parse(localStorage.getItem(userKey))?.token
 
 const movementsActions = {
-    obterDespesas: (dispatch, id) => {
-        fetch(`${urlBaseAPI}/${8}/movimentacoes`)
-            .then(resp => resp.json())
-            .then(despesas => dispatch({ type: 'obterDespesas', payload: { despesas } }))
+    obterMovimentacoes: (dispatch) => {
+        fetch(`${urlBaseAPI}/movimentacoes`, { 
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `bearer ${jwt}`
+            }
+        })
+        .then(resp => resp.json())
+        .then(movimentacoes => dispatch({ type: 'obterMovimentacoes', payload: { movimentacoes } }))
     },
-    ordenarDespesas: (dispatch, invertido) => {
-        dispatch({ type: 'ordenarDespesas', payload: { invertido } })
+    ordenarMovimentacoes: (dispatch, seletorOrdenador, invertido) => {
+        dispatch({ type: 'ordenarMovimentacoes', payload: { seletorOrdenador, invertido } })
     },
-    removerDespesa: (dispatch, id) => {
-        dispatch({ type: 'removerDespesa', payload: { id } })
+    deletarMovimentacao: (dispatch, id) => {
+        fetch(`${urlBaseAPI}/movimentacoes/${id}`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "aplication/json",
+                "Authorization": `bearer ${jwt}`
+            }
+        })
+        .then(resp => {
+            if (!resp.ok) throw new Error(`Erro na requisição ${resp.statusText}`)
+            return resp.status === 204 ? null : resp.json
+        })
+        .then(_ => {
+            dispatch({ type: 'deletarMovimentacao', payload: { id } })
+            console.log('Movimentação deletada com sucesso')
+        })
+        .catch(error => console.log("Erro ao deletar movimentação: " + error))
     },
-    atualizarDespesa: (dispatch, despesa) => {
-        dispatch({ type: 'atualizarDespesa', payload: { despesa }})
+    atualizarMovimentacao: (dispatch, movimentacao) => {
+        const movimentacaoToFetch = { ...movimentacao }
+        delete movimentacaoToFetch.conta
+        delete movimentacaoToFetch.categoria
+        delete movimentacaoToFetch.usuario
+        console.log(JSON.stringify(movimentacaoToFetch))
+        fetch(`${urlBaseAPI}/movimentacoes/${movimentacaoToFetch.id}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `bearer ${jwt}`
+            },
+            body: JSON.stringify(movimentacaoToFetch)
+        })
+        .then(resp => {
+            if (!resp.ok) throw new Error(`Erro na requisição: ${resp.statusText}`)
+            return resp.status === 204 ? null : resp.json()
+        })
+        .then(_ => {
+            dispatch({ type: 'atualizarMovimentacao', payload: { movimentacao }})
+            console.log("Movimentação atualizada com sucesso")
+        })
+        .catch(error => console.log("Erro ao atualizar movimentação: " + error))
     },
-    adicionarDespesa: (dispatch, despesa) => {
-        dispatch({ type: 'adicionarDespesa', payload: { despesa }})
+    adicionarMovimentacao: (dispatch, movimentacao) => {
+        dispatch({ type: 'adicionarMovimentacao', payload: { movimentacao }})
     }
 }
 
