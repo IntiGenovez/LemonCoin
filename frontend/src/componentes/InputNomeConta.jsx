@@ -1,8 +1,6 @@
-export default function InputNomeConta({ change, valor }){
-
-
+export default function InputNomeConta({ valor, change }){
     return(
-        <select name="nomeConta" id="nomeConta" onChange={change} value={valor}>
+        <select name="nomeConta" id="nomeConta" onChange={change} value={valor.nome}>
             <option value="">Conta</option>
             <option value="banco_do_brasil">Banco do Brasil</option>
             <option value="bradesco">Bradesco</option>

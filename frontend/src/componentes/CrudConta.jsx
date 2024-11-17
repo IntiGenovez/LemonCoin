@@ -32,11 +32,11 @@ export default function CrudConta({ tipo }){
         proprietario: '',
         descricao: ''
     })
+
     const [openDialog, setOpenDialog] = useState(false)
 
     const handleSaldoChange = (event) =>{
         setConta(prev => ({ ...prev, saldo: event.target.value }))
-        
     }
 
     const mascara = () =>{ 
@@ -73,7 +73,6 @@ export default function CrudConta({ tipo }){
     useEffect(() => {
         if (tipo === "Editar" && id) {
             const contaParaEditar = contexto.state.contas.find(conta => conta.id === Number(id))
-            console.log(contaParaEditar)
             if (contaParaEditar) {
                 setConta(contaParaEditar)
             }
@@ -102,12 +101,7 @@ export default function CrudConta({ tipo }){
             }
         } 
         else if(tipo === "Editar"){
-            console.log(tipo)                        
-            console.log(conta)                        
-            console.log(saldo)                        
-            console.log(proprietario)                        
-            console.log(id)                                    
-            console.log(contexto.state.contas)                                    
+            //                                   
         }
 
     }    
@@ -120,7 +114,7 @@ export default function CrudConta({ tipo }){
                 <div className={styles.containerForm}>
                     <div className={styles.dados}>
                         <div className={styles.cabecalho}>
-                            <InputNomeConta value={tipo === "Editar" ? {conta} : ""}
+                            <InputNomeConta valor={tipo === "Editar" ? conta : ""}
                                 change={(event) => {
                                     handleContaChange(event)
                                     handleIconeChange(event)
