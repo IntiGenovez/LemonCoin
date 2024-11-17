@@ -12,12 +12,14 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
         nome: movimentacao.categoria,
         id: movimentacao.categoriaId,
     })
+
+    useEffect(()=>console.log(typeof +movimentacaoListada.valor.toFixed(2)))
     const [ contaSelecionada, setContaSelecionada ] = useState({ 
         nome: movimentacao.conta,
         id: movimentacao.contaId,
     })
 
-    let dataFormatada = movimentacao.data.split('T')[0].split('-').reverse().join('/')
+    let dataFormatada = movimentacao.data.split(' ')[0].split('-').reverse().join('/')
 
     let valorFormatado = movimentacao.valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 
@@ -54,9 +56,9 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
                             onClick={() => {
                                 setMovimentacaoEditavel(null)
                                 movimentacao.categoria = categoriaSelecionada.nome
-                                movimentacao.categoria = categoriaSelecionada.nome
+                                movimentacao.categoriaId = categoriaSelecionada.id
                                 movimentacao.conta = contaSelecionada.nome
-                                movimentacao.conta = contaSelecionada.nome
+                                movimentacao.contaId = contaSelecionada.id
                                 movementsActions.atualizarMovimentacao(contexto.dispatch, movimentacao)
                             }}
                         ></i>

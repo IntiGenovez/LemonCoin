@@ -39,7 +39,6 @@ const movementsActions = {
         delete movimentacaoToFetch.conta
         delete movimentacaoToFetch.categoria
         delete movimentacaoToFetch.usuario
-        console.log(JSON.stringify(movimentacaoToFetch))
         fetch(`${urlBaseAPI}/movimentacoes/${movimentacaoToFetch.id}`, {
             method: 'PUT',
             headers: {
@@ -59,7 +58,30 @@ const movementsActions = {
         .catch(error => console.log("Erro ao atualizar movimentação: " + error))
     },
     adicionarMovimentacao: (dispatch, movimentacao) => {
-        dispatch({ type: 'adicionarMovimentacao', payload: { movimentacao }})
+        const movimentacaoToFetch = { ...movimentacao }
+        delete movimentacaoToFetch.conta
+        delete movimentacaoToFetch.categoria
+        delete movimentacaoToFetch.usuario
+        console.log(JSON.stringify(movimentacaoToFetch))
+        fetch(`${urlBaseAPI}/movimentacoes`, { 
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `bearer ${jwt}`
+            },
+            body: JSON.stringify(movimentacaoToFetch)
+        })
+        .then(resp => {
+            if (!resp.ok) {
+                throw new Error(`Erro na requisição: ${resp.statusText}`)
+            }
+            return resp.json()
+        })    
+        .then(data => {
+            dispatch({ type: 'adicionarMovimentacao', payload: { movimentacao, id: data } })
+            console.log("Movimentação adicionada com sucesso")
+        })
+        .catch(error => console.error("Erro ao adicionar movimentação:", error))
     }
 }
 

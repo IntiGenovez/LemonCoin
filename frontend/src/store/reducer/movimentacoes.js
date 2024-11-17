@@ -22,9 +22,8 @@ function movimentacoesReducer(estado, action) {
                 )}
             break
         case 'adicionarMovimentacao':
-            console.log(action.payload.movimentacao)
-            // novoEstado = { ...estado, movimentacoes: estado.movimentacoes.push(action.payload.movimentacao) }
-            // console.log(novoEstado)
+            const novaMovimentacao = { ...action.payload.movimentacao, id: action.payload.id, valor: +action.payload.movimentacao.valor }
+            novoEstado = { ...estado, movimentacoes: [ ...estado.movimentacoes, novaMovimentacao ]}
             break
         default:
             novoEstado = estado      
