@@ -43,9 +43,7 @@ const accountsActions = {
             }
         })
         .then(resp => {
-            if (!resp.ok) {
-                throw new Error(`Erro na requisição: ${resp.statusText}`)
-            }
+            if (!resp.ok) throw new Error(`Erro na requisição: ${resp.statusText}`)
             return resp.status === 204 ? null : resp.json()
         })    
         .then(_ => {
@@ -70,8 +68,6 @@ const accountsActions = {
             return resp.json()
         })    
         .then(data => {
-            console.log("aaaaa")
-            console.log(data)
             dispatch({ type: 'adicionarConta', payload: { conta, id: data } })
             console.log("Conta adicionada com sucesso")
         })

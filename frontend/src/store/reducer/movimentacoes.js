@@ -1,29 +1,29 @@
 function movimentacoesReducer(estado, action) {
     let novoEstado
     switch (action.type) {
-        case 'obterDespesas':
-            novoEstado = { ...estado, despesas: action.payload.despesas }
+        case 'obterMovimentacoes':
+            novoEstado = { ...estado, movimentacoes: action.payload.movimentacoes }
             break
-        case 'ordenarDespesas':
+        case 'ordenarMovimentacoes':
             if (action.payload.invertido) {
-                novoEstado = { ...estado, despesas: estado.despesas.sort((a, b) => b[action.payload.seletorOrdenador] <= a[action.payload.seletorOrdenador] ? -1 : 1 ) }
+                novoEstado = { ...estado, movimentacoes: estado.movimentacoes.sort((a, b) => b[action.payload.seletorOrdenador] <= a[action.payload.seletorOrdenador] ? -1 : 1 ) }
             } else {
-                novoEstado = { ...estado, despesas: estado.despesas.sort((a, b) => a[action.payload.seletorOrdenador] <= b[action.payload.seletorOrdenador] ? -1 : 1 ) }
+                novoEstado = { ...estado, movimentacoes: estado.movimentacoes.sort((a, b) => a[action.payload.seletorOrdenador] <= b[action.payload.seletorOrdenador] ? -1 : 1 ) }
             }
             break
-        case 'removerDespesa':
-            novoEstado = { ...estado, despesas: estado.despesas.filter(despesa => despesa.id !== action.payload.id) }
+        case 'deletarMovimentacao':
+            novoEstado = { ...estado, movimentacoes: estado.movimentacoes.filter(movimentacao => movimentacao.id !== action.payload.id) }
             break
-        case 'atualizarDespesa':
-            novoEstado = { ...estado, despesas: estado.despesas.map(despesa => 
-                despesa.id === action.payload.despesa.id ? 
-                    action.payload.despesa :
-                    despesa
+        case 'atualizarMovimentacao':
+            novoEstado = { ...estado, movimentacoes: estado.movimentacoes.map(movimentacao => 
+                movimentacao.id === action.payload.movimentacao.id ? 
+                    action.payload.movimentacao :
+                    movimentacao
                 )}
             break
-        case 'adicionarDespesa':
-            console.log(action.payload.despesa)
-            // novoEstado = { ...estado, despesas: estado.despesas.push(action.payload.despesa) }
+        case 'adicionarMovimentacao':
+            console.log(action.payload.movimentacao)
+            // novoEstado = { ...estado, movimentacoes: estado.movimentacoes.push(action.payload.movimentacao) }
             // console.log(novoEstado)
             break
         default:

@@ -15,7 +15,6 @@ module.exports = app => {
         }
 
         if (conta.id) {
-            console.log(conta)
             app.bd('contas')
                 .update(conta)
                 .where({ id: conta.id })

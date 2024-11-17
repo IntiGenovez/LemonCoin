@@ -3,11 +3,11 @@ module.exports = app => {
 
     const salvar = async (req, res) => {
         const movimentacao = { ...req.body }
+        movimentacao.usuarioId = req.user.id
         if (req.params.id) movimentacao.id = req.params.id
 
         try {
             existeOuErro(movimentacao.valor, "Valor não informado")
-            existeOuErro(movimentacao.recorrencia, "Recorrência não informada")
             existeOuErro(movimentacao.data, "Data não informada")
             existeOuErro(movimentacao.usuarioId, "Usuário não informado")
             existeOuErro(movimentacao.contaId, "Conta não informada")
@@ -17,6 +17,7 @@ module.exports = app => {
         }
 
         if (movimentacao.id) {
+            console.log(movimentacao)
             app.bd('movimentacoes')
                 .update(movimentacao)
                 .where({ id: movimentacao.id })
@@ -32,12 +33,13 @@ module.exports = app => {
 
     const deletar = async (req, res) => {
         try {
-            const registroDeletado = await app.db('movimentacoes')
+            const registroDeletado = await app.bd('movimentacoes')
                 .where({ id: req.params.id }).del()
             existeOuErro(registroDeletado, "Movimentação não encontrada")
 
             res.status(204).send()
         } catch (msg) {
+            console.log(msg)
             return res.status(400).send(msg)
         }
     }
@@ -64,7 +66,7 @@ module.exports = app => {
             .join('usuarios', 'movimentacoes.usuarioId', '=', 'usuarios.id')
             .join('contas', 'movimentacoes.contaId', '=', 'contas.id')
             .join('categorias', 'movimentacoes.categoriaId', '=', 'categorias.id')
-            .where('movimentacoes.usuarioId', req.params.id)
+            .where('movimentacoes.usuarioId', req.user.id)
             .then(movimentacoes => res.json(movimentacoes))        
             .catch(err => res.status(500).send(err))
     }
