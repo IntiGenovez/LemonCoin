@@ -5,8 +5,21 @@ function contasReducer(estado, action) {
             novoEstado = { ...estado, contas: action.payload.contas }
             break
         case 'adicionarConta':
-            novoEstado = { ...estado, contas: [ ...estado.contas, action.payload.conta ]}
-            console.log(novoEstado)
+            const novaConta = { ...action.payload.conta, id: action.payload.id }
+            novoEstado = { ...estado, contas: [ ...estado.contas, novaConta ]}
+            break
+        case 'atualizarConta':
+            novoEstado = { ...estado, contas: estado.contas.map(conta => {
+                    return conta.id === action.payload.conta.id ? action.payload.conta : conta
+                }) 
+            }
+            break
+        case 'deletarConta':
+            novoEstado = { ...estado, contas: estado.contas.filter(conta => {
+                    return conta.id !== action.payload.conta.id
+                }) 
+            }
+            break
         default:
             novoEstado = estado      
     }

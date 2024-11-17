@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { DadosContexto } from "../store"
 import { accountsActions } from "../store/action"
 import Mensagem from "./mensagem"
@@ -24,31 +24,41 @@ import styles from '../estilos/CrudConta.module.css'
 export default function CrudConta({ tipo }){
     const contexto = useContext(DadosContexto)
     const { id } = useParams() //id para quando for tela de editar
+    const navigate = useNavigate()
 
     const [conta, setConta] = useState({
         nome: '',
-        saldo: 0,
+        saldo: '',
         icone: null,
         proprietario: '',
         descricao: ''
     })
 
+    //puxa dados do id caso seja tela de editar
+    useEffect(() => {
+        if (tipo === "Editar" && id) {
+            const contaParaEditar = contexto.state.contas.find(conta => conta.id === +id)
+            if (contaParaEditar) {
+                setConta(contaParaEditar)
+            }
+        }
+    }, [])
+
     const [openDialog, setOpenDialog] = useState(false)
 
-    const handleSaldoChange = (event) =>{
-        setConta(prev => ({ ...prev, saldo: event.target.value }))
+    const handleSaldoChange = e => {
+        setConta(prev => ({ ...prev, saldo: e.target.value }))
     }
 
     const mascara = () =>{ 
         let saldoMascara = conta.saldo.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
         setConta(prev => ({ ...prev, saldo: saldoMascara}))
-        console.log(conta.saldo.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }))
     }
 
-    const handleIconeChange = (event) => setConta(prev => ({ ...prev, icone: event.target.value }))
-    const handleContaChange = (event) => setConta(prev => ({ ...prev, nome: event.target.value }))
-    const handleProprietarioChange = (event) => setConta(prev => ({ ...prev, proprietario: event.target.value }))
-    const handleDescricaoChange = (event) => setConta(prev => ({ ...prev, descricao: event.target.value }))
+    const handleIconeChange = e => setConta(prev => ({ ...prev, icone: e.target.value }))
+    const handleContaChange = e => setConta(prev => ({ ...prev, nome: e.target.value }))
+    const handleProprietarioChange = e => setConta(prev => ({ ...prev, proprietario: e.target.value }))
+    const handleDescricaoChange = e => setConta(prev => ({ ...prev, descricao: e.target.value }))
 
    
 
@@ -69,15 +79,7 @@ export default function CrudConta({ tipo }){
     // Obtém a imagem correspondente ao nome da variavel icone, ou ícone lápis padrão se não for encontrado
     const iconeSrc = iconeMap[conta.icone] || lapis 
 
-    //puxa dados do id caso seja tela de editar
-    useEffect(() => {
-        if (tipo === "Editar" && id) {
-            const contaParaEditar = contexto.state.contas.find(conta => conta.id === Number(id))
-            if (contaParaEditar) {
-                setConta(contaParaEditar)
-            }
-        }
-    }, [id, tipo, contexto.state.contas])
+ 
 
     // Função para abrir o popUp
     const handleOpenDialog = () => {
@@ -89,8 +91,8 @@ export default function CrudConta({ tipo }){
         setOpenDialog(false)
     }
 
-    const handleConfirm = (event) => { //quando o botão de confirmar é precionado
-        event.preventDefault()
+    const handleConfirmar = (e) => { //quando o botão de confirmar é precionado
+        e.preventDefault()
 
         if (tipo === 'Adicionar') {
             try{
@@ -101,10 +103,25 @@ export default function CrudConta({ tipo }){
             }
         } 
         else if(tipo === "Editar"){
-            //                                   
+            try{
+                delete conta['usuario_nome']
+                accountsActions.atualizarConta(contexto.dispatch, conta)
+                handleOpenDialog()
+            } catch(e) {
+                return 0
+            }                               
         }
-
     }    
+
+    const handleExcluir = e => {
+        e.preventDefault()
+        try{
+            accountsActions.deletarConta(contexto.dispatch, conta)
+            handleOpenDialog()
+        } catch(e) {
+            return 0
+        }  
+    } 
 
     return(
         <form className={styles}>
@@ -115,9 +132,9 @@ export default function CrudConta({ tipo }){
                     <div className={styles.dados}>
                         <div className={styles.cabecalho}>
                             <InputNomeConta valor={tipo === "Editar" ? conta : ""}
-                                change={(event) => {
-                                    handleContaChange(event)
-                                    handleIconeChange(event)
+                                change={e => {
+                                    handleContaChange(e)
+                                    handleIconeChange(e)
                                 }} 
                             /> 
                             <input type="text" name="saldo" id="saldo" placeholder="Saldo: R$" value={conta.saldo} onChange={handleSaldoChange} onBlur={mascara} />
@@ -134,7 +151,7 @@ export default function CrudConta({ tipo }){
                                 (
                                     <>
                                         <BotaoAcao onClick={ () => history.back() }>Cancelar</BotaoAcao>
-                                        <BotaoAcao onClick={ handleConfirm }>Confirmar</BotaoAcao>
+                                        <BotaoAcao onClick={ handleConfirmar }>Confirmar</BotaoAcao>
                                         <Mensagem
                                             open={openDialog}
                                             onClose={handleCloseDialog}
@@ -149,9 +166,9 @@ export default function CrudConta({ tipo }){
                                 :
                                 (
                                     <>
-                                        <BotaoAcao>Relatório de conta</BotaoAcao>
-                                        <BotaoAcao>Excluir conta</BotaoAcao>
-                                        <BotaoAcao onClick={handleConfirm}>Editar conta</BotaoAcao>
+                                        <BotaoAcao onClick={ () => navigate('/relatorios') }>Relatório de conta</BotaoAcao>
+                                        <BotaoAcao onClick={ handleExcluir }>Excluir conta</BotaoAcao>
+                                        <BotaoAcao onClick={ handleConfirmar }>Editar conta</BotaoAcao>
                                         <Mensagem
                                             open={openDialog}
                                             onClose={handleCloseDialog}

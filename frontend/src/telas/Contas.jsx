@@ -11,18 +11,15 @@ export default function Contas() {
 
     const contexto = useContext(DadosContexto)
 
-    useEffect(() => {
-        // Recarregar as contas do servidor ou garantir que o estado seja atualizado.
-        accountsActions.obterContas(contexto.dispatch);
-    }, [contexto.state.contas]);
-
     return (
         <div className={styles.contas}>
             <div className={styles.container}>
-                { contexto.state.contas.map(conta => {
+                { contexto.state.contas.map((conta, i) => {
+                    console.log('conta: ' + i)
+                    console.log(conta)
                     return (
                         <CardConta 
-                            key={conta.id} 
+                            key={i} 
                             id={conta.id}
                             icone={conta.icone}
                             nome={conta.nome} 
