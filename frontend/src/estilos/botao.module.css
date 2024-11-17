@@ -1,5 +1,5 @@
 .btnAcao {
-    background-color: #e7efc4;
+    background-color: var(--background-botoes);
     border: 0;
     width: 35%;
     height: 40px;

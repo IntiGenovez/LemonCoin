@@ -15,6 +15,7 @@ module.exports = app => {
         }
 
         if (conta.id) {
+            console.log(conta)
             app.bd('contas')
                 .update(conta)
                 .where({ id: conta.id })
@@ -23,7 +24,11 @@ module.exports = app => {
         } else {
             app.bd('contas')
                 .insert(conta)
-                .then(_ => res.status(204).send())
+                .returning('id')
+                .then(ids => {
+                    const id = ids[0]
+                    res.json(id)
+                })
                 .catch(err => res.status(500).send(err))
         }
     }
@@ -32,12 +37,12 @@ module.exports = app => {
         try {
             existeOuErro(req.params.id, 'Código da conta não infomado')
 
-            const movimentacao = await app.db('movimentacoes')
+            const movimentacao = await app.bd('movimentacoes')
                 .where({ contaId: req.params.id })
 
             naoExisteOuErro(movimentacao, 'Há movimentações associadas à categoria')
 
-            const registroDeletado = await app.db('contas')
+            const registroDeletado = await app.bd('contas')
                 .where({ id: req.params.id }).del()
             existeOuErro(registroDeletado, 'A conta não foi encontrada.')
 

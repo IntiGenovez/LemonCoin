@@ -12,10 +12,15 @@ import mercadoPago from '../assets/Mercado-Pago.png'
 import { useNavigate } from 'react-router-dom';
 
 import styles from '../estilos/CardConta.module.css'
+import { useEffect } from 'react';
 
-export default function CardConta({icone, proprietario, nome, saldo, id}) {
-
+export default function CardConta({id, icone, proprietario, nome, saldo}) {
+    
     // Mapeamento de nome de ícone para imagem importada
+    // useEffect(() => {
+    //     console.log(nome)
+    //     console.log(nome)
+    // })
     const iconeMap = {
         lapis: lapis,
         nubank: nubank,

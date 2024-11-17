@@ -30,7 +30,7 @@ module.exports = app => {
     app.route('/contas/:id')
         .all(app.config.passport.autenticador())
         .put(app.api.conta.salvar)
-        .delete(app.api.categoria.deletar)
+        .delete(app.api.conta.deletar)
 
 
     /************* ENDPOINTS DE CATEGORIAS *************/
