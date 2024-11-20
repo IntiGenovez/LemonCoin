@@ -23,6 +23,11 @@ export default function AdicionarMovimentacao({ tipo }){
         data: '',
         tipo
     })
+    const [ data, setData ] = useState({
+        ano: '',
+        mes: '',
+        dia: ''
+    })
 
     const [ categoriaSelecionada, setCategoriaSelecionada ] = useState({ 
         nome: '',
@@ -48,7 +53,9 @@ export default function AdicionarMovimentacao({ tipo }){
         })
     }
 
-    useEffect(() => console.log(movimentacao))
+    const handleInputData = (valor, campo) => {
+        setData(prev => ({ ...prev, [campo]: valor }))
+    }
 
     return(
         <form className={styles}>
@@ -88,9 +95,9 @@ export default function AdicionarMovimentacao({ tipo }){
                     </div>
                     <div className={styles.divData}>
                         <span>Data: </span>
-                        <InputDia />
-                        <InputMes />
-                        <InputAno />
+                        <InputDia valor={ data.dia } onChange={ e => handleInputData(e, 'dia') } />
+                        <InputMes valor={ data.mes } onChange={ e => handleInputData(e, 'mes') } />
+                        <InputAno valor={ data.ano } onChange={ e => handleInputData(e, 'ano') } />
                     </div>
                     <div className={styles.Botoes}>
                     <button>Cancelar</button>
@@ -101,8 +108,10 @@ export default function AdicionarMovimentacao({ tipo }){
                             movimentacao.categoriaId = categoriaSelecionada.id
                             movimentacao.conta = contaSelecionada.nome
                             movimentacao.contaId = contaSelecionada.id
-                            const now = new Date()
-                            movimentacao.data = now.toISOString().slice(0, 19).replace('T', ' ')
+
+                            movimentacao.data = `${data.ano}-${data.mes}-${data.dia} 00:00:00`
+                            console.log(movimentacao.data)
+
                             movementsActions.adicionarMovimentacao(contexto.dispatch, movimentacao)
                             navigate(`/${tipo.toLowerCase()}s`)
                         }

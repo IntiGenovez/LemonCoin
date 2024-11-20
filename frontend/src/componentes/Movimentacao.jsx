@@ -13,13 +13,14 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
         id: movimentacao.categoriaId,
     })
 
-    useEffect(()=>console.log(typeof +movimentacaoListada.valor.toFixed(2)))
     const [ contaSelecionada, setContaSelecionada ] = useState({ 
         nome: movimentacao.conta,
         id: movimentacao.contaId,
     })
 
-    let dataFormatada = movimentacao.data.split(' ')[0].split('-').reverse().join('/')
+    let dataFormatada = movimentacao.data.split('T').length === 2 ? 
+        movimentacao.data.split('T')[0].split('-').reverse().join('/') : 
+        movimentacao.data.split(' ')[0].split('-').reverse().join('/')
 
     let valorFormatado = movimentacao.valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
 
