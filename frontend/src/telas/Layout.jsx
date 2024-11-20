@@ -1,13 +1,14 @@
 import { useContext, useEffect } from "react"
 import { Outlet } from "react-router-dom"
-import { movementsActions, accountsActions, categoriesActions } from "../store/action"
+import { movementsActions, accountsActions, categoriesActions, errorMessageActions } from "../store/action"
 import BotaoVoltar from "../componentes/BotaoVoltar"
 import { useLocation } from "react-router-dom"
 
 import { DadosContexto } from "../store"
 
-import Cabecalho from "../surface/Cabecalho";
-import Rodape from "../surface/Rodape";
+import Cabecalho from "../surface/Cabecalho"
+import Mensagem from "../componentes/Mensagem"
+import Rodape from "../surface/Rodape"
 
 export default function Layout() {
     
@@ -38,6 +39,15 @@ export default function Layout() {
                     )
             }
             <Outlet />
+            <Mensagem
+                open={ contexto.state.mensagemErro.openDialog  }
+                onClose={ () => errorMessageActions.fecharMensagem(contexto.dispatch) }
+                textoBotao='Fechar'
+                link={ window.location.pathname }
+                tipo='success'
+                titulo='Ocorreu um erro'
+                mensagem={ `${ contexto.state.mensagemErro.mensagem }` }
+            />
             <Rodape />
         </>
     )

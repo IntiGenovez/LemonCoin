@@ -20,9 +20,9 @@
             font-weight: 600;
         }
 
-        & .grafico {
-            /* border: #1d3a1e solid 1px; */
-        }
+        /* & .grafico {
+            border: #1d3a1e solid 1px;
+        } */
     }
 
     & .divDados {
@@ -44,6 +44,7 @@
                 border-radius: 10%;
                 width: 70px;
                 height: 60%;
+                cursor: pointer;
             }
         }
         

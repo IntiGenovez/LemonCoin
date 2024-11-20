@@ -5,10 +5,12 @@ import BotaoNavegar from "../componentes/BotaoNavegar"
 
 import styles from "../estilos/Home.module.css"
 import { useContext } from "react"
+import { useNavigate } from "react-router-dom"
 import { DadosContexto } from "../store"
 
 export default function Home(){
     const contexto = useContext(DadosContexto)
+    const navigate = useNavigate()
 
     return (
         <div className={styles.container}>
@@ -37,7 +39,7 @@ export default function Home(){
                             );
                         })
                     }
-                    <button>Ver mais...</button>
+                    <button onClick={(() => navigate('/contas'))}>Ver mais...</button>
                 </div>
 
                 <div className={styles.containerGastos}>

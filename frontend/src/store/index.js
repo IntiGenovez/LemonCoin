@@ -11,6 +11,10 @@ export const initialState = {
         telefone: '',
         genero: '',
         token: null
+    },
+    mensagemErro: {
+        mensagem: '',
+        openDialog: false
     }
 }
 
