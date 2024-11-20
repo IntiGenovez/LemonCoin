@@ -1,3 +1,5 @@
+import RelatorioMovimentacao from "../componentes/RelatorioMovimentacao"
+
 export default function Relatorios() {
-    return <div>página de Relatorios</div>
+    return <div className="tela-padrao"><RelatorioMovimentacao /></div>
 }
