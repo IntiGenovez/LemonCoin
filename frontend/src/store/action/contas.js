@@ -24,7 +24,9 @@ const accountsActions = {
         })
         .then(resp => {
             if (!resp.ok) {
-                throw new Error(`Erro na requisição: ${resp.statusText}`)
+                return resp.text().then(msg => {
+                    throw new Error(msg)
+                })
             }
             return resp.status === 204 ? null : resp.json()
         })    
@@ -32,7 +34,7 @@ const accountsActions = {
             dispatch({ type: 'atualizarConta', payload: { conta } })
             console.log("Conta atualizada com sucesso")
         })
-        .catch(error => console.error("Erro ao atualizar conta:", error))
+        .catch(error => dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message } }))
     },
     deletarConta: (dispatch, conta) => {
         fetch(`${urlBaseAPI}/contas/${conta.id}`, { 
@@ -43,14 +45,18 @@ const accountsActions = {
             }
         })
         .then(resp => {
-            if (!resp.ok) throw new Error(`Erro na requisição: ${resp.statusText}`)
+            if (!resp.ok) {
+                return resp.text().then(msg => {
+                    throw new Error(msg)
+                })
+            }
             return resp.status === 204 ? null : resp.json()
         })    
         .then(_ => {
             dispatch({ type: 'deletarConta', payload: { conta } })
             console.log("Conta deletada com sucesso")
         })
-        .catch(error => console.error("Erro ao deletar conta:", error))
+        .catch(error => dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message } }))
     },
     adicionarConta: (dispatch, conta) => {
         fetch(`${urlBaseAPI}/contas`, { 
@@ -63,7 +69,9 @@ const accountsActions = {
         })
         .then(resp => {
             if (!resp.ok) {
-                throw new Error(`Erro na requisição: ${resp.statusText}`)
+                return resp.text().then(msg => {
+                    throw new Error(msg)
+                })
             }
             return resp.json()
         })    
@@ -71,7 +79,7 @@ const accountsActions = {
             dispatch({ type: 'adicionarConta', payload: { conta, id: data } })
             console.log("Conta adicionada com sucesso")
         })
-        .catch(error => console.error("Erro ao adicionar conta:", error))
+        .catch(error => dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message } }))
     }
 }
 

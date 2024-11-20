@@ -2,29 +2,44 @@ import { useState, useContext, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { DadosContexto } from "../store"
 import { accountsActions } from "../store/action"
-import Mensagem from "./mensagem"
+import Mensagem from "./Mensagem"
 
-import lapis from '../assets/lapis.png'
-import nubank from '../assets/nubank.png'
-import bancoDoBrasil from '../assets/Banco-do-Brasil.png'
-import bradesco from '../assets/Bradesco.png'
-import caixa from '../assets/Caixa.png'
-import itau from '../assets/Itau.png'
-import santander from '../assets/Santander.png'
-import picpay from '../assets/PicPay.png'
-import sicredi from '../assets/Sicredi.png'
-import mercadoPago from '../assets/Mercado-Pago.png'
+import lapis from "../assets/lapis.png"
+import nubank from "../assets/nubank.png"
+import bancoDoBrasil from "../assets/Banco-do-Brasil.png"
+import bradesco from "../assets/Bradesco.png"
+import caixa from "../assets/Caixa.png"
+import itau from "../assets/Itau.png"
+import santander from "../assets/Santander.png"
+import picpay from "../assets/PicPay.png"
+import sicredi from "../assets/Sicredi.png"
+import mercadoPago from "../assets/Mercado-Pago.png"
 
 import InputNomeConta from "./InputNomeConta"
 import BotaoAcao from "./BotaoAcao"
 
-import styles from '../estilos/CrudConta.module.css'
+import styles from "../estilos/CrudConta.module.css"
+import { useMediaQuery } from "@mui/material"
 
 
 export default function CrudConta({ tipo }){
     const contexto = useContext(DadosContexto)
     const { id } = useParams() //id para quando for tela de editar
     const navigate = useNavigate()
+
+    //puxa dados do id caso seja tela de editar
+    useEffect(() => {
+        if (tipo === 'Atualizar' && id) {
+            const contaParaAtualizar = contexto.state.contas.find(conta => conta.id === +id)
+            if (contaParaAtualizar) {
+                setConta(contaParaAtualizar)
+            }
+        }
+    }, [])
+
+    useEffect(() => {
+        setOpenDialog(false)
+    }, [contexto.state.mensagemErro.openDialog])
 
     const [conta, setConta] = useState({
         nome: '',
@@ -34,17 +49,12 @@ export default function CrudConta({ tipo }){
         descricao: ''
     })
 
-    //puxa dados do id caso seja tela de editar
-    useEffect(() => {
-        if (tipo === "Editar" && id) {
-            const contaParaEditar = contexto.state.contas.find(conta => conta.id === +id)
-            if (contaParaEditar) {
-                setConta(contaParaEditar)
-            }
-        }
-    }, [])
-
+    
     const [openDialog, setOpenDialog] = useState(false)
+    const [ dialogData, setDialogData ] = useState({
+        mensagem: '',
+        titulo: ''
+    })
 
     const handleSaldoChange = e => {
         setConta(prev => ({ ...prev, saldo: e.target.value }))
@@ -89,6 +99,10 @@ export default function CrudConta({ tipo }){
     // Função para fechar o popUp
     const handleCloseDialog = () => {
         setOpenDialog(false)
+        setDialogData({
+            mensagem: '',
+            titulo: ''
+        })
     }
 
     const handleConfirmar = (e) => { //quando o botão de confirmar é precionado
@@ -96,14 +110,16 @@ export default function CrudConta({ tipo }){
 
         if (tipo === 'Adicionar') {
             try{
+                setDialogData({ mensagem: `Você adicionou a conta: ${ conta.nome }`, titulo: 'Conta Adicionada!' })
                 accountsActions.adicionarConta(contexto.dispatch, conta)
                 handleOpenDialog()
             } catch(e) {
                 return 0
             }
         } 
-        else if(tipo === "Editar"){
+        else if(tipo === 'Atualizar'){
             try{
+                setDialogData({ mensagem: `Você atualizou a conta: ${ conta.nome }`, titulo: 'Conta atualizada' })
                 delete conta['usuario_nome']
                 accountsActions.atualizarConta(contexto.dispatch, conta)
                 handleOpenDialog()
@@ -116,6 +132,7 @@ export default function CrudConta({ tipo }){
     const handleExcluir = e => {
         e.preventDefault()
         try{
+            setDialogData({ mensagem: `Você deletou a conta: ${ conta.nome }`, titulo: 'Conta excluída' })
             accountsActions.deletarConta(contexto.dispatch, conta)
             handleOpenDialog()
         } catch(e) {
@@ -127,40 +144,31 @@ export default function CrudConta({ tipo }){
         <form className={styles}>
             <h1>{tipo} Conta</h1>
             <div className={styles.formulario}>
-                <img src={iconeSrc} alt="imagem da conta" style={{width: "200px", height:"200px"}}/>
+                <img src={iconeSrc} alt='imagem da conta' style={{width: '200px', height:'200px'}}/>
                 <div className={styles.containerForm}>
                     <div className={styles.dados}>
                         <div className={styles.cabecalho}>
-                            <InputNomeConta valor={tipo === "Editar" ? conta : ""}
+                            <InputNomeConta valor={tipo === 'Atualizar' ? conta : ''}
                                 change={e => {
                                     handleContaChange(e)
                                     handleIconeChange(e)
                                 }} 
                             /> 
-                            <input type="text" name="saldo" id="saldo" placeholder="Saldo: R$" value={conta.saldo} onChange={handleSaldoChange} onBlur={mascara} />
+                            <input type='text' name='saldo' id='saldo' placeholder='Saldo: R$' value={conta.saldo} onChange={handleSaldoChange} onBlur={mascara} />
                         </div>
                         <hr />
-                        <input type="text" name="proprietario" id="proprietario" placeholder="Nome Proprietario: " value={conta.proprietario} onChange={handleProprietarioChange} />
+                        <input type='text' name='proprietario' id='proprietario' placeholder='Nome Proprietario: ' value={conta.proprietario} onChange={handleProprietarioChange} />
 
-                        <input type="text" name="descricao" id="descricao" placeholder="Descrição: " value={conta.descricao} onChange={handleDescricaoChange} />
+                        <input type='text' name='descricao' id='descricao' placeholder='Descrição: ' value={conta.descricao} onChange={handleDescricaoChange} />
                     </div>
 
                     <div className={styles.containerBotoes}>
                         {
-                            tipo  == "Adicionar" ?
+                            tipo  == 'Adicionar' ?
                                 (
                                     <>
                                         <BotaoAcao onClick={ () => history.back() }>Cancelar</BotaoAcao>
                                         <BotaoAcao onClick={ handleConfirmar }>Confirmar</BotaoAcao>
-                                        <Mensagem
-                                            open={openDialog}
-                                            onClose={handleCloseDialog}
-                                            textoBotao="Fechar"
-                                            link="/contas"
-                                            tipo="success"
-                                            titulo="Conta adicionada!!!!"
-                                            mensagem="Você adicionou uma nova conta"
-                                        />
                                     </>
                                 )
                                 :
@@ -169,30 +177,22 @@ export default function CrudConta({ tipo }){
                                         <BotaoAcao onClick={ () => navigate('/relatorios') }>Relatório de conta</BotaoAcao>
                                         <BotaoAcao onClick={ handleExcluir }>Excluir conta</BotaoAcao>
                                         <BotaoAcao onClick={ handleConfirmar }>Editar conta</BotaoAcao>
-                                        <Mensagem
-                                            open={openDialog}
-                                            onClose={handleCloseDialog}
-                                            textoBotao="Fechar"
-                                            link="/contas"
-                                            tipo="success"
-                                            titulo="Conta editada!!!!"
-                                            mensagem={`Você editou a conta de ${conta.proprietario}`}
-                                        />
-                                        <Mensagem
-                                            open={openDialog}
-                                            onClose={handleCloseDialog}
-                                            textoBotao="Fechar"
-                                            link="/contas"
-                                            tipo="info"
-                                            titulo="Conta deletada!!!!"
-                                            mensagem={`Você deletou a conta de ${conta.proprietario}`}
-                                        />
                                     </>
                                 )
                         }
                     </div>
                 </div>
             </div>
+            
+            <Mensagem
+                open={ openDialog }
+                onClose={ handleCloseDialog }
+                textoBotao='Fechar'
+                link='/contas'
+                tipo='success'
+                titulo={ dialogData.titulo }
+                mensagem={ dialogData.mensagem }
+            />
         </form>
     )
 }

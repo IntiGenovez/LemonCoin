@@ -24,7 +24,9 @@ const categoriesActions = {
         })
         .then(resp => {
             if (!resp.ok) {
-                throw new Error(`Erro na requisição: ${resp.statusText}`)
+                return resp.text().then(msg => {
+                    throw new Error(msg)
+                })
             }
             return resp.status === 204 ? null : resp.json()
         })    
@@ -32,7 +34,7 @@ const categoriesActions = {
             dispatch({ type: 'atualizarCategoria', payload: { categoria } })
             console.log("Categoria atualizada com sucesso")
         })
-        .catch(error => console.error("Erro ao atualizar categoria:", error))
+        .catch(error => dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message } }))
     },
     deletarCategoria: (dispatch, id) => {
         fetch(`${urlBaseAPI}/categorias/${id}`, { 
@@ -44,7 +46,9 @@ const categoriesActions = {
         })
         .then(resp => {
             if (!resp.ok) {
-                throw new Error(`Erro na requisição: ${resp.statusText}`)
+                return resp.text().then(msg => {
+                    throw new Error(msg)
+                })
             }
             return resp.status === 204 ? null : resp.json()
         })    
@@ -52,7 +56,7 @@ const categoriesActions = {
             dispatch({ type: 'deletarCategoria', payload: { categoria: { id } } })
             console.log("Categoria deletada com sucesso")
         })
-        .catch(error => console.error("Erro ao deletar categoria:", error))
+        .catch(error => dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message } }))
     },
     adicionarCategoria: (dispatch, categoria) => {
         fetch(`${urlBaseAPI}/categorias`, { 
@@ -65,7 +69,9 @@ const categoriesActions = {
         })
         .then(resp => {
             if (!resp.ok) {
-                throw new Error(`Erro na requisição: ${resp.statusText}`)
+                return resp.text().then(msg => {
+                    throw new Error(msg)
+                })
             }
             return resp.json()
         })    
@@ -73,7 +79,7 @@ const categoriesActions = {
             dispatch({ type: 'adicionarCategoria', payload: { categoria, id: data } })
             console.log("Categoria adicionada com sucesso")
         })
-        .catch(error => console.error("Erro ao adicionar categoria:", error))
+        .catch(error => dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message } }))
     }
 }
 

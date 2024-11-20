@@ -6,7 +6,6 @@ import Alert from '@mui/material/Alert';
 import { Link } from 'react-router-dom';
 
 function Mensagem({ open, onClose, titulo, tipo, mensagem, link, textoBotao }) {
-
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>{titulo}</DialogTitle>

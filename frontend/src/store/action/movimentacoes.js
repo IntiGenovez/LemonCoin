@@ -25,14 +25,18 @@ const movementsActions = {
             }
         })
         .then(resp => {
-            if (!resp.ok) throw new Error(`Erro na requisição ${resp.statusText}`)
+            if (!resp.ok) {
+                return resp.text().then(msg => {
+                    throw new Error(msg)
+                })
+            }
             return resp.status === 204 ? null : resp.json
         })
         .then(_ => {
             dispatch({ type: 'deletarMovimentacao', payload: { id } })
             console.log('Movimentação deletada com sucesso')
         })
-        .catch(error => console.log("Erro ao deletar movimentação: " + error))
+        .catch(error => dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message } }))
     },
     atualizarMovimentacao: (dispatch, movimentacao) => {
         const movimentacaoToFetch = { ...movimentacao }
@@ -48,14 +52,18 @@ const movementsActions = {
             body: JSON.stringify(movimentacaoToFetch)
         })
         .then(resp => {
-            if (!resp.ok) throw new Error(`Erro na requisição: ${resp.statusText}`)
+            if (!resp.ok) {
+                return resp.text().then(msg => {
+                    throw new Error(msg)
+                })
+            }
             return resp.status === 204 ? null : resp.json()
         })
         .then(_ => {
             dispatch({ type: 'atualizarMovimentacao', payload: { movimentacao }})
             console.log("Movimentação atualizada com sucesso")
         })
-        .catch(error => console.log("Erro ao atualizar movimentação: " + error))
+        .catch(error => dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message } }))
     },
     adicionarMovimentacao: (dispatch, movimentacao) => {
         const movimentacaoToFetch = { ...movimentacao }
@@ -73,7 +81,9 @@ const movementsActions = {
         })
         .then(resp => {
             if (!resp.ok) {
-                throw new Error(`Erro na requisição: ${resp.statusText}`)
+                return resp.text().then(msg => {
+                    throw new Error(msg)
+                })
             }
             return resp.json()
         })    
@@ -81,7 +91,7 @@ const movementsActions = {
             dispatch({ type: 'adicionarMovimentacao', payload: { movimentacao, id: data } })
             console.log("Movimentação adicionada com sucesso")
         })
-        .catch(error => console.error("Erro ao adicionar movimentação:", error))
+        .catch(error => dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message } }))
     }
 }
 
