@@ -1,5 +1,5 @@
-import RelatorioMovimentacao from "../componentes/RelatorioMovimentacao"
+import RelatorioCategoria from "../componentes/RelatorioCategoria"
 
 export default function Relatorios() {
-    return <div className="tela-padrao"><RelatorioMovimentacao /></div>
+    return <div className="tela-padrao"><RelatorioCategoria /></div>
 }

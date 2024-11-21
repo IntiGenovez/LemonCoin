@@ -52,7 +52,7 @@ export default function Coluna({ movimentacao, cemPorcento }) {
             <div className={ styles.coluna }>
                 <div className={ styles.colunaPreenchida } style={{ height: `${porcentagem}%` }}></div>
             </div>
-            <div className={ styles.legenda }>{ mes }/{ movimentacao.mes.split('-')[1] }</div>
+            <div className={ styles.legenda }>{ mes }/{ movimentacao.mes.split('-')[0].substr(2) }</div>
         </div>
     )
 }
