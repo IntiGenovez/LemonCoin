@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { DadosContexto } from "../store"
 import { movementsActions } from "../store/action"
+import { useNavigate } from 'react-router-dom'
 
 import styles from "../estilos/Movimentacoes.module.css"
 
@@ -8,6 +9,7 @@ import styles from "../estilos/Movimentacoes.module.css"
 export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel, setMovimentacaoEditavel }) {
     const contexto = useContext(DadosContexto)
     const [ movimentacao, setMovimentacao ] = useState({ ...movimentacaoListada, valor: +movimentacaoListada.valor.toFixed(2) })
+    const navigate = useNavigate()
     const [ categoriaSelecionada, setCategoriaSelecionada ] = useState({ 
         nome: movimentacao.categoria,
         id: movimentacao.categoriaId,
@@ -42,15 +44,21 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
     return (
         <li className={ styles.movimentacao }>
             { movimentacaoEditavel ? 
-                (<> <input value={movimentacao.data} onChange={ e => setMovimentacao({ ...movimentacao, data: e.target.value }) } />
+                (<> 
+                    <input value={movimentacao.data} onChange={ e => setMovimentacao({ ...movimentacao, data: e.target.value }) } />
+
                     <input value={movimentacao.nome} onChange={ e => setMovimentacao({ ...movimentacao, nome: e.target.value }) } />
+
                     <input type='number' value={movimentacao.valor} onChange={ e => setMovimentacao({ ...movimentacao, valor: +e.target.value }) } step={0.01}/>
+
                     <select value={ categoriaSelecionada.nome } onChange={ handleChangeCategoria }>
                         { contexto.state.categorias.map((categoria, i) => (<option key={i} id={categoria.id}>{categoria.nome}</option>)) }
                     </select>
+
                     <select value={ contaSelecionada.nome } onChange={ handleChangeConta }>
                         { contexto.state.contas.map((conta, i) => (<option key={i} id={conta.id}>{conta.nome}</option>)) }
                     </select>
+
                     <span>
                         <i 
                             className='bx bx-check'
@@ -69,13 +77,19 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
                                 movementsActions.deletarMovimentacao(contexto.dispatch, movimentacao.id)
                             }}
                         ></i>
-                    </span></>)
+                    </span>
+                </>)
             : 
                 (<> <span>{ dataFormatada }</span>
                     <span>{ movimentacao.nome }</span>
                     <span>{ valorFormatado }</span>
                     <span>{ movimentacao.categoria }</span>
-                    <span>{ movimentacao.conta }</span>
+                    <span onClick={(() => navigate(`/editar-conta/${movimentacao.contaId}`))}>
+                        { movimentacao.conta
+                        .replace(/_/g, ' ')
+                        .toLowerCase().replace(/\b\w/g, (letra) => letra.toUpperCase())}
+                    </span>
+
                     <span> 
                         <i 
                             className='bx bx-edit-alt'
@@ -85,9 +99,8 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
                             className='bx bx-trash' 
                             onClick={() => movementsActions.deletarMovimentacao(contexto.dispatch, movimentacao.id)}
                         ></i>
-                    </span></>)
-            }
-            
-        </li>
+                    </span>
+                </>)
+        }</li>
     )
 }
