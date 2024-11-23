@@ -51,7 +51,7 @@ export default function Home(){
 
                         <div style={{display: 'flex', gap: '3px', flexDirection: 'column'}}>
                             { contexto.state.movimentacoes
-                                .slice(0, 4) 
+                                .slice(0, 10) 
                                 .map(movimentacao => {
                                     return (
                                         <TextGasto 
