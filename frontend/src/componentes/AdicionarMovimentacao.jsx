@@ -62,7 +62,7 @@ export default function AdicionarMovimentacao({ tipo }){
                 <div className={styles.formulario}>
                     <h1>Adicionar {tipo}</h1>
 
-                    <input 
+                    <input className={styles.inputNome}
                         type="text" 
                         name="nome" 
                         id="nome" 
@@ -71,7 +71,7 @@ export default function AdicionarMovimentacao({ tipo }){
                         onChange={e => setMovimentacao(prev => ({ ...prev, nome: e.target.value }))}
                     />
 
-                    <div>
+                    <div className={styles.containerSaldo}>
                          <input 
                             type="text" 
                             name="valor" 
@@ -81,16 +81,19 @@ export default function AdicionarMovimentacao({ tipo }){
                             onChange={e => setMovimentacao(prev => ({ ...prev, valor: e.target.value }))}
                         />
                         <select value={ categoriaSelecionada.nome } onChange={ handleChangeCategoria }>
-                            <option value={null}>Selecione uma opção</option>
+                            <option value={null}>Categoria</option>
                             { contexto.state.categorias.map((categoria, i) => (<option key={i} id={categoria.id}>{categoria.nome}</option>)) }
                         </select>
 
                     </div>
-                    <div>
+                    <div className={styles.divContaRecorrencia}>
                         <InputRecorrencia />
                         <select value={ contaSelecionada.nome } onChange={ handleChangeConta }>
-                            <option value={null}>Selecione uma opção</option>
-                            { contexto.state.contas.map((conta, i) => (<option key={i} id={conta.id}>{conta.nome}</option>)) }
+                            <option value={null}>Conta</option>
+                            { contexto.state.contas.map((conta, i) => (
+                                <option key={i} id={conta.id}>
+                                    {conta.nome.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, (letra) => letra.toUpperCase())}: {conta.proprietario} {/*nome conta sem underline*/}
+                                </option>)) }
                         </select>
                     </div>
                     <div className={styles.divData}>
