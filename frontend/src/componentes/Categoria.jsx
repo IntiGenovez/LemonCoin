@@ -17,7 +17,22 @@ export default function Categoria({ id, nome, adicionar, naoAdicionar, categoria
             <div className={styles.item}>
             {
                 adicionar || categoriaEditavel ?
-                (<input value={ newCategoria.nome } onChange={ e => setNewCategoria(prev => ({...prev, nome: e.target.value})) } />)
+                (<input 
+                    value={ newCategoria.nome } 
+                    onKeyDown={e => 
+                        {if(e.key === 'Enter'){
+                            if (adicionar) {
+                                categoriesActions.adicionarCategoria(contexto.dispatch, newCategoria)
+                                naoAdicionar()  
+                            } else {
+                                setNewCategoria(prev => ({ ...prev, id}))
+                                console.log(id)
+                                categoriesActions.atualizarCategoria(contexto.dispatch, newCategoria)
+                                setCategoriaEditavel(null)
+                            }
+                        }
+                        }} 
+                    onChange={ e => setNewCategoria(prev => ({...prev, nome: e.target.value})) } />)
                 :
                 (<p>{ nome }</p>)
             }

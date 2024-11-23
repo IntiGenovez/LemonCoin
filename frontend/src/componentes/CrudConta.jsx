@@ -24,10 +24,9 @@ import { useMediaQuery } from "@mui/material"
 
 export default function CrudConta({ tipo }){
     const contexto = useContext(DadosContexto)
-    const { id } = useParams() //id para quando for tela de editar
+    const { id } = useParams() //puxa id para quando for tela de editar
     const navigate = useNavigate()
 
-    //puxa dados do id caso seja tela de editar
     useEffect(() => {
         if (tipo === 'Atualizar' && id) {
             const contaParaAtualizar = contexto.state.contas.find(conta => conta.id === +id)
