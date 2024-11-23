@@ -45,17 +45,22 @@ export default function Home(){
                 <div className={styles.containerGastos}>
 
                     <div className={styles.containerHistorico}>
-                        <h3>HISTÓRICO DE GASTOS</h3>
+                        <h3>HISTÓRICO DE MOVIMENTAÇÕES</h3>
 
                         <div style={{display: 'flex', gap: '3px', flexDirection: 'column'}}>
-                            <TextGasto despesa='Steam' valorDespesa='R$ 1.000,00' />
-                            <TextGasto despesa='Xbox' valorDespesa='R$ 3.000,00' />
-                            <TextGasto despesa='Tênis' valorDespesa='R$ 5.000,00' />
-                            <TextGasto despesa='Comida do bebê' valorDespesa='R$ 200,00' />
-                            <TextGasto despesa='Despesa mensal' valorDespesa='R$ 500,00' />
-                            <TextGasto despesa='Curso da Udemy' valorDespesa='R$ 50,00' />
-                            <TextGasto despesa='Agiota' valorDespesa='R$ 700,00' />
-                            <TextGasto despesa='Curso do Marçal' valorDespesa='R$ 5.000,00' />
+                            { contexto.state.movimentacoes
+                                .slice(0, 4) 
+                                .map(movimentacao => {
+                                    return (
+                                        <TextGasto 
+                                            key={movimentacao.id}
+                                            nome={movimentacao.nome} 
+                                            valor={movimentacao.valor} 
+                                            tipo={movimentacao.tipo}                         
+                                        />
+                                    );
+                                })
+                            }
                         </div>
                     </div> 
 
