@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { DadosContexto } from "../store"
 
 import { categoriesActions } from "../store/action"
@@ -19,19 +19,22 @@ export default function Categoria({ id, nome, adicionar, naoAdicionar, categoria
                 adicionar || categoriaEditavel ?
                 (<input 
                     value={ newCategoria.nome } 
-                    onKeyDown={e => 
+                    onKeyUp={e => 
                         {if(e.key === 'Enter'){
+                            console.log("primeiro");
                             if (adicionar) {
+                                console.log("adicionar")
                                 categoriesActions.adicionarCategoria(contexto.dispatch, newCategoria)
                                 naoAdicionar()  
                             } else {
+                                console.log("Editar")
                                 setNewCategoria(prev => ({ ...prev, id}))
                                 console.log(id)
                                 categoriesActions.atualizarCategoria(contexto.dispatch, newCategoria)
                                 setCategoriaEditavel(null)
                             }
-                        }
-                        }} 
+                        }}
+                    } 
                     onChange={ e => setNewCategoria(prev => ({...prev, nome: e.target.value})) } />)
                 :
                 (<p>{ nome }</p>)

@@ -4,11 +4,13 @@ import TextGasto from "../componentes/TextGasto"
 import BotaoNavegar from "../componentes/BotaoNavegar"
 
 import styles from "../estilos/Home.module.css"
-import { useContext } from "react"
+import { useContext, useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { DadosContexto } from "../store"
+import { urlBaseAPI } from "../global"
 
 export default function Home(){
+    
     const contexto = useContext(DadosContexto)
     const navigate = useNavigate()
 
@@ -19,7 +21,7 @@ export default function Home(){
                     <GraficoBarra />
                 </div>
 
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p> 
             </div>
 
             <div className={styles.divDados}>
