@@ -8,6 +8,9 @@ import santander from '../assets/Santander.png';
 import picpay from '../assets/PicPay.png';
 import sicredi from '../assets/Sicredi.png';
 import mercadoPago from '../assets/Mercado-Pago.png'
+import inter from '../assets/inter.png'
+import stone from '../assets/stone.png'
+import wise from '../assets/wise.png'
 
 import { useNavigate } from 'react-router-dom';
 
@@ -31,7 +34,10 @@ export default function CardConta({id, icone, proprietario, nome, saldo}) {
         santander: santander,
         picpay: picpay,
         sicredi: sicredi,
-        'mercado_pago': mercadoPago
+        'mercado_pago': mercadoPago,
+        inter: inter,
+        stone: stone,
+        wise: wise
     };
 
     // Obtém a imagem correspondente ao nome da variavel icone, ou ícone lápis padrão se não for encontrado
