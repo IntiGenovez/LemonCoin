@@ -36,4 +36,43 @@
         aspect-ratio: 1 / 1;
         border-radius: 50%;
     }
+
+    & ul {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+
+        & li {
+            display: flex;
+            gap: 10px;
+        
+            & div {
+                width: 20px;
+                aspect-ratio: 1 / 1;
+            }
+         
+            .cor1 {
+                background-color: pink;
+            }
+            .cor2 {
+                background-color: lightblue;
+            }
+            .cor3 {
+                background-color: orange;
+            }
+            .cor4 {
+                background-color: aquamarine;
+            }
+            .cor5 {
+                background-color: chartreuse;
+            }
+        }
+    }
+}
+
+.mudarTelas {
+    cursor: pointer;
+    position: absolute;
+    background-color: #0000;
 }

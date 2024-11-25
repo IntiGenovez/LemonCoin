@@ -11,6 +11,10 @@ export default function Categoria({ id, nome, adicionar, naoAdicionar, categoria
         nome: nome,
         id: null
     })
+    const atualizarCategoria = () => {
+        console.log(id)
+        setNewCategoria(prev => ({ ...prev, id}))
+    }
 
     return (
         <>
@@ -49,8 +53,7 @@ export default function Categoria({ id, nome, adicionar, naoAdicionar, categoria
                                     categoriesActions.adicionarCategoria(contexto.dispatch, newCategoria)
                                     naoAdicionar()  
                                 } else {
-                                    setNewCategoria(prev => ({ ...prev, id}))
-                                    console.log(id)
+                                    console.log(newCategoria)
                                     categoriesActions.atualizarCategoria(contexto.dispatch, newCategoria)
                                     setCategoriaEditavel(null)
                                 }
@@ -60,7 +63,12 @@ export default function Categoria({ id, nome, adicionar, naoAdicionar, categoria
                         <i 
                             className='bx bx-edit-alt'
                             onClick={() => {
-                                categoriaEditavel === id ? setCategoriaEditavel(null) : setCategoriaEditavel(id)
+                                if (categoriaEditavel === id) {
+                                    setCategoriaEditavel(null)
+                                } else {
+                                    setCategoriaEditavel(id)
+                                    atualizarCategoria()
+                                }
                                 naoAdicionar()
                             }}
                         ></i>

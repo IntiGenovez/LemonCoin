@@ -1,27 +1,31 @@
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { DadosContexto } from "../store"
 import { userActions } from "../store/action"
 
 import InputDia from "../componentes/InputDia";
 import InputAno from "../componentes/InputAno";
 import InputMes from "../componentes/InputMes";
+import Mensagem from "../componentes/Mensagem"
 
 import styles from "../estilos/Cadastro.module.css"
 import BotaoAcao from "../componentes/BotaoAcao";
 
 export default function Cadastro(){
     const contexto = useContext(DadosContexto)
+    const navigate = useNavigate()
     const [usuario, setUsuario] = useState({
-        nome: 'usuario',
-        email: 'usuario@email.com',
-        telefone: '(11) 91234-1234',
+        nome: '',
+        email: '',
+        telefone: '',
         dia: '',
         mes: '',
         ano: '',
-        genero: 'M',
-        senha: '123',
-        confirmarSenha: '123'
+        genero: '',
+        senha: '',
+        confirmarSenha: ''
     })
+    const [openDialog, setOpenDialog] = useState(false)
 
     const handleClick = e => {
         e.preventDefault()
@@ -33,6 +37,7 @@ export default function Cadastro(){
             telefone: usuario.telefone,
             genero: usuario.genero
         })
+        setOpenDialog(true)
     }
 
     return (
@@ -89,7 +94,18 @@ export default function Cadastro(){
                 <BotaoAcao onClick={ handleClick }>Cadastrar</BotaoAcao>
 
             </div>
-
+            <Mensagem
+                open={ openDialog }
+                onClose={ () => {
+                    setOpenDialog(false)
+                    navigate('/login')
+                }}
+                textoBotao='Fechar'
+                link='/contas'
+                tipo='success'
+                titulo={ 'Cadastro Realizado com sucesso' }
+                mensagem={ 'Cadastro Realizado com sucesso' }
+            />
             
         </form>
     );

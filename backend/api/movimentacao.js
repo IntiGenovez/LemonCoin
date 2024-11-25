@@ -63,13 +63,13 @@ module.exports = app => {
 
     const obterPorIddoUsuario = (req, res) => {
         app.bd('movimentacoes')
-            .select('movimentacoes.*')
-            .select('usuarios.nome as usuario_nome')
-            .select('contas.nome as conta_nome')
-            .select('categorias.nome as categoria_nome')
-            .join('usuarios', 'movimentacoes.usuarioId', '=', 'usuarios.id')
             .join('contas', 'movimentacoes.contaId', '=', 'contas.id')
             .join('categorias', 'movimentacoes.categoriaId', '=', 'categorias.id')
+            .join('usuarios', 'movimentacoes.usuarioId', '=', 'usuarios.id')
+            .select('movimentacoes.*')
+            .select('contas.nome as conta')
+            .select('categorias.nome as categoria')
+            .select('usuarios.nome as usuario')
             .where('movimentacoes.usuarioId', req.user.id)
             .then(movimentacoes => res.json(movimentacoes))        
             .catch(err => res.status(500).send(err))
