@@ -55,6 +55,7 @@ module.exports = app => {
             .join('usuarios', 'categorias.usuarioId', '=', 'usuarios.id')
             .select('categorias.*')
             .select('usuarios.nome as usuario_nome')
+            .where('categorias.usuarioId', req.user.id)
             .then(categorias => res.json(categorias))
             .catch(err => res.status(500).send(err))
     }

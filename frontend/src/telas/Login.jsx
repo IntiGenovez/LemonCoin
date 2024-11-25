@@ -12,8 +12,8 @@ export default function Login() {
     const navigate = useNavigate()
 
     const [usuario, setUsuario] = useState({
-        email: 'usuario@email.com',
-        senha: '123'
+        email: '',
+        senha: ''
     })
 
     const handleClick = async e => {

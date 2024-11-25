@@ -63,6 +63,13 @@ export default function RelatorioCategoria() {
 
     return (
         <div className={ styles.relatorio }>
+            <ul>
+                <li><div className={ styles.cor1 }></div>{ movimentacoesPorCategoria[0]?.categoria || ''  }</li>
+                <li><div className={ styles.cor2 }></div>{ movimentacoesPorCategoria[1]?.categoria || '' }</li>
+                <li><div className={ styles.cor3 }></div>{ movimentacoesPorCategoria[2]?.categoria || '' }</li>
+                <li><div className={ styles.cor4 }></div>{ movimentacoesPorCategoria[3]?.categoria || '' }</li>
+                <li><div className={ styles.cor5 }></div>{ movimentacoesPorCategoria[4]?.categoria || '' }</li>
+            </ul>
             <Pizza dados={ movimentacoesPorCategoria } cemPorcento={ saldoTotal.toFixed(2) } />
         </div>
     )

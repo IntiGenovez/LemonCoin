@@ -1,4 +1,4 @@
-import GraficoBarra from "../componentes/GraficoBarra"
+import RelatorioCategoria from "../componentes/RelatorioCategoria"
 import CardContaText from "../componentes/CardContaText"
 import TextGasto from "../componentes/TextGasto"
 import BotaoNavegar from "../componentes/BotaoNavegar"
@@ -18,10 +18,9 @@ export default function Home(){
         <div className={styles.container}>
             <div className={styles.divGrafico}>
                 <div className={styles.grafico}>
-                    <GraficoBarra />
+                    <RelatorioCategoria />
                 </div>
 
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p> 
             </div>
 
             <div className={styles.divDados}>

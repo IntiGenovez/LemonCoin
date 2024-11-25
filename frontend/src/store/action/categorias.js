@@ -75,8 +75,9 @@ const categoriesActions = {
             }
             return resp.json()
         })    
-        .then(data => {
-            dispatch({ type: 'adicionarCategoria', payload: { categoria, id: data } })
+        .then(id => {
+            console.log('id: ' + id)
+            dispatch({ type: 'adicionarCategoria', payload: { categoria, id } })
             console.log("Categoria adicionada com sucesso")
         })
         .catch(error => dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message } }))

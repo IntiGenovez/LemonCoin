@@ -51,7 +51,7 @@ module.exports = app => {
     app.route('/movimentacoes')
         .all(app.config.passport.autenticador())
         .post(app.api.movimentacao.salvar)
-        .get(app.api.movimentacao.obter)
+        .get(app.api.movimentacao.obterPorIddoUsuario)
 
     app.route('/movimentacoes/:id')
         .all(app.config.passport.autenticador())
