@@ -14,6 +14,9 @@ import santander from "../assets/Santander.png"
 import picpay from "../assets/PicPay.png"
 import sicredi from "../assets/Sicredi.png"
 import mercadoPago from "../assets/Mercado-Pago.png"
+import inter from '../assets/inter.png'
+import stone from '../assets/stone.png'
+import wise from '../assets/wise.png'
 
 import InputNomeConta from "./InputNomeConta"
 import BotaoAcao from "./BotaoAcao"
@@ -82,8 +85,11 @@ export default function CrudConta({ tipo }){
         santander: santander,
         picpay: picpay,
         sicredi: sicredi,
-        'mercado_pago': mercadoPago
-    }
+        'mercado_pago': mercadoPago,
+        inter: inter,
+        stone: stone,
+        wise: wise
+    };
 
     // Obtém a imagem correspondente ao nome da variavel icone, ou ícone lápis padrão se não for encontrado
     const iconeSrc = iconeMap[conta.icone] || lapis 
@@ -166,7 +172,7 @@ export default function CrudConta({ tipo }){
                             tipo  == 'Adicionar' ?
                                 (
                                     <>
-                                        <BotaoAcao onClick={ () => history.back() }>Cancelar</BotaoAcao>
+                                        <BotaoAcao onClick={ () => navigate('/contas') }>Cancelar</BotaoAcao>
                                         <BotaoAcao onClick={ handleConfirmar }>Confirmar</BotaoAcao>
                                     </>
                                 )
