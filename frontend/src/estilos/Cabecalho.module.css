@@ -1,3 +1,4 @@
+
 .cabecalho {
     display: flex;
     flex-direction: row;
@@ -76,4 +77,55 @@
 
 .containerNavegacao *, .cabecalho * {
     text-transform: uppercase;
+}
+
+.botaoMenu {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+@media (max-width: 640px) {
+    .cabecalho {
+        h1 {
+            font-size: 0;
+        }
+        h2 {
+            font-size: 1.3em;
+        }
+
+        & > :last-child a {
+            font-size: 18px;
+            padding: 0 20px 0;
+        }
+    }
+
+    .botaoMenu{
+        display: block;
+        color: black;
+        background-color: #e7efc4;
+        font-size: 30px;
+        width: 100%;
+        text-align: start;
+        padding-left: 20px;
+    }
+    .containerNavegacao {
+        flex-direction: column;
+        width: 100%;
+        padding: 20px;
+        gap: 6px;
+        margin-bottom: 3px;
+        
+        &.open {
+            flex-direction: column;
+            display: flex;
+        }
+
+        &.close {
+            display: none;
+            flex-direction: column;
+        }
+    }
 }

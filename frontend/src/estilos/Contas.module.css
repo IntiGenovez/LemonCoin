@@ -20,3 +20,11 @@
     flex-grow: 1;
     /* border: red solid 1px; */
 }
+
+@media (max-width: 640px) {
+    .container {
+        margin-top: 40px;
+        width: 80%;
+        gap: 60px;
+    }
+}

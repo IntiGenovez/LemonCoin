@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { Link, useLocation } from "react-router-dom"
 
 import { DadosContexto } from "../store"
@@ -9,11 +9,17 @@ import logo from "../assets/logo.png"
 
 export default function Cabecalho() {
     const contexto = useContext(DadosContexto)
+
+    const [menuOpen, setMenuOpen] = useState(false);
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+    };
     
     let location = useLocation(); //usado para saber o path atual
     let btnLogin //define se botao de login vai estar escrito login ou logout
-    let lista //lista de telas no cabecalho
+    let barraNav //lista de telas no cabecalho
     let linkLogo //para onde o logo vai levar ao clicar
+    let iconeLista //serve para manipular o botão de lista
 
     // Pega o nome do path atual
     let titulo = location.pathname;
@@ -25,21 +31,31 @@ export default function Cabecalho() {
 
     // muda o cabecalho de acordo com a tela atual
     if (titulo === '' || titulo === 'login' || titulo === 'cadastro'){
-        lista = (
-            <></>
-        )
+        barraNav = (<></>)
+        iconeLista = (<></>)
         btnLogin = 'LOGIN'
         linkLogo = '/'
     } else {
-        lista = (
-            <>
-                <Link to='/despesas'>Despesas</Link>
-                <Link to='/receitas'>Receitas</Link>
-                <Link to='/categorias'>Categorias</Link>
-                <Link to='/contas'>Contas</Link>
-                <Link to='/relatorios'>Relatórios</Link>
-            </>
+        iconeLista = (
+            <button className={styles.botaoMenu} onClick={toggleMenu}>
+                &#9776; {/*icone de lista*/}
+            </button>
         )
+        if (menuOpen){
+            barraNav = (
+                <nav className={`${styles.containerNavegacao} ${styles.open}`}>
+                    <Link to='/despesas'>Despesas</Link>
+                    <Link to='/receitas'>Receitas</Link>
+                    <Link to='/categorias'>Categorias</Link>
+                    <Link to='/contas'>Contas</Link>
+                    <Link to='/relatorios'>Relatórios</Link>
+                </nav>
+            )
+        } else {
+            barraNav = (
+                <nav className={`${styles.containerNavegacao} ${styles.close}`}></nav>
+            )
+        }
         btnLogin = 'LOGOUT'
         linkLogo = '/home'
     }
@@ -66,9 +82,8 @@ export default function Cabecalho() {
                     <Link to='/login' onClick={handleClick}>{btnLogin}</Link>
                 </div>
             </div>
-            <nav className={styles.containerNavegacao}>
-                {lista}
-            </nav>
+            {iconeLista}
+            {barraNav}
         </header>
     )
 }
