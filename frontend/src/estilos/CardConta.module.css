@@ -21,3 +21,9 @@
         flex-direction: column;
     }
 }
+
+@media (max-width: 640px){
+    .CardConta {
+        --tamanho-CardConta: 85px;
+    }
+}

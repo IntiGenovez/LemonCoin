@@ -2,3 +2,9 @@
     width: 1000px;
     margin: auto;
 }
+
+@media (max-width: 640px) {
+    .logo{
+        width: 300px;
+    };
+}
