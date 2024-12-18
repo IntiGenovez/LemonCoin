@@ -73,3 +73,67 @@ form h1{
     flex-direction: column;
     justify-content: space-between;
 }
+
+@media (max-width: 768px) {
+    
+    form h1{
+        font-size: 34px;
+    }
+    
+    .formulario{
+        align-items: center;
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .formulario img{
+        padding: 15px;
+    }
+    
+    .dados {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .cabecalho{
+        display: flex;
+        flex-direction: row;
+        align-items: none;
+        justify-content: space-between;
+
+        & select{
+            appearance: none;
+            background-color: rgba(255, 0, 0, 0);
+            border: none;
+            outline: none;
+            width: 50%;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        & input[type="text"]{
+            width: 50%;
+            text-align: end;
+        }
+    }
+    
+    .containerBotoes{
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 7px;
+        & button {
+            padding: 3px;
+            height: 100%;
+        }
+        /* border: solid red; */
+    }
+    
+    .containerForm{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 30px;
+    }
+}

@@ -159,7 +159,7 @@ export default function CrudConta({ tipo }){
                                     handleIconeChange(e)
                                 }} 
                             /> 
-                            <input type='text' name='saldo' id='saldo' placeholder='Saldo: R$' value={conta.saldo} onChange={handleSaldoChange} onBlur={mascara} />
+                            <input className={styles.saldo} type='text' name='saldo' id='saldo' placeholder='Saldo: R$' value={conta.saldo} onChange={handleSaldoChange} onBlur={mascara} />
                         </div>
                         <hr />
                         <input type='text' name='proprietario' id='proprietario' placeholder='Nome Proprietario: ' value={conta.proprietario} onChange={handleProprietarioChange} />
