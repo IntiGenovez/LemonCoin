@@ -37,8 +37,18 @@ export default function Movimentacoes({ tipo }) {
         [isUp, seletorAtivo]
     )
 
+
+
     return (
         <section className={ styles.containerMovimentacoes }>
+            <select name="filtro" id="filtro" className={styles.filtro}>
+                { seletores.map((seletor) =>
+                    (<option value={ seletor } key={ seletor }>
+                        {seletor !== "Filtro" ? seletor.toUpperCase() : ''}
+                    </option>)
+                )}
+            </select>
+            
             <div className={ styles.seletores }>
                 { seletores.map((seletor) =>
                     (<Seletor  

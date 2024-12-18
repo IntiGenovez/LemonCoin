@@ -145,6 +145,10 @@
     }
 }
 
+.filtro {
+    display: none;
+}
+
 @media (max-width: 768px) {
     .seletores {
         display: none;
@@ -170,6 +174,30 @@
             gap: 15px;
             font-size: 23px;
         }
+
+        & input {
+            width: 90%;
+            height: 40px;
+            margin: 3px;
+        }
+        
+        & select {
+            width: 90%;
+            height: 40px;
+            margin: 3px;
+        }
+    }
+    .total {
+        p {
+            font-size: 25px;
+        }
+    }
+
+    .filtro {
+        display: flex;
+        height: 90px;
+        border: black solid;
+        border-radius: 13px;
     }
 }
 
