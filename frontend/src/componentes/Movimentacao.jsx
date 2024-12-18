@@ -80,23 +80,24 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
                     </span>
                 </>)
             : 
-                (<> <span>{ dataFormatada }</span>
-                    <span>{ movimentacao.nome }</span>
-                    <span>{ valorFormatado }</span>
-                    <span>{ movimentacao.categoria }</span>
+                (<> 
+                    <span><div className={styles.nomeLinha}>Data: </div>{ dataFormatada }</span>
+                    <span><div className={styles.nomeLinha}>Nome: </div>{ movimentacao.nome }</span>
+                    <span><div className={styles.nomeLinha}>Valor: </div>{ valorFormatado }</span>
+                    <span><div className={styles.nomeLinha}>Categoria: </div>{ movimentacao.categoria }</span>
                     <span onClick={(() => navigate(`/editar-conta/${movimentacao.contaId}`))}>
+                        <div className={styles.nomeLinha}>Conta: </div>
                         { movimentacao.conta
                         .replace(/_/g, ' ')
                         .toLowerCase().replace(/\b\w/g, (letra) => letra.toUpperCase())}
                     </span>
-
-                    <span> 
-                        <i 
+                    <span>
+                        <i
                             className='bx bx-edit-alt'
                             onClick={() => setMovimentacaoEditavel(movimentacao.id)}
                         ></i>
-                        <i 
-                            className='bx bx-trash' 
+                        <i
+                            className='bx bx-trash'
                             onClick={() => movementsActions.deletarMovimentacao(contexto.dispatch, movimentacao.id)}
                         ></i>
                     </span>

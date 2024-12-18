@@ -22,7 +22,7 @@
     }
 }
 
-@media (max-width: 640px){
+@media (max-width: 768px){
     .CardConta {
         --tamanho-CardConta: 85px;
     }

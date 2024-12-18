@@ -1,3 +1,4 @@
+
 .containerMovimentacoes {
     display: flex;
     flex-direction: column;
@@ -69,6 +70,12 @@
         font-size: 16px;
         font-weight: 300;
         color: var(--background-botoes);
+        display: flex;
+        flex-direction: row;
+
+        div.nomeLinha {
+            display: none;
+        }
     }
     
     & span:last-child {
@@ -135,6 +142,34 @@
 
     & span {
         color: var(--background-botoes);
+    }
+}
+
+@media (max-width: 768px) {
+    .seletores {
+        display: none;
+    }
+    .movimentacao {
+        flex-direction: column;
+        border: black solid 1.5px;
+        padding: 10px;
+        border-radius: 13px;
+
+        span {
+            div.nomeLinha {
+                display: flex;
+                font-weight: 900;
+                margin-right: 3px;
+            }
+        }
+
+        & span:last-child {
+            flex-basis: 10%;
+            display: flex;
+            justify-content: end;
+            gap: 15px;
+            font-size: 23px;
+        }
     }
 }
 

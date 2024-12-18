@@ -87,7 +87,7 @@
     cursor: pointer;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
     .cabecalho {
         h1 {
             font-size: 0;
@@ -99,6 +99,10 @@
         & > :last-child a {
             font-size: 18px;
             padding: 0 20px 0;
+        }
+
+        & .titulo{
+            text-align: center;
         }
     }
 

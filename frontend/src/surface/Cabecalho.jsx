@@ -26,7 +26,8 @@ export default function Cabecalho() {
     if(titulo === '/'){
         titulo = ''
     } else {
-        titulo = titulo.replace('/', '').replace('-', ' ')
+        titulo = titulo.replace('/', '').replace('-', ' ');
+        titulo = titulo.split('/')[0];
     }
 
     // muda o cabecalho de acordo com a tela atual
@@ -53,7 +54,13 @@ export default function Cabecalho() {
             )
         } else {
             barraNav = (
-                <nav className={`${styles.containerNavegacao} ${styles.close}`}></nav>
+                <nav className={`${styles.containerNavegacao} ${styles.close}`}>
+                    <Link to='/despesas'>Despesas</Link>
+                    <Link to='/receitas'>Receitas</Link>
+                    <Link to='/categorias'>Categorias</Link>
+                    <Link to='/contas'>Contas</Link>
+                    <Link to='/relatorios'>Relatórios</Link>
+                </nav>
             )
         }
         btnLogin = 'LOGOUT'
@@ -76,7 +83,7 @@ export default function Cabecalho() {
                     </Link>
                 </div>
                 <div>
-                    <h2>{titulo}</h2>
+                    <h2 className={styles.titulo}>{titulo}</h2>
                 </div>
                 <div>
                     <Link to='/login' onClick={handleClick}>{btnLogin}</Link>
