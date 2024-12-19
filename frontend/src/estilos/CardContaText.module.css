@@ -10,3 +10,9 @@
     padding: 8px;
     width: 100px;
 }
+
+@media (max-width: 768px) {
+    .card {
+        width: 100%;
+    }
+}

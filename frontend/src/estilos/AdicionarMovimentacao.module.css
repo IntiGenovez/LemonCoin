@@ -68,3 +68,42 @@ form {
         height: 30px;
     }
 }
+
+@media (max-width: 768px) {
+    
+    .formulario {
+        width: 100%;
+
+        input {
+            height: 30px;
+            border: black solid 2px;
+            border-radius: 5px;
+        }
+
+        select {
+            height: 30px;
+            border: black solid 2px;
+            border-radius: 5px; 
+        }
+
+        & .containerSaldo {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            margin-bottom: 3px;
+
+            & select {
+                width: 100%;
+            }
+        }
+        
+        & .Botoes {
+            justify-content: center;
+            margin-top: 10px;
+
+            & button {
+                width: 50%;
+            }
+        }
+    }
+}
