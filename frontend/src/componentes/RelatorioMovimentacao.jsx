@@ -5,7 +5,7 @@ import Coluna from "./Coluna"
 
 import styles from "../estilos/Relatorio.module.css"
 
-export default function RelatorioMovimentacao() {
+export default function RelatorioMovimentacao({ mudarRelatorio }) {
     const contexto = useContext(DadosContexto)
     const [ movimentacoesPorMes, setMovimentacoesPorMes ] = useState([{
         mes: '',
@@ -46,9 +46,12 @@ export default function RelatorioMovimentacao() {
 
     return (
         <div className={ styles.relatorio }>
-            { movimentacoesPorMes.map((movimentacao, i) => {
-                return <Coluna key={i} movimentacao={ movimentacao } cemPorcento={ maiorSaldo } />
-            }) }
+            <p className={ styles.mudarTelas } onClick={mudarRelatorio}>Despesas</p>
+            <div className={ styles.alinharRelatorio }>
+                { movimentacoesPorMes.map((movimentacao, i) => {
+                    return <Coluna key={i} movimentacao={ movimentacao } cemPorcento={ maiorSaldo } />
+                }) }
+            </div>
         </div>
     )
 }
