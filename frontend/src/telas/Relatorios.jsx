@@ -4,14 +4,16 @@ import RelatorioMovimentacao from "../componentes/RelatorioMovimentacao"
 import styles from "../estilos/Relatorio.module.css"
 
 export default function Relatorios() {
-    const [ rel, setRel ] = useState('Despesas')
+    const [ relatorio, setRelatorio ] = useState('Despesas')
+    const mudarRelatorio = () => {
+        setRelatorio(prev => prev === 'Despesas' ? 'Categorias': 'Despesas') 
+    }
     return (
         <div className='tela-padrao'>
-            <p className={ styles.mudarTelas } onClick={ () => setRel(prev => prev === 'Despesas' ? 'Categorias': 'Despesas') }>{ rel }</p>
             {
-                rel === 'Despesas' ?
-                    <RelatorioCategoria /> :
-                    <RelatorioMovimentacao />
+                relatorio === 'Despesas' ?
+                    <RelatorioCategoria mudarRelatorio={mudarRelatorio} /> :
+                    <RelatorioMovimentacao mudarRelatorio={mudarRelatorio} />
             }
         </div>
     )
