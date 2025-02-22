@@ -22,7 +22,7 @@
     text-decoration: underline;
 }
 
-.formulario input[type="text"]{
+.formulario input[type="text"] input[type="password"]{
     /* border: solid red 1px; */
     width: 70%;
     height: 7%;
