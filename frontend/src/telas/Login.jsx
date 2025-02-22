@@ -39,7 +39,7 @@ export default function Login() {
                 <input type="text" value={ usuario.email } onChange={ e => setUsuario(prev => ({...prev, email: e.target.value})) }/>
 
                 <h1>Senha</h1>
-                <input type="text" value={ usuario.senha } onChange={ e => setUsuario(prev => ({...prev, senha: e.target.value})) }/>
+                <input type="password" value={ usuario.senha } onChange={ e => setUsuario(prev => ({...prev, senha: e.target.value})) }/>
 
                 <Link to="">Esqueci minha senha</Link>
 
