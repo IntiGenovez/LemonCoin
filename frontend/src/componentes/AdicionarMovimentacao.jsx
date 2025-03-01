@@ -3,7 +3,7 @@ import InputMes from "./InputMes";
 import InputDia from "./InputDia";
 import InputRecorrencia from "./InputRecorrencia";
 import { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import { DadosContexto } from "../store"
 import { movementsActions } from "../store/action";
@@ -103,7 +103,9 @@ export default function AdicionarMovimentacao({ tipo }){
                         <InputAno valor={ data.ano } onChange={ e => handleInputData(e, 'ano') } />
                     </div>
                     <div className={styles.Botoes}>
-                    <button>Cancelar</button>
+                    <button>
+                        <Link to={`/${tipo}s`} style={{color: "white"}}>Cancelar</Link>
+                    </button>
                     <button onClick={
                         e => {
                             e.preventDefault()
