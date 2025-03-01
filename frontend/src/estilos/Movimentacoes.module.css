@@ -145,10 +145,6 @@
     }
 }
 
-.filtro {
-    display: none;
-}
-
 @media (max-width: 768px) {
     .seletores {
         display: none;
@@ -191,13 +187,6 @@
         p {
             font-size: 25px;
         }
-    }
-
-    .filtro {
-        display: flex;
-        height: 90px;
-        border: black solid;
-        border-radius: 13px;
     }
 }
 
