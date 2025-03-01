@@ -15,7 +15,7 @@ module.exports = app => {
         .get(app.api.usuario.obter)
 
     app.route('/usuarios/:id')
-        // .all(app.config.passport.autenticador())
+        .all(app.config.passport.autenticador())
         .put(app.api.usuario.salvar)
         .get(app.api.usuario.obterPorId)
 
