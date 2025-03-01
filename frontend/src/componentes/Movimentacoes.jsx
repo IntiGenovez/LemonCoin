@@ -19,6 +19,23 @@ export default function Movimentacoes({ tipo }) {
     let linkAdicionar = location.pathname
     linkAdicionar = linkAdicionar.replace('/', '').slice(0, -1)
     linkAdicionar = "/adicionar-" + linkAdicionar
+
+    const [tamanho, setTamanho] = useState({
+        largura: window.innerWidth,
+        altura: window.innerHeight
+    });
+
+    useEffect(() => {
+        const handleResize = () => {
+            setTamanho({
+                largura: window.innerWidth,
+                altura: window.innerHeight
+            });
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
     
     const contexto = useContext(DadosContexto)
 
@@ -40,15 +57,7 @@ export default function Movimentacoes({ tipo }) {
 
 
     return (
-        <section className={ styles.containerMovimentacoes }>
-            <select name="filtro" id="filtro" className={styles.filtro}>
-                { seletores.map((seletor) =>
-                    (<option value={ seletor } key={ seletor }>
-                        {seletor !== "Filtro" ? seletor.toUpperCase() : ''}
-                    </option>)
-                )}
-            </select>
-            
+        <section className={ styles.containerMovimentacoes }>            
             <div className={ styles.seletores }>
                 { seletores.map((seletor) =>
                     (<Seletor  
@@ -60,22 +69,44 @@ export default function Movimentacoes({ tipo }) {
                     />)
                 )}
             </div>
-            <ul>
-                { contexto.state.movimentacoes
-                    .filter(movimentacao => {
-                        return movimentacao.tipo === tipo
-                    })
-                    .map(movimentacao => {
-                        return (<Movimentacao  
-                            tipo={ tipo } 
-                            key={ movimentacao.id } 
-                            movimentacaoListada={ movimentacao }
-                            movimentacaoEditavel={ movimentacaoEditavel === movimentacao.id }
-                            setMovimentacaoEditavel={ setMovimentacaoEditavel }
-                        />)
-                }
-                ) }
-            </ul>
+
+            {tamanho.largura <= 768 ? //se a tela for mobile, ira fazer uma ul em ordem alfabetica da data
+                <ul>
+                    {contexto.state.movimentacoes
+                        .filter(movimentacao => movimentacao.tipo === tipo)
+                        .slice() 
+                        .sort((a, b) => new Date(b.data) - new Date(a.data)) //ordena por data
+                        .map(movimentacao => (
+                            <Movimentacao  
+                                tipo={tipo} 
+                                key={movimentacao.id} 
+                                movimentacaoListada={movimentacao}
+                                movimentacaoEditavel={movimentacaoEditavel === movimentacao.id}
+                                setMovimentacaoEditavel={setMovimentacaoEditavel}
+                            />
+                        ))}
+                </ul>
+
+            : //else
+
+                <ul>
+                    { contexto.state.movimentacoes
+                        .filter(movimentacao => {
+                            return movimentacao.tipo === tipo
+                        })
+                        .map(movimentacao => {
+                            return (<Movimentacao  
+                                tipo={ tipo } 
+                                key={ movimentacao.id } 
+                                movimentacaoListada={ movimentacao }
+                                movimentacaoEditavel={ movimentacaoEditavel === movimentacao.id }
+                                setMovimentacaoEditavel={ setMovimentacaoEditavel }
+                            />)
+                    }
+                    ) }
+                </ul>
+            }
+            
             <div className={styles.total}>
                 <p>Total: <span>{ contexto.state.movimentacoes
                     .filter(movimentacao => movimentacao.tipo === tipo)
