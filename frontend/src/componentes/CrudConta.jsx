@@ -118,7 +118,7 @@ export default function CrudConta({ tipo }){
                 setDialogData({ mensagem: `Você adicionou a conta: ${ conta.nome }`, titulo: 'Conta Adicionada!' })
                 accountsActions.adicionarConta(contexto.dispatch, conta)
                 handleOpenDialog()
-            } catch(e) {
+            } catch {
                 return 0
             }
         } 
@@ -128,7 +128,7 @@ export default function CrudConta({ tipo }){
                 delete conta['usuario_nome']
                 accountsActions.atualizarConta(contexto.dispatch, conta)
                 handleOpenDialog()
-            } catch(e) {
+            } catch {
                 return 0
             }                               
         }
@@ -140,7 +140,7 @@ export default function CrudConta({ tipo }){
             setDialogData({ mensagem: `Você deletou a conta: ${ conta.nome }`, titulo: 'Conta excluída' })
             accountsActions.deletarConta(contexto.dispatch, conta)
             handleOpenDialog()
-        } catch(e) {
+        } catch {
             return 0
         }  
     } 
