@@ -19,7 +19,7 @@ module.exports = app => {
     }
 
     function validarGenero(valor, msg) {
-        if (valor !== 'M' && valor !== 'F') throw msg
+        if (valor !== 'M' && valor !== 'F' && valor !== 'O') throw msg
     }
 
     function validarEmail(valor, msg) {
