@@ -26,10 +26,11 @@ export default function Cadastro(){
         confirmarSenha: ''
     })
     const [openDialog, setOpenDialog] = useState(false)
+    const [openDialogError, setOpenDialogError] = useState(false)
 
-    const handleClick = e => {
+    const handleClick = async e => {
         e.preventDefault()
-        userActions.signup(contexto.dispatch, {
+        const sucess = await userActions.signup(contexto.dispatch, {
             nome: usuario.nome,
             email: usuario.email,
             senha: usuario.senha,
@@ -37,7 +38,15 @@ export default function Cadastro(){
             telefone: usuario.telefone,
             genero: usuario.genero
         })
-        setOpenDialog(true)
+        console.log(sucess)
+        console.log(usuario)
+        if(sucess) {
+            setOpenDialog(true)
+            console.log("cadastro realizado com sucesso")
+        } else {
+            setOpenDialogError(true)
+            console.log("Erro ao realizar cadastro")
+        }
     }
 
     return (
@@ -105,6 +114,17 @@ export default function Cadastro(){
                 tipo='success'
                 titulo={ 'Cadastro Realizado com sucesso' }
                 mensagem={ 'Cadastro Realizado com sucesso' }
+            /> 
+            <Mensagem
+                open={ openDialogError }
+                onClose={ () => {
+                    setOpenDialogError(false)
+                }}
+                textoBotao='Fechar'
+                link=''
+                tipo='Error'
+                titulo={ 'Erro ao realizar cadastro' }
+                mensagem={ 'Houve um erro ao realizar o seu cadastro, tente novamente mais tarde' }
             />
             
         </form>
