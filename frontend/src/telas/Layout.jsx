@@ -5,6 +5,7 @@ import BotaoVoltar from "../componentes/BotaoVoltar"
 import { useLocation } from "react-router-dom"
 
 import { DadosContexto } from "../store"
+import { userKey } from "../global"
 
 import Cabecalho from "../surface/Cabecalho"
 import Mensagem from "../componentes/Mensagem"
@@ -15,6 +16,10 @@ export default function Layout() {
     const contexto = useContext(DadosContexto)
 
     useEffect(() => {
+        const jwt = JSON.parse(localStorage.getItem(userKey))?.token
+
+        if(!jwt) return
+
         movementsActions.obterMovimentacoes(contexto.dispatch)
         accountsActions.obterContas(contexto.dispatch)
         categoriesActions.obterCategorias(contexto.dispatch)

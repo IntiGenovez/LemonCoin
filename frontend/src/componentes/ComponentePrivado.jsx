@@ -1,9 +1,12 @@
 import { Navigate } from "react-router-dom"
-import { userKey } from "../global"
+import { useContext } from "react"
+import { DadosContexto } from "../store"
 
 export default function ComponentePrivado({ children }) {
-    const token = localStorage.getItem(userKey)
-    if (!token) {
+    const { state } = useContext(DadosContexto)
+    const usuarioAutenticado = state.usuario && state.usuario.token
+
+    if (!usuarioAutenticado) {
         return <Navigate to='/login' replace />
     } else {
         return <>{ children }</>

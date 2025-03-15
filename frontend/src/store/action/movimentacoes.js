@@ -1,17 +1,51 @@
 import { urlBaseAPI, userKey } from "../../global.js"
-const jwt = JSON.parse(localStorage.getItem(userKey))?.token
+
+const getToken = () => {
+    const storedUser = JSON.parse(localStorage.getItem(userKey))
+    return storedUser?.token || null
+}
 
 const movementsActions = {
-    obterMovimentacoes: (dispatch) => {
-        fetch(`${urlBaseAPI}/movimentacoes`, { 
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `bearer ${jwt}`
+    obterMovimentacoes: async (dispatch) => {
+        const token = getToken()
+
+        if(!token) {
+            console.error("Token não encontrado")
+            dispatch({ type: 'exibirMensagem', payload: { mensagem: "Token não encontrado" } })
+            return
+        }
+
+        try {
+            const response = await fetch(`${urlBaseAPI}/movimentacoes`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `bearer ${token}`
+                }
+            })
+
+            if(!response.ok) {
+                throw new Error(`Erro ${response.status}: ${await response.text()}`)
             }
-        })
-        .then(resp => resp.json())
-        .then(movimentacoes => dispatch({ type: 'obterMovimentacoes', payload: { movimentacoes } }))
+            const data = await response.json()
+            dispatch({ type: 'obterMovimentacoes', payload: { movimentacoes: data } })
+        } catch (error) {
+            console.error("Erro ao obter movimentações: ", error.message)
+            dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message } })
+        }
+
+
+
+
+        // fetch(`${urlBaseAPI}/movimentacoes`, { 
+        //     method: "GET",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         "Authorization": `bearer ${jwt}`
+        //     }
+        // })
+        // .then(resp => resp.json())
+        // .then(movimentacoes => dispatch({ type: 'obterMovimentacoes', payload: { movimentacoes } }))
     },
     ordenarMovimentacoes: (dispatch, seletorOrdenador, invertido) => {
         dispatch({ type: 'ordenarMovimentacoes', payload: { seletorOrdenador, invertido } })

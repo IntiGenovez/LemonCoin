@@ -5,30 +5,42 @@ import BotaoAcao from '../componentes/BotaoAcao'
 import globalStyle from "../estilos/Login.module.css"
 
 import { DadosContexto } from "../store"
-import { userActions } from "../store/action"
+import { userActions, movementsActions, accountsActions, categoriesActions } from "../store/action"
 
 export default function Login() {
     const contexto = useContext(DadosContexto)
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
 
     const [usuario, setUsuario] = useState({
-        email: '',
-        senha: ''
+        email: '12345@gmail.com',
+        senha: '12345'
     })
 
     const handleClick = async e => {
         e.preventDefault()
-        const sucesso = await userActions.signin(contexto.dispatch, usuario)
-        
-        if (sucesso)
-            navigate('/home')
-        else 
-            alert('Usuário inválido')
-    }
+        setLoading(true)
+        setError(null)
 
-    useEffect(() => {
-        console.log(contexto)
-    }, [contexto.state])
+        const sucesso = await userActions.signin(contexto.dispatch, usuario)
+        setLoading(false)
+
+        if(sucesso) {
+            try {
+                navigate('/home')
+                await Promise.all([
+                    movementsActions.obterMovimentacoes(contexto.dispatch),
+                    accountsActions.obterContas(contexto.dispatch),
+                    categoriesActions.obterCategorias(contexto.dispatch)
+                ])
+            } catch (err) {
+                setError("Erro ao obter dados: " + err.message)
+            }
+        } else {
+            setError("Usuário inválido")
+        }
+    }
 
 
     return (
@@ -36,14 +48,28 @@ export default function Login() {
 
             <div className={globalStyle.formulario}>
                 <h1>Usuário</h1>
-                <input type="text" value={ usuario.email } onChange={ e => setUsuario(prev => ({...prev, email: e.target.value})) }/>
+                <input 
+                    type="text" 
+                    value={ usuario.email } 
+                    onChange={ e => setUsuario(prev => ({...prev, email: e.target.value})) }
+                    disabled={loading}
+                />
 
                 <h1>Senha</h1>
-                <input type="password" value={ usuario.senha } onChange={ e => setUsuario(prev => ({...prev, senha: e.target.value})) }/>
+                <input 
+                    type="password" 
+                    value={ usuario.senha } 
+                    onChange={ e => setUsuario(prev => ({...prev, senha: e.target.value})) }
+                    disabled={loading}
+                />
 
                 <Link to="">Esqueci minha senha</Link>
 
-                <BotaoAcao onClick={ handleClick }>Entrar</BotaoAcao>
+                {error && <p>{error}</p>}
+
+                <BotaoAcao onClick={ handleClick } disabled={loading}>
+                    {loading ? "Entrando..." : "Entrar"}
+                </BotaoAcao>
 
                 <Link to="/cadastro">Ainda não possuo conta</Link>
             </div>
