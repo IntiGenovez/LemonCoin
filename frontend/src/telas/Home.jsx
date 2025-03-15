@@ -14,6 +14,11 @@ export default function Home(){
     const contexto = useContext(DadosContexto)
     const navigate = useNavigate()
 
+    
+    useEffect(() => {
+        console.log(contexto.state)
+    }, [])
+
     return (
         <div className={styles.container}>
             <div className={styles.divGrafico}>

@@ -1,17 +1,37 @@
 import { urlBaseAPI, userKey } from "../../global.js"
-const jwt = JSON.parse(localStorage.getItem(userKey))?.token
+
+const getToken = () => {
+    const storedUser = JSON.parse(localStorage.getItem(userKey))
+    return storedUser?.token || null
+}
 
 const accountsActions = {
-    obterContas: (dispatch) => {
-        fetch(`${urlBaseAPI}/contas`, { 
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `bearer ${jwt}`
+    obterContas: async (dispatch) => {
+        const token = getToken()
+        if(!token) {
+            console.error("Token não encontrado")
+            dispatch({ type: 'exibirMensagem', payload: { mensagem: "Token não encontrado" } })
+            return
+        }
+
+        try {
+            const response = await fetch(`${urlBaseAPI}/contas`, { 
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `bearer ${token}`
+                }
+            })
+
+            if(!response.ok) {
+                throw new Error(`Erro ${response.status}: ${await response.text()}`)
             }
-         })
-            .then(resp => resp.json())
-            .then(data => dispatch({ type: 'obterContas', payload: { contas: data } }))
+            const data = await response.json()
+            dispatch({ type: 'obterContas', payload: { contas: data } })
+        } catch (error) {
+            console.error("Erro ao obter contas: ", error.message)
+            dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message } })
+        }
     },
     atualizarConta: (dispatch, conta) => {
         fetch(`${urlBaseAPI}/contas/${conta.id}`, { 

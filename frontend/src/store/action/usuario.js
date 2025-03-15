@@ -12,26 +12,20 @@ const userActions = {
                 body: JSON.stringify(userData)
             })
 
-            let data;
-            try {
-                data = await response.json();
-            } catch (error) {
-                data = null;
-                console.error("Erro ao analisar JSON:", error);
-            }
+            const data = await response.json()
 
             console.log('Resposta da API:', response)
             console.log('Dados retornados pela API:', data)
 
-            if (response.ok) {
-                dispatch({ type: 'signup', payload: data })
-                return true
-            } else {
-                console.error('Resposta inesperada: ', data)
-                return false
+            if(!response.ok) {
+                console.error('Erro ao cadastrar: ', data)
+                throw new Error(data.message || 'Erro ao cadastrar')
             }
+
+            dispatch({ type: 'signup', payload: data })
+            return true
         } catch (error) {
-            console.error("Erro no cadastro: ", error)
+            console.error("Erro no cadastro: ", error.message)
             return false
         }
     },
@@ -45,9 +39,14 @@ const userActions = {
                 body: JSON.stringify(usuario),
             })
 
-            if (!response.ok) throw new Error("Erro de autenticação");
-
             const data = await response.json()
+            console.log('Resposta da API: ', response.status, response.statusText)
+            console.log('Dados retornados pela API: ', data)
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Erro ao logar')
+            }
+
             if (data.token) {
                 dispatch({ type: 'signin', payload: { usuario: data }})
                 localStorage.setItem(userKey, JSON.stringify(data))
