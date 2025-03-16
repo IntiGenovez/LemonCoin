@@ -1,4 +1,9 @@
-import { fetchAPI, handleError } from "./fetchAPI.js"
+import { fetchAPI } from "./fetchAPI.js"
+
+const handleError = (dispatch, error, link) => {
+    console.error(error.message)
+    dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, titulo: 'ATENÇÃO', link } })
+}
 
 const categoriesActions = {
     obterCategorias: async (dispatch) => {

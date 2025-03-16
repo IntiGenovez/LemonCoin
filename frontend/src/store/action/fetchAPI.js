@@ -5,11 +5,6 @@ export const getToken = () => {
     return storedUser?.token || null
 }
 
-export const handleError = (dispatch, error, link) => {
-    console.error(error.message)
-    dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, titulo: 'ATENçÃO', link } })
-}
-
 export const fetchAPI = async (endpoint, method = "GET", body = null) => {
     const token = getToken()
     if (!token) {
@@ -35,6 +30,7 @@ export const fetchAPI = async (endpoint, method = "GET", body = null) => {
 
     if (!response.ok) {
         if (response.status === 500) {
+            console.error(data)
             throw new Error("Estamos enfrentando problemas no momento, tente novamente mais tarde!")
         }
         throw new Error(`Erro ${response.status}: ${data}`)
