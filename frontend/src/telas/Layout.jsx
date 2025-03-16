@@ -17,9 +17,9 @@ export default function Layout() {
 
     useEffect(() => {
         const jwt = JSON.parse(localStorage.getItem(userKey))?.token
-
+        
         if(!jwt) return
-
+        
         userActions.obterDadosUsuario(contexto.dispatch, jwt)
         movementsActions.obterMovimentacoes(contexto.dispatch)
         accountsActions.obterContas(contexto.dispatch)

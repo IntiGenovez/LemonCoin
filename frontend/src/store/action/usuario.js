@@ -20,8 +20,8 @@ const userActions = {
                 data = await response.text() // Lê como texto
             }
 
-            console.log('Resposta da API:', response)
-            console.log('Dados retornados pela API:', data)
+            // console.log('Resposta da API:', response)
+            // console.log('Dados retornados pela API:', data)
 
             if(!response.ok) {
                 console.error('Erro ao cadastrar: ', data)
@@ -86,8 +86,8 @@ const userActions = {
                 }
             })
             const data = await response.json()
-            console.log('Resposta da API: ', response.status, response.statusText)
-            console.log('Dados retornados pela API: ', data)
+            // console.log('Resposta da API: ', response.status, response.statusText)
+            // console.log('Dados retornados pela API: ', data)
 
             if (!response.ok) {
                 throw new Error(data.message || 'Erro ao obter dados do usuário')
