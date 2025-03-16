@@ -1,8 +1,9 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Link, useLocation } from "react-router-dom"
 
 import { DadosContexto } from "../store"
 import { userActions } from "../store/action"
+import { getToken } from "../store/action/fetchAPI"
 
 import styles from "../estilos/Cabecalho.module.css"
 import logo from "../assets/logo.png"
@@ -14,9 +15,12 @@ export default function Cabecalho() {
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
-    
+    const [btnLogin, setBtnLogin] = useState('') //define se botao de login vai estar escrito login ou logout
+    useEffect(() => {
+        setBtnLogin(getToken() ? 'LOGOUT' : 'LOGIN')
+    }, [contexto.state.usuario])
+   
     let location = useLocation(); //usado para saber o path atual
-    let btnLogin //define se botao de login vai estar escrito login ou logout
     let barraNav //lista de telas no cabecalho
     let linkLogo //para onde o logo vai levar ao clicar
     let iconeLista //serve para manipular o botão de lista
@@ -34,7 +38,6 @@ export default function Cabecalho() {
     if (titulo === '' || titulo === 'login' || titulo === 'cadastro'){
         barraNav = (<></>)
         iconeLista = (<></>)
-        btnLogin = 'LOGIN'
         linkLogo = '/'
     } else {
         iconeLista = (
@@ -63,7 +66,6 @@ export default function Cabecalho() {
                 </nav>
             )
         }
-        btnLogin = 'LOGOUT'
         linkLogo = '/home'
     }
 

@@ -73,7 +73,32 @@ const userActions = {
     signout: (dispatch) => {
         localStorage.removeItem(userKey)
         dispatch({ type: 'signout' })
+    },
+    obterDadosUsuario: async (dispatch) => {
+        const token = JSON.parse(localStorage.getItem(userKey))?.token
+        if (!token) 
+            return
+        try {
+            const response = await fetch(`${urlBaseAPI}/obterdadosusuario`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `bearer ${token}`
+                }
+            })
+            const data = await response.json()
+            console.log('Resposta da API: ', response.status, response.statusText)
+            console.log('Dados retornados pela API: ', data)
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Erro ao obter dados do usuário')
+            }
+
+            dispatch({ type: 'signin', payload: { usuario: data }})
+        } catch (error) {
+            console.error('Erro ao obter dados do usuário: ', error)
+        }
     }
+
 }
 
 export default userActions

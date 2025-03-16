@@ -1,14 +1,27 @@
 import { Navigate } from "react-router-dom"
-import { useContext } from "react"
-import { DadosContexto } from "../store"
+import { useEffect, useState } from "react"
+import { getToken } from "../store/action/fetchAPI"
 
 export default function ComponentePrivado({ children }) {
-    const { state } = useContext(DadosContexto)
-    const usuarioAutenticado = state.usuario && state.usuario.token
+    const [usuarioAutenticado, setUsuarioAutenticado] = useState(null)
+    const [loading, setLoading] = useState(true)
 
-    if (!usuarioAutenticado) {
-        return <Navigate to='/login' replace />
-    } else {
-        return <>{ children }</>
-    }
-}
+    useEffect(() => {
+        const token = getToken()
+        setUsuarioAutenticado(!!token)
+        setLoading(false)
+    }, [])
+
+    if (loading) return <p>Carregando...</p>
+
+    return (
+        <>
+            { 
+                !usuarioAutenticado ? 
+                    <Navigate to='/home' replace />
+                :
+                    children 
+            }
+        </>
+    )
+} 

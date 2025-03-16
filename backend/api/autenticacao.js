@@ -47,5 +47,33 @@ module.exports = app => {
         res.send(false)
     }
 
-    return { signin, validarToken }
+    const obterDadosUsuario = (req, res) => {
+        const token = req.headers['authorization']?.split(' ')[1]
+
+        if (!token) {
+            return res.status(401).send('Token não encontrado!')
+        }
+
+        try {
+            const tokenDecodificado = jwt.decode(token, authSecret)
+            const usuarioId = tokenDecodificado.id
+
+            app.bd('usuarios')
+                .select('id', 'nome', 'email', 'genero', 'telefone')
+                .where({ id: usuarioId })
+                .first()
+                .then(usuario => {
+                    if (!usuario) {
+                        return res.status(400).send('Usuário não encontrado!')
+                    }
+                    res.json(usuario)
+                })
+                .catch(err => res.status(500).send(err))
+        } catch (e) {
+            return res.status(401).send('Token inválido!')
+        }
+    }
+
+
+    return { signin, validarToken, obterDadosUsuario }
 }

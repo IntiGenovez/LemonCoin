@@ -11,6 +11,10 @@ export default function Contas() {
 
     const contexto = useContext(DadosContexto)
 
+    useEffect(() => {
+        console.log(contexto.state.usuario)
+    })
+
     return (
         <div className={styles.contas}>
             <div className={styles.container}>
