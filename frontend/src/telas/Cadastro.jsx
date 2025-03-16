@@ -13,20 +13,15 @@ import BotaoAcao from "../componentes/BotaoAcao";
 
 export default function Cadastro(){
     const contexto = useContext(DadosContexto)
-    const navigate = useNavigate()
     const [usuario, setUsuario] = useState({
         nome: '',
         email: '',
         telefone: '',
-        dia: '',
-        mes: '',
-        ano: '',
+        dataNascimento: '',
         genero: '',
         senha: '',
         confirmarSenha: ''
     })
-    const [openDialog, setOpenDialog] = useState(false)
-    const [openDialogError, setOpenDialogError] = useState(false)
 
     const handleClick = async e => {
         e.preventDefault()
@@ -40,17 +35,27 @@ export default function Cadastro(){
                 genero: usuario.genero
             })
 
+            console.log(usuario)
+
             if (cadastrar) {
-                setOpenDialog(true)
                 console.log("Cadastro realizado com sucesso")
             } else {
-                setOpenDialogError(true)
                 console.log(cadastrar)
             }
         } catch (error) {
-            setOpenDialogError(true)
             console.log("Erro ao realizar cadastro: ", error)
         }
+    }
+
+    const handleInputTelefone = e => {
+        let valor = e.target.value
+        if (valor.length > 15) {
+            return
+        }
+        valor = valor.replace(/\D/g, '') // Remove tudo que não é dígito
+        valor = valor.replace(/^(\d{2})(\d)/g, '($1) $2') // Coloca parênteses em volta dos dois primeiros dígitos
+        valor = valor.replace(/(\d)(\d{4})$/, '$1-$2') // Coloca hífen entre o quarto e o quinto dígitos
+        setUsuario({ ...usuario, telefone: valor })
     }
 
     return (
@@ -61,16 +66,15 @@ export default function Cadastro(){
             <input type="text" value={ usuario.email } placeholder='Email: ' 
                 onChange={ e => setUsuario({ ...usuario, email: e.target.value}) } />
             <input type="text" value={ usuario.telefone } placeholder='Telefone: ' 
-                onChange={ e => setUsuario({ ...usuario, telefone: e.target.value}) } />
+                onChange={e => handleInputTelefone(e)} />
             
             <div>
                 <h2>Data de Nascimento:</h2>
                 <div className={styles.inputSelect}>
-                    <InputDia valor={usuario.dia} onChange={valor => setUsuario({ ...usuario, dia: valor})} />
-
-                    <InputMes valor={usuario.mes} onChange={valor => setUsuario({ ...usuario, mes: valor})} />
-
-                    <InputAno valor={usuario.ano} onChange={valor => setUsuario({ ...usuario, ano: valor})} />
+                    <InputDia 
+                        value={usuario.dataNascimento} 
+                        onChange={ e => setUsuario({ ...usuario, dataNascimento: e }) } 
+                    />
                 </div>
             </div>
             <div> 
@@ -107,29 +111,7 @@ export default function Cadastro(){
                 <BotaoAcao onClick={ handleClick }>Cadastrar</BotaoAcao>
 
             </div>
-            <Mensagem
-                open={ openDialog }
-                onClose={ () => {
-                    setOpenDialog(false)
-                    navigate('/login')
-                }}
-                textoBotao='Fechar'
-                link='/contas'
-                tipo='success'
-                titulo={ 'Cadastro Realizado com sucesso' }
-                mensagem={ 'Cadastro Realizado com sucesso' }
-            /> 
-            <Mensagem
-                open={ openDialogError }
-                onClose={ () => {
-                    setOpenDialogError(false)
-                }}
-                textoBotao='Fechar'
-                link=''
-                tipo='error'
-                titulo={ 'Erro ao realizar cadastro' }
-                mensagem={ 'Houve um erro ao realizar o seu cadastro, verifique todos seus dados' }
-            />
+            
             
         </form>
     );

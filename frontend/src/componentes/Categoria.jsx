@@ -12,7 +12,6 @@ export default function Categoria({ id, nome, adicionar, naoAdicionar, categoria
         id: null
     })
     const atualizarCategoria = () => {
-        console.log(id)
         setNewCategoria(prev => ({ ...prev, id}))
     }
 
@@ -25,15 +24,11 @@ export default function Categoria({ id, nome, adicionar, naoAdicionar, categoria
                     value={ newCategoria.nome } 
                     onKeyUp={e => 
                         {if(e.key === 'Enter'){
-                            console.log("primeiro");
                             if (adicionar) {
-                                console.log("adicionar")
                                 categoriesActions.adicionarCategoria(contexto.dispatch, newCategoria)
                                 naoAdicionar()  
                             } else {
-                                console.log("Editar")
                                 setNewCategoria(prev => ({ ...prev, id}))
-                                console.log(id)
                                 categoriesActions.atualizarCategoria(contexto.dispatch, newCategoria)
                                 setCategoriaEditavel(null)
                             }
@@ -53,7 +48,6 @@ export default function Categoria({ id, nome, adicionar, naoAdicionar, categoria
                                     categoriesActions.adicionarCategoria(contexto.dispatch, newCategoria)
                                     naoAdicionar()  
                                 } else {
-                                    console.log(newCategoria)
                                     categoriesActions.atualizarCategoria(contexto.dispatch, newCategoria)
                                     setCategoriaEditavel(null)
                                 }

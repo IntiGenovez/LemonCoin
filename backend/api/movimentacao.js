@@ -44,6 +44,8 @@ module.exports = app => {
             const oldMovimentacao = await app.bd('movimentacoes')
                 .where({ id: movimentacao.id })
                 .first()
+            console.log(oldMovimentacao)
+            console.log(movimentacao)
             app.bd('movimentacoes')
                 .update(movimentacao)
                 .where({ id: movimentacao.id })

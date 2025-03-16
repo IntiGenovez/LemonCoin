@@ -48,9 +48,9 @@ export default function Layout() {
                 open={ contexto.state.mensagemErro.openDialog  }
                 onClose={ () => errorMessageActions.fecharMensagem(contexto.dispatch) }
                 textoBotao='Fechar'
-                link={ window.location.pathname }
-                tipo='success'
-                titulo='Ocorreu um erro'
+                link={ contexto.state.mensagemErro.link }
+                tipo={ contexto.state.mensagemErro.tipo }
+                titulo={ contexto.state.mensagemErro.titulo }
                 mensagem={ `${ contexto.state.mensagemErro.mensagem }` }
             />
             <Rodape />

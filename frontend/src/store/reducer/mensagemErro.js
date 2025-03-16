@@ -2,10 +2,11 @@ function mensagemErroReducer(estado, action) {
     let novoEstado
     switch (action.type) {
         case 'exibirMensagem':
-            novoEstado = { ...estado, mensagemErro: { mensagem: action.payload.mensagem, openDialog: true } }
+            console.log(action.payload)
+            novoEstado = { ...estado, mensagemErro: { ...action.payload, openDialog: true } }
             break
         case 'fecharMensagem':
-            novoEstado = { ...estado, mensagemErro: { mensagem: '', openDialog: false } }
+            novoEstado = { ...estado, mensagemErro: { openDialog: false } }
             break
         default:
             novoEstado = estado      
