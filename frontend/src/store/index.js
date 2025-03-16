@@ -14,7 +14,10 @@ export const initialState = {
     },
     mensagemErro: {
         mensagem: '',
-        openDialog: false
+        openDialog: false,
+        tipo: '',
+        link: '',
+        titulo: ''
     }
 }
 

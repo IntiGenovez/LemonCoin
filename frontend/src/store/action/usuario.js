@@ -1,9 +1,8 @@
-import { urlBaseAPI, userKey } from "../../global"
+import { urlBaseAPI, userKey } from '../../global'
 
 const userActions = {
     signup: async (dispatch, userData) => {
         try {
-            console.log("enviando dados para API")
             const response = await fetch(`${urlBaseAPI}/signup`, {
                 method: 'POST',
                 headers: {
@@ -12,20 +11,30 @@ const userActions = {
                 body: JSON.stringify(userData)
             })
 
-            const data = await response.json()
+            const contentType = response.headers.get('content-type')
+            let data;
+    
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json() // Lê como JSON
+            } else {
+                data = await response.text() // Lê como texto
+            }
 
             console.log('Resposta da API:', response)
             console.log('Dados retornados pela API:', data)
 
             if(!response.ok) {
                 console.error('Erro ao cadastrar: ', data)
-                throw new Error(data.message || 'Erro ao cadastrar')
+                throw new Error(data || 'Erro ao cadastrar')
             }
 
             dispatch({ type: 'signup', payload: data })
+            await userActions.signin(dispatch, { email: userData.email, senha: userData.senha })
+            dispatch({ type: 'exibirMensagem', payload: { mensagem: 'Cadastro Realizado com Sucesso', tipo: 'success', titulo: 'Cadastrado!', link: '/home' } })
             return true
         } catch (error) {
-            console.error("Erro no cadastro: ", error.message)
+            console.error('Erro no cadastro: ', error.message)
+            dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, tipo: 'error', link: '/cadastro', titulo: 'ATENÇÃO!'  } })
             return false
         }
     },
@@ -34,7 +43,7 @@ const userActions = {
             const response = await fetch(`${urlBaseAPI}/signin`, { 
                 method: 'POST',
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                   },
                 body: JSON.stringify(usuario),
             })
@@ -57,7 +66,7 @@ const userActions = {
                 return false
             }
         } catch (error) {
-            console.error("Erro no login: ", error)
+            console.error('Erro no login: ', error)
             return false
         }
     },
