@@ -5,6 +5,7 @@ module.exports = app => {
     app.post('/signup', app.api.usuario.salvar)
     app.post('/signin', app.api.autenticacao.signin)
     app.post('/validartoken', app.api.autenticacao.validarToken)
+    app.get('/obterdadosusuario', app.api.autenticacao.obterDadosUsuario)
 
 
     /************* ENDPOINTS DE USUARIOS *************/

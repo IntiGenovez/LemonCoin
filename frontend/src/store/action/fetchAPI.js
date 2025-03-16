@@ -1,8 +1,13 @@
 import { urlBaseAPI, userKey } from "../../global.js"
 
-const getToken = () => {
+export const getToken = () => {
     const storedUser = JSON.parse(localStorage.getItem(userKey))
     return storedUser?.token || null
+}
+
+export const handleError = (dispatch, error, link) => {
+    console.error(error.message)
+    dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, titulo: 'ATENçÃO', link } })
 }
 
 export const fetchAPI = async (endpoint, method = "GET", body = null) => {

@@ -88,7 +88,7 @@ function App() {
         },
         {
           path: '/home',
-          element: <Home />
+          element: <Apresentacao><Home /></Apresentacao>
         }
       ]
     }

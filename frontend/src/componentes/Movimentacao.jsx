@@ -61,7 +61,7 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
 
                     <span>
                         <i 
-                            className='bx bx-check'
+                            className='bx bx'
                             onClick={() => {
                                 setMovimentacaoEditavel(null)
                                 movimentacao.categoria = categoriaSelecionada.nome
@@ -72,9 +72,10 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
                             }}
                         ></i>
                         <i 
-                            className='bx bx-trash' 
+                            className='bx bx' 
                             onClick={() => {
-                                movementsActions.deletarMovimentacao(contexto.dispatch, movimentacao.id)
+                                console.log('alooo')
+                                movementsActions.deletarMovimentacao(contexto.dispatch, movimentacao)
                             }}
                         ></i>
                     </span>

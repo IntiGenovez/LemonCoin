@@ -1,4 +1,4 @@
-import { fetchAPI } from "./fetchAPI.js"
+import { fetchAPI, handleError } from "./fetchAPI.js"
 
 const movementsActions = {
     obterMovimentacoes: async (dispatch) => {
@@ -6,34 +6,34 @@ const movementsActions = {
             const data = await fetchAPI("movimentacoes")
             dispatch({ type: 'obterMovimentacoes', payload: { movimentacoes: data } })
         } catch (error) {
-            console.error("Erro ao obter movimentações: ", error.message)
-            dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message } })
+            handleError(dispatch, error, `${movimentacao.tipo.toLowerCase()}s`)
         }
     },
     ordenarMovimentacoes: (dispatch, seletorOrdenador, invertido) => {
         dispatch({ type: 'ordenarMovimentacoes', payload: { seletorOrdenador, invertido } })
     },
-    deletarMovimentacao: async (dispatch, id) => {
+    deletarMovimentacao: async (dispatch, movimentacao) => {
+        console.log(movimentacao)
         try {
+            const id = movimentacao.id
             await fetchAPI(`movimentacoes/${id}`, "DELETE")
             dispatch({ type: 'deletarMovimentacao', payload: { id } })
         } catch (error) {
-            console.error("Erro ao deletar movimentação: ", error.message)
-            dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message } })
+            handleError(dispatch, error, `${movimentacao.tipo.toLowerCase()}s`)
         }
     },
     atualizarMovimentacao: async (dispatch, movimentacao) => {
         try {
             const movimentacaoToFetch = { ...movimentacao }
+            console.log(movimentacaoToFetch)
             delete movimentacaoToFetch.conta
             delete movimentacaoToFetch.categoria
             delete movimentacaoToFetch.usuario
 
             await fetchAPI(`movimentacoes/${movimentacaoToFetch.id}`, "PUT", movimentacaoToFetch)
             dispatch({ type: 'atualizarMovimentacao', payload: { movimentacao } })
-        } catch (error) { 
-            console.error("Erro ao atualizar movimentação: ", error.message)
-            dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message } })
+        } catch (error) {
+            handleError(dispatch, error, `${movimentacao.tipo.toLowerCase()}s`)
         }
     },
     adicionarMovimentacao: (dispatch, movimentacao) => {
@@ -46,8 +46,7 @@ const movementsActions = {
             const id = fetchAPI("movimentacoes", "POST", movimentacaoToFetch)
             dispatch({ type: 'adicionarMovimentacao', payload: { movimentacao, id } })
         } catch (error) {
-            console.error("Erro ao adicionar movimentação: ", error.message)
-            dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message } })
+            handleError(dispatch, error, `${movimentacao.tipo.toLowerCase()}s`)
         }
     }
 }

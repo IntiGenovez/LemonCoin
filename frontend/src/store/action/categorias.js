@@ -1,4 +1,4 @@
-import { fetchAPI } from "./fetchAPI.js"
+import { fetchAPI, handleError } from "./fetchAPI.js"
 
 const categoriesActions = {
     obterCategorias: async (dispatch) => {
@@ -6,8 +6,7 @@ const categoriesActions = {
             const data = await fetchAPI("categorias")
             dispatch({ type: 'obterCategorias', payload: { categorias: data } })
         } catch (error) {
-            console.error("Erro ao obter categorias: ", error.message)
-            dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, tipo: '' } })
+            handleError(dispatch, error, '/categorias')
         }
     },
     atualizarCategoria: async (dispatch, categoria) => {
@@ -15,8 +14,7 @@ const categoriesActions = {
             await fetchAPI(`categorias/${categoria.id}`, "PUT", categoria)
             dispatch({ type: 'atualizarCategoria', payload: { categoria } })
         } catch (error) {
-            console.error("Erro ao atualizar categoria: ", error.message)
-            dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, tipo: '' } })
+            handleError(dispatch, error, '/categorias')
         }
     },
     deletarCategoria: async (dispatch, id) => {
@@ -24,8 +22,7 @@ const categoriesActions = {
             await fetchAPI(`categorias/${id}`, "DELETE")
             dispatch({ type: 'deletarCategoria', payload: { categoria: { id } } })
         } catch (error) {
-            console.error("Erro ao deletar categoria: ", error.message)
-            dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, tipo: 'error', titulo: 'ATENÇÃO!', link: '/categorias' } })
+            handleError(dispatch, error, '/categorias')
         }
     },
     adicionarCategoria: async (dispatch, categoria) => {
@@ -33,8 +30,7 @@ const categoriesActions = {
             const id = await fetchAPI("categorias", "POST", categoria)
             dispatch({ type: 'adicionarCategoria', payload: { categoria, id } })
         } catch (error) {
-            console.error("Erro ao adicionar categoria: ", error.message)
-            dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, tipo: '' } })
+            handleError(dispatch, error, '/categorias')
         }
     }
 }
