@@ -53,6 +53,18 @@ export default function AdicionarMovimentacao({ tipo }){
 
     }
 
+    useEffect(() => {
+        let dataAtual = new Date().toLocaleString("en-US", { timeZone: "America/Sao_Paulo" }).toString()
+        let dia = dataAtual.split('/')[1]
+        let mes = dataAtual.split('/')[0]
+        let ano = dataAtual.split(',')[0].split('/')[2]
+        if (dia.length === 1) dia = '0' + dia
+        if (mes.length === 1) mes = '0' + mes
+        dataAtual = `${ano}-${mes}-${dia}`
+
+        setMovimentacao(prev => ({ ...prev, data: dataAtual }))
+    }, [])
+
     const handleChangeCategoria = e => {
         setCategoriaSelecionada({
             nome: e.target.value,
@@ -73,6 +85,7 @@ export default function AdicionarMovimentacao({ tipo }){
     }
 
     const handleInputData = e => {
+        console.log(e)
         setMovimentacao(prev => ({ ...prev, data: e }))
     }
 

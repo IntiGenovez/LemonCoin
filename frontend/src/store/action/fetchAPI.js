@@ -36,5 +36,7 @@ export const fetchAPI = async (endpoint, method = "GET", body = null) => {
         throw new Error(`Erro ${response.status}: ${data}`)
     }
 
+    
+
     return data
 }

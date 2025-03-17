@@ -112,12 +112,15 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
                                 movimentacao.categoriaId = categoriaSelecionada.id
                                 movimentacao.conta = contaSelecionada.nome
                                 movimentacao.contaId = contaSelecionada.id
+                                movimentacao.valorAnterior = movimentacaoListada.valor
                                 movementsActions.atualizarMovimentacao(contexto.dispatch, movimentacao)
                             }}
                         ></i>
                         <i 
                             className='bx bx-trash' 
-                            onClick={() => {
+                            onClick={() => {                                
+                                movimentacao.valor = movimentacao.valor.replace('R$ ', '').replace(',', '.')
+                                movimentacao.valor = +movimentacao.valor
                                 movementsActions.deletarMovimentacao(contexto.dispatch, movimentacao)
                             }}
                         ></i>
@@ -142,7 +145,11 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
                         ></i>
                         <i
                             className='bx bx-trash'
-                            onClick={() => movementsActions.deletarMovimentacao(contexto.dispatch, movimentacao)}
+                            onClick={() => {
+                                movimentacao.valor = movimentacao.valor.replace('R$ ', '').replace(',', '.')
+                                movimentacao.valor = +movimentacao.valor
+                                movementsActions.deletarMovimentacao(contexto.dispatch, movimentacao)}
+                            }
                         ></i>
                     </span>
                 </>)

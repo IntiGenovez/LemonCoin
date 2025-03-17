@@ -2,7 +2,6 @@ function mensagemErroReducer(estado, action) {
     let novoEstado
     switch (action.type) {
         case 'exibirMensagem':
-            console.log(action.payload)
             novoEstado = { ...estado, mensagemErro: { ...action.payload, openDialog: true } }
             break
         case 'fecharMensagem':

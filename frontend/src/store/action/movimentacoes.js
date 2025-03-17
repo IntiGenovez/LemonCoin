@@ -23,6 +23,15 @@ const movementsActions = {
             const id = movimentacao.id
             await fetchAPI(`movimentacoes/${id}`, "DELETE")
             dispatch({ type: 'deletarMovimentacao', payload: { id } })
+            dispatch({ 
+                type: 'atualizarSaldo', 
+                payload: 
+                { 
+                    valor: movimentacao.tipo === "Receita" ?
+                        - movimentacao.valor :
+                        movimentacao.valor,
+                    id: movimentacao.contaId
+                }})
         } catch (error) {
             handleError(dispatch, error, `${movimentacao.tipo.toLowerCase()}s`)
         }
@@ -30,13 +39,22 @@ const movementsActions = {
     atualizarMovimentacao: async (dispatch, movimentacao) => {
         try {
             const movimentacaoToFetch = { ...movimentacao }
-            console.log(movimentacaoToFetch)
             delete movimentacaoToFetch.conta
             delete movimentacaoToFetch.categoria
             delete movimentacaoToFetch.usuario
+            delete movimentacaoToFetch.valorAnterior
 
             await fetchAPI(`movimentacoes/${movimentacaoToFetch.id}`, "PUT", movimentacaoToFetch)
             dispatch({ type: 'atualizarMovimentacao', payload: { movimentacao } })
+            dispatch({ 
+                type: 'atualizarSaldo', 
+                payload: 
+                { 
+                    valor: movimentacao.tipo === "Receita" ?
+                        movimentacao.valor - movimentacao.valorAnterior :
+                        movimentacao.valorAnterior + movimentacao.valor,
+                    id: movimentacao.contaId
+                }})
         } catch (error) {
             handleError(dispatch, error, `${movimentacao.tipo.toLowerCase()}s`)
         }
@@ -50,6 +68,16 @@ const movementsActions = {
 
             const id = await fetchAPI("movimentacoes", "POST", movimentacaoToFetch)
             dispatch({ type: 'adicionarMovimentacao', payload: { movimentacao, id } })
+            dispatch({ 
+                type: 'atualizarSaldo', 
+                payload: 
+                { 
+                    valor: movimentacao.tipo === "Receita" ?
+                        movimentacao.valor :
+                        -movimentacao.valor, 
+                    id: movimentacao.contaId
+                }})
+            dispatch({ type: 'exibirMensagem', payload: { mensagem: `${movimentacao.tipo} cadastrada com sucesso.`, titulo: 'Sucesso', tipo: 'success', link: `/${movimentacao.tipo.toLowerCase()}s` } })
         } catch (error) {
             console.log(error.message)
             handleError(dispatch, error, `/adicionar-${movimentacao.tipo.toLowerCase()}`)

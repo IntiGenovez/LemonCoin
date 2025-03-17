@@ -20,6 +20,12 @@ function contasReducer(estado, action) {
                 }) 
             }
             break
+        case 'atualizarSaldo':
+            novoEstado = { ...estado, contas: estado.contas.map(conta => {
+                    return conta.id === +action.payload.id ? { ...conta, saldo: (conta.saldo + action.payload.valor) } : conta
+                })
+            }
+            break
         default:
             novoEstado = estado      
     }
