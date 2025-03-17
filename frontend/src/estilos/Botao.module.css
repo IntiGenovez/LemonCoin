@@ -16,6 +16,7 @@
     font-size: 17px;
     background-color: #ddeac4;
     padding: 13px 20px 10px;
+    cursor: pointer;
 
     & * {
         color: var(--cor-fonte-principal);

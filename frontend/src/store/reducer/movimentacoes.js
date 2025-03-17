@@ -12,7 +12,11 @@ function movimentacoesReducer(estado, action) {
             }
             break
         case 'deletarMovimentacao':
-            novoEstado = { ...estado, movimentacoes: estado.movimentacoes.filter(movimentacao => movimentacao.id !== action.payload.id) }
+            novoEstado = { ...estado, 
+                movimentacoes: estado.movimentacoes
+                    .filter(movimentacao => movimentacao.id !== action.payload.id),
+            }
+            console.log(action.payload)
             break
         case 'atualizarMovimentacao':
             novoEstado = { ...estado, movimentacoes: estado.movimentacoes.map(movimentacao => 
