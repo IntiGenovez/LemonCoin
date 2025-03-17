@@ -20,7 +20,7 @@ export const fetchAPI = async (endpoint, method = "GET", body = null) => {
     }
 
     if (body) options.body = JSON.stringify(body)
-
+        
     const response = await fetch(`${urlBaseAPI}/${endpoint}`, options)
 
     const contentType = response.headers.get("content-type")
