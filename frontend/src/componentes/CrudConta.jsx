@@ -40,7 +40,6 @@ export default function CrudConta({ tipo }){
 
     const formatarSaldo = saldo => {
         if (typeof saldo === 'number') {
-            console.log(saldo)
             saldo = saldo.toString()
             let centavos = saldo.split('.')[1]
             if (!centavos) 

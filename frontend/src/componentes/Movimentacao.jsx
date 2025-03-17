@@ -24,7 +24,42 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
         movimentacao.data.split('T')[0].split('-').reverse().join('/') : 
         movimentacao.data.split(' ')[0].split('-').reverse().join('/')
 
-    let valorFormatado = movimentacao.valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+    const formatarValor = valor => {
+        if (typeof valor === 'number') {
+            valor = valor.toString()
+            let centavos = valor.split('.')[1]
+            if (!centavos) 
+                valor = valor + ',00'
+            if (centavos?.length === 1)
+                valor = valor + '0'
+        }
+
+        // Remove tudo o que não for dígito
+        valor = valor.replace(/\D/g, '');
+
+        // Se o valor estiver vazio ou não tiver centavos, adiciona "00" como default
+        if (valor.length <= 2) {
+            valor = '00' + valor
+        }
+
+        let reais = valor.slice(0, -2)
+        let centavos = valor.slice(-2)
+
+        if (centavos.length === 1) {
+            centavos = '0' + centavos;
+        }
+
+        // Se o valor de reais for menor que 100, remove os zeros à esquerda
+        reais = reais.replace(/^0+/, '') || '0'; // Remove os zeros à esquerda ou garante que tenha pelo menos 1 dígito
+    
+        let valorFormatado = `R$ ${reais},${centavos}`;
+        return valorFormatado
+
+    }
+
+    useEffect(() => {
+        setMovimentacao(prev => ({ ...prev, valor: formatarValor(movimentacao.valor) }))
+    }, [movimentacao.valor])
 
     const handleChangeCategoria = e => {
         setCategoriaSelecionada({
@@ -40,16 +75,22 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
         })
     }
 
+    const handleChangeValor = e => {
+        let valor = e.target.value;
+    
+        setMovimentacao(prev => ({ ...prev, valor: formatarValor(valor) }));
+    }
+
 
     return (
         <li className={ styles.movimentacao }>
             { movimentacaoEditavel ? 
                 (<> 
-                    <input value={movimentacao.data} onChange={ e => setMovimentacao({ ...movimentacao, data: e.target.value }) } />
+                    <input type='date' value={movimentacao.data} onChange={ e => setMovimentacao({ ...movimentacao, data: e.target.value }) } />
 
                     <input value={movimentacao.nome} onChange={ e => setMovimentacao({ ...movimentacao, nome: e.target.value }) } />
 
-                    <input type='number' value={movimentacao.valor} onChange={ e => setMovimentacao({ ...movimentacao, valor: +e.target.value }) } step={0.01}/>
+                    <input value={movimentacao.valor} onChange={ e => handleChangeValor(e) } />
 
                     <select value={ categoriaSelecionada.nome } onChange={ handleChangeCategoria }>
                         { contexto.state.categorias.map((categoria, i) => (<option key={i} id={categoria.id}>{categoria.nome}</option>)) }
@@ -61,8 +102,11 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
 
                     <span>
                         <i 
-                            className='bx bx'
+                            className='bx bx-check'
                             onClick={() => {
+                                movimentacao.valor = movimentacao.valor.replace('R$ ', '').replace(',', '.')
+                                movimentacao.valor = +movimentacao.valor
+
                                 setMovimentacaoEditavel(null)
                                 movimentacao.categoria = categoriaSelecionada.nome
                                 movimentacao.categoriaId = categoriaSelecionada.id
@@ -72,9 +116,8 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
                             }}
                         ></i>
                         <i 
-                            className='bx bx' 
+                            className='bx bx-trash' 
                             onClick={() => {
-                                console.log('alooo')
                                 movementsActions.deletarMovimentacao(contexto.dispatch, movimentacao)
                             }}
                         ></i>
@@ -84,7 +127,7 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
                 (<> 
                     <span><div className={styles.nomeLinha}>Data: </div>{ dataFormatada }</span>
                     <span><div className={styles.nomeLinha}>Nome: </div>{ movimentacao.nome }</span>
-                    <span><div className={styles.nomeLinha}>Valor: </div>{ valorFormatado }</span>
+                    <span><div className={styles.nomeLinha}>Valor: </div>{ movimentacao.valor }</span>
                     <span><div className={styles.nomeLinha}>Categoria: </div>{ movimentacao.categoria }</span>
                     <span onClick={(() => navigate(`/editar-conta/${movimentacao.contaId}`))}>
                         <div className={styles.nomeLinha}>Conta: </div>
@@ -99,7 +142,7 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
                         ></i>
                         <i
                             className='bx bx-trash'
-                            onClick={() => movementsActions.deletarMovimentacao(contexto.dispatch, movimentacao.id)}
+                            onClick={() => movementsActions.deletarMovimentacao(contexto.dispatch, movimentacao)}
                         ></i>
                     </span>
                 </>)

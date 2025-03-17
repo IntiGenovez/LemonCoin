@@ -1,5 +1,3 @@
-import InputAno from "./InputAno";
-import InputMes from "./InputMes";
 import InputDia from "./InputDia";
 import InputRecorrencia from "./InputRecorrencia";
 import { useState, useContext, useEffect } from "react";
@@ -23,16 +21,37 @@ export default function AdicionarMovimentacao({ tipo }){
         data: '',
         tipo
     })
-    const [ data, setData ] = useState({
-        ano: '',
-        mes: '',
-        dia: ''
-    })
 
     const [ categoriaSelecionada, setCategoriaSelecionada ] = useState({ 
         nome: '',
         id: '',
     })
+
+    const formatarValor = valor => {
+        valor = valor === 0 ? '' : valor
+
+        // Remove tudo o que não for dígito
+        valor = valor.replace(/\D/g, '');
+
+        // Se o valor estiver vazio ou não tiver centavos, adiciona "00" como default
+        if (valor.length <= 2) {
+            valor = '00' + valor
+        }
+
+        let reais = valor.slice(0, -2)
+        let centavos = valor.slice(-2)
+
+        if (centavos.length === 1) {
+            centavos = '0' + centavos;
+        }
+
+        // Se o valor de reais for menor que 100, remove os zeros à esquerda
+        reais = reais.replace(/^0+/, '') || '0'; // Remove os zeros à esquerda ou garante que tenha pelo menos 1 dígito
+    
+        let valorFormatado = `R$ ${reais},${centavos}`;
+        return valorFormatado
+
+    }
 
     const handleChangeCategoria = e => {
         setCategoriaSelecionada({
@@ -53,8 +72,12 @@ export default function AdicionarMovimentacao({ tipo }){
         })
     }
 
-    const handleInputData = (valor, campo) => {
-        setData(prev => ({ ...prev, [campo]: valor }))
+    const handleInputData = e => {
+        setMovimentacao(prev => ({ ...prev, data: e }))
+    }
+
+    const handleInputValor = e => {
+        setMovimentacao(prev => ({ ...prev, valor: formatarValor(e.target.value) }))
     }
 
     return(
@@ -71,14 +94,14 @@ export default function AdicionarMovimentacao({ tipo }){
                         onChange={e => setMovimentacao(prev => ({ ...prev, nome: e.target.value }))}
                     />
 
-                    <div className={styles.containerSaldo}>
+                    <div className={styles.containerValor}>
                          <input 
                             type="text" 
                             name="valor" 
                             id="valor" 
                             placeholder="Valor: R$" 
                             value={movimentacao.valor} 
-                            onChange={e => setMovimentacao(prev => ({ ...prev, valor: e.target.value }))}
+                            onChange={e => handleInputValor(e)}
                         />
                         <select value={ categoriaSelecionada.nome } onChange={ handleChangeCategoria }>
                             <option value={null}>Categoria</option>
@@ -98,9 +121,7 @@ export default function AdicionarMovimentacao({ tipo }){
                     </div>
                     <div className={styles.divData}>
                         <span>Data: </span>
-                        <InputDia valor={ data.dia } onChange={ e => handleInputData(e, 'dia') } />
-                        <InputMes valor={ data.mes } onChange={ e => handleInputData(e, 'mes') } />
-                        <InputAno valor={ data.ano } onChange={ e => handleInputData(e, 'ano') } />
+                        <InputDia valor={ movimentacao.data } onChange={ e => handleInputData(e) } />
                     </div>
                     <div className={styles.Botoes}>
                     <button>
@@ -114,11 +135,14 @@ export default function AdicionarMovimentacao({ tipo }){
                             movimentacao.conta = contaSelecionada.nome
                             movimentacao.contaId = contaSelecionada.id
 
-                            movimentacao.data = `${data.ano}-${data.mes}-${data.dia} 00:00:00`
-                            console.log(movimentacao.data)
+                            if (movimentacao.valor) {
+                                movimentacao.valor = movimentacao.valor.replace('R$ ', '').replace(',', '.')
+                                movimentacao.valor = +movimentacao.valor
+                            }
 
+                            movimentacao.data = `${movimentacao.data} 00:00:00`
+                            
                             movementsActions.adicionarMovimentacao(contexto.dispatch, movimentacao)
-                            navigate(`/${tipo.toLowerCase()}s`)
                         }
                     }>Confirmar</button>
                     </div>

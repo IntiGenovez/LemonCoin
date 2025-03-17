@@ -70,7 +70,7 @@ export default function Cadastro(){
             
             <div>
                 <h2>Data de Nascimento:</h2>
-                <div className={styles.inputSelect}>
+                <div className={styles.divNascimento}>
                     <InputDia 
                         value={usuario.dataNascimento} 
                         onChange={ e => setUsuario({ ...usuario, dataNascimento: e }) } 

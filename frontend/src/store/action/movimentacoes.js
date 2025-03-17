@@ -41,17 +41,18 @@ const movementsActions = {
             handleError(dispatch, error, `${movimentacao.tipo.toLowerCase()}s`)
         }
     },
-    adicionarMovimentacao: (dispatch, movimentacao) => {
+    adicionarMovimentacao: async (dispatch, movimentacao) => {
         try {
             const movimentacaoToFetch = { ...movimentacao }
             delete movimentacaoToFetch.conta
             delete movimentacaoToFetch.categoria
             delete movimentacaoToFetch.usuario
 
-            const id = fetchAPI("movimentacoes", "POST", movimentacaoToFetch)
+            const id = await fetchAPI("movimentacoes", "POST", movimentacaoToFetch)
             dispatch({ type: 'adicionarMovimentacao', payload: { movimentacao, id } })
         } catch (error) {
-            handleError(dispatch, error, `${movimentacao.tipo.toLowerCase()}s`)
+            console.log(error.message)
+            handleError(dispatch, error, `/adicionar-${movimentacao.tipo.toLowerCase()}`)
         }
     }
 }
