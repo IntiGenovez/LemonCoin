@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect, useTransition } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import BotaoAcao from '../componentes/BotaoAcao'
 
@@ -42,6 +42,20 @@ export default function Login() {
         }
     }
 
+    const handleRecuperarSenha = async e => {
+        e.preventDefault()
+        setLoading(true)
+        setError(null)
+        const sucesso = await userActions.recuperarSenhaPedido(contexto.dispatch, usuario)
+        setLoading(false)
+
+        if (sucesso) {
+            setError(null)
+            return
+        } else {
+            setError("Informe seu email")
+        }
+    }
 
     return (
         <form>
@@ -63,7 +77,7 @@ export default function Login() {
                     disabled={loading}
                 />
 
-                <Link to="">Esqueci minha senha</Link>
+                <Link onClick={ handleRecuperarSenha }>Esqueci minha senha</Link>
 
                 {error && <p>{error}</p>}
 

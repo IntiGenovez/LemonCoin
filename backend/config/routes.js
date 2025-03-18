@@ -6,6 +6,8 @@ module.exports = app => {
     app.post('/signin', app.api.autenticacao.signin)
     app.post('/validartoken', app.api.autenticacao.validarToken)
     app.get('/obterdadosusuario', app.api.autenticacao.obterDadosUsuario)
+    app.post('/recuperarsenhapedido', app.api.autenticacao.recuperarSenhaPedido)
+    app.post('/recuperarsenha', app.api.autenticacao.recuperarSenha)
 
 
     /************* ENDPOINTS DE USUARIOS *************/
