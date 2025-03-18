@@ -48,12 +48,19 @@ const userActions = {
                 body: JSON.stringify(usuario),
             })
 
-            const data = await response.json()
+            const contentType = response.headers.get('content-type')
+            let data;
+    
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json() // Lê como JSON
+            } else {
+                data = await response.text() // Lê como texto
+            }
             console.log('Resposta da API: ', response.status, response.statusText)
             console.log('Dados retornados pela API: ', data)
 
             if (!response.ok) {
-                throw new Error(data.message || 'Erro ao logar')
+                throw new Error(data || 'Erro ao logar')
             }
 
             if (data.token) {
@@ -97,8 +104,72 @@ const userActions = {
         } catch (error) {
             console.error('Erro ao obter dados do usuário: ', error)
         }
-    }
+    },
+    recuperarSenhaPedido: async (dispatch, usuario) => {
+        try {
+            const response = await fetch(`${urlBaseAPI}/recuperarsenhapedido`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(usuario)
+            })
 
+            const contentType = response.headers.get('content-type')
+            let data;
+    
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json() // Lê como JSON
+            } else {
+                data = await response.text() // Lê como texto
+            }
+
+            console.log('Resposta da API: ', response.status, response.statusText)
+            console.log('Dados retornados pela API: ', data)
+
+            if (!response.ok) {
+                throw new Error(data || 'Erro ao recuperar senha')
+            }
+
+            dispatch({ type: 'exibirMensagem', payload: { mensagem: 'Email enviado com sucesso', tipo: 'success', titulo: 'Email Enviado!', link: '/login' } })
+            return true
+        } catch (error) {
+            console.error('Erro ao recuperar senha: ', error)
+            return false
+        }
+    },
+    recuperarSenha: async (dispatch, token, novaSenha, confirmarNovaSenha) => {
+        try {
+            const response = await fetch(`${urlBaseAPI}/recuperarsenha`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token, novaSenha, confirmarNovaSenha })
+            })
+            const contentType = response.headers.get('content-type')
+            let data;
+    
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json() // Lê como JSON
+            } else {
+                data = await response.text() // Lê como texto
+            }
+
+            console.log('Resposta da API: ', response.status, response.statusText)
+            console.log('Dados retornados pela API: ', data)
+
+            if (!response.ok) {
+                throw new Error(data || 'Erro ao recuperar senha')
+            }
+
+            dispatch({ type: 'exibirMensagem', payload: { mensagem: 'Senha alterada', tipo: 'success', titulo: 'Senha alterada!', link: '/login' } })
+            return true
+        } catch (error) {
+            console.error('Erro ao recuperar senha: ', error)
+            return false
+        }
+    }   
 }
 
 export default userActions

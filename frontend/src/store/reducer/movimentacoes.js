@@ -16,7 +16,6 @@ function movimentacoesReducer(estado, action) {
                 movimentacoes: estado.movimentacoes
                     .filter(movimentacao => movimentacao.id !== action.payload.id),
             }
-            console.log(action.payload)
             break
         case 'atualizarMovimentacao':
             novoEstado = { ...estado, movimentacoes: estado.movimentacoes.map(movimentacao => 

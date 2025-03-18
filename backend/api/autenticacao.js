@@ -1,8 +1,17 @@
-const { authSecret } = require('../.env')
+const { authSecret, auth } = require('../.env')
 const jwt = require('jwt-simple')
 const bcrypt = require('bcrypt-nodejs')
+const mailer = require('nodemailer')
 
 module.exports = app => {
+    const { existeOuErro, validarEmail, igualOuErro } = app.api.validacao
+    const criptografarSenha = password => {
+        const salt = bcrypt.genSaltSync(10)
+        return bcrypt.hashSync(password, salt)
+    }
+
+    console.log(criptografarSenha('1234'))
+
     const signin = async (req, res) => {
         if (!req.body.email || !req.body.senha) {
             return res.status(400).send('Informe usuário e senha!')
@@ -74,6 +83,65 @@ module.exports = app => {
         }
     }
 
+    const recuperarSenhaPedido = async (req, res) => {
+        const email = req.body.email
+        try {
+            existeOuErro(email, 'Email não informado')
+            validarEmail(email, 'Email não tem um formato válido')
+            const usuario = await app.bd('usuarios')
+                .where({ email: email }).first()
 
-    return { signin, validarToken, obterDadosUsuario }
+            existeOuErro(usuario, 'Usuário não existe')
+            
+            const token = jwt.encode({ email, exp: Date.now() + 3600000 }, authSecret )
+
+            const resetLink = `http://localhost:5173/recuperar-senha?token=${token}`
+
+            const config = {
+                service: 'gmail',
+                auth
+            }
+
+            const transporter = mailer.createTransport(config)
+
+            const message = {
+                from: 'lemoncoinfatec@gmail.com',
+                to: email,
+                subject: 'Recuperação de senha',
+                text: `Clique no link para redefinir sua senha: ${resetLink}`
+            }
+
+            await transporter.sendMail(message, err => {
+                if (err) {
+                    console.log(err)
+                    return res.status(500).send('Erro ao enviar email')
+                }
+                res.status(204).send()
+            })
+        } catch (msg) {
+            console.log(msg)
+            return res.status(400).send(msg)
+        }
+    }
+
+    const recuperarSenha = async (req, res) => {
+        const { token, novaSenha, confirmarNovaSenha  } = req.body
+        try {
+            existeOuErro(novaSenha, "Senha não informada")
+            existeOuErro(confirmarNovaSenha, "Confirmar senha não informado")
+            igualOuErro(novaSenha, confirmarNovaSenha, "Senhas não conferem")
+            const decoded = jwt.decode(token, authSecret)
+            novaSenha = criptografarSenha(novaSenha)
+
+            await app.bd('usuarios')
+                .update({ senha: novaSenha })
+                .where({ email: decoded.email })
+                .then(_ => res.status(204).send())
+                .catch(err => res.status(500).send(err))
+        } catch (error) {
+            res.status(400).send("Token inválido ou expirado")
+        }
+    }
+
+    return { signin, validarToken, obterDadosUsuario, recuperarSenhaPedido, recuperarSenha }
 }
