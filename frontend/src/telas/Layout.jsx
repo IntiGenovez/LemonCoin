@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react"
 import { Outlet } from "react-router-dom"
-import { movementsActions, accountsActions, categoriesActions, errorMessageActions, userActions } from "../store/actionFirebase"
+import { movementsActions, accountsActions, categoriesActions, errorMessageActions } from "../store/actionFirebase"
 import BotaoVoltar from "../componentes/BotaoVoltar"
 import { useLocation } from "react-router-dom"
 
@@ -15,12 +15,7 @@ export default function Layout() {
     
     const contexto = useContext(DadosContexto)
 
-    useEffect(() => {
-        const jwt = JSON.parse(localStorage.getItem(userKey))?.token
-        
-        if(!jwt) return
-        
-        userActions.obterDadosUsuario(contexto.dispatch, jwt)
+    useEffect(() => {        
         movementsActions.obterMovimentacoes(contexto.dispatch)
         accountsActions.obterContas(contexto.dispatch)
         categoriesActions.obterCategorias(contexto.dispatch)
