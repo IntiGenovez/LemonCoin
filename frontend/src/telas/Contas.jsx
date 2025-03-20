@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { DadosContexto } from '../store';
-import { accountsActions } from '../store/action';
+import { accountsActions } from '../store/actionFirebase';
 
 import CardConta from '../componentes/CardConta'
 import BotaoAdicionar from '../componentes/BotaoAdicionar'

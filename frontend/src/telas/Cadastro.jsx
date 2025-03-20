@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DadosContexto } from "../store"
-import { userActions } from "../store/action"
+import { userActions } from "../store/actionFirebase"
 
 import InputDia from "../componentes/InputDia";
 import InputAno from "../componentes/InputAno";

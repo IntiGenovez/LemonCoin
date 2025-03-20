@@ -5,7 +5,7 @@ import BotaoAcao from '../componentes/BotaoAcao'
 import globalStyle from "../estilos/Login.module.css"
 
 import { DadosContexto } from "../store"
-import { userActions, movementsActions, accountsActions, categoriesActions } from "../store/action"
+import { userActions, movementsActions, accountsActions, categoriesActions } from "../store/actionFirebase"
 
 export default function Login() {
     const contexto = useContext(DadosContexto)

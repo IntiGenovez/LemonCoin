@@ -10,8 +10,6 @@ module.exports = app => {
         return bcrypt.hashSync(password, salt)
     }
 
-    console.log(criptografarSenha('1234'))
-
     const signin = async (req, res) => {
         if (!req.body.email || !req.body.senha) {
             return res.status(400).send('Informe usuário e senha!')

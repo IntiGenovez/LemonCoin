@@ -1,14 +1,13 @@
 import { Navigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { getToken } from "../store/action/fetchAPI"
+import { isUserSignedIn } from "../store/actionFirebase/firebase"
 
 export default function ComponentePrivado({ children }) {
     const [usuarioAutenticado, setUsuarioAutenticado] = useState(null)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        const token = getToken()
-        setUsuarioAutenticado(!!token)
+        isUserSignedIn(setUsuarioAutenticado)
         setLoading(false)
     }, [])
 

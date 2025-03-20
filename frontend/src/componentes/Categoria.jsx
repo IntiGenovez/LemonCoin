@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import { DadosContexto } from "../store"
 
-import { categoriesActions } from "../store/action"
+import { categoriesActions } from "../store/actionFirebase"
 
 import styles from '../estilos/Categoria.module.css'
 

@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { DadosContexto } from "../store"
-import { accountsActions } from "../store/action"
+import { accountsActions } from "../store/actionFirebase"
 import Mensagem from "./Mensagem"
 
 import lapis from "../assets/lapis.png"

@@ -4,7 +4,7 @@ import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom"
 
 import { DadosContexto } from "../store"
-import { movementsActions } from "../store/action";
+import { movementsActions } from "../store/actionFirebase";
 
 import styles from "../estilos/AdicionarMovimentacao.module.css";
 

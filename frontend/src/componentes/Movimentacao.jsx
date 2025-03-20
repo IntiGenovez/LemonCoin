@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { DadosContexto } from "../store"
-import { movementsActions } from "../store/action"
+import { movementsActions } from "../store/actionFirebase"
 import { useNavigate } from 'react-router-dom'
 
 import styles from "../estilos/Movimentacoes.module.css"
