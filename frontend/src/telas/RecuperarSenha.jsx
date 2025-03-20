@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom"
 import BotaoAcao from '../componentes/BotaoAcao'
 
 import globalStyle from "../estilos/Login.module.css"
-import { userActions } from "../store/action"
+import { userActions } from "../store/actionFirebase"
 import { DadosContexto } from '../store'
 
 

@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 
 
 import { DadosContexto } from "../store"
-import { movementsActions } from "../store/action"
+import { movementsActions } from "../store/actionFirebase"
 
 export default function Movimentacoes({ tipo }) {
     const [ seletorAtivo, setSeletorAtivo ] = useState(null)

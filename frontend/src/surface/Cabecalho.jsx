@@ -2,8 +2,8 @@ import { useContext, useEffect, useState } from "react"
 import { Link, useLocation } from "react-router-dom"
 
 import { DadosContexto } from "../store"
-import { userActions } from "../store/action"
-import { getToken } from "../store/action/fetchAPI"
+import { userActions } from "../store/actionFirebase"
+import { isUserSignedIn } from "../store/actionFirebase/firebase"
 
 import styles from "../estilos/Cabecalho.module.css"
 import logo from "../assets/logo.png"
@@ -15,10 +15,13 @@ export default function Cabecalho() {
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
-    const [btnLogin, setBtnLogin] = useState('') //define se botao de login vai estar escrito login ou logout
+    const [usuario, setUsuario] = useState(null) //define se botao de login vai estar escrito login ou logout
+
     useEffect(() => {
-        setBtnLogin(getToken() ? 'LOGOUT' : 'LOGIN')
-    }, [contexto.state.usuario])
+        const unsubscribe = isUserSignedIn(setUsuario)
+
+        return () => unsubscribe()
+    }, [])
    
     let location = useLocation(); //usado para saber o path atual
     let barraNav //lista de telas no cabecalho
@@ -70,7 +73,7 @@ export default function Cabecalho() {
     }
 
     const handleClick = () => {
-        if (btnLogin === 'LOGOUT') {
+        if (usuario) {
             userActions.signout(contexto.dispatch)
         }
     }
@@ -88,7 +91,7 @@ export default function Cabecalho() {
                     <h2 className={styles.titulo}>{titulo}</h2>
                 </div>
                 <div>
-                    <Link to='/login' onClick={handleClick}>{btnLogin}</Link>
+                    <Link to='/login' onClick={handleClick}>{ usuario ? 'LOGOUT' : 'LOGIN' }</Link>
                 </div>
             </div>
             {iconeLista}

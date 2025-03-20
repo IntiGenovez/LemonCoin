@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react"
 import { Outlet } from "react-router-dom"
-import { movementsActions, accountsActions, categoriesActions, errorMessageActions, userActions } from "../store/action"
+import { movementsActions, accountsActions, categoriesActions, errorMessageActions, userActions } from "../store/actionFirebase"
 import BotaoVoltar from "../componentes/BotaoVoltar"
 import { useLocation } from "react-router-dom"
 
