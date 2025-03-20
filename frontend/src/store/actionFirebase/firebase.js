@@ -22,24 +22,32 @@ const db = getFirestore(app)
 const analytics = getAnalytics(app)
 
 
-export const firestore = async (type, method, payload) => {
-    let docRef
+export const firestore = async (type, method, id, payload) => {
     let querySnapshot
     if(method === 'save')
-        docRef = await addDoc(collection(db, type), payload)
+        return await addDoc(collection(db, type), payload)
 
     if(method === 'read') {
         querySnapshot = await getDocs(collection(db, type))
-        querySnapshot.forEach(doc => console.log(`${doc.id} → ${doc.data()}`))
-        return querySnapshot
+        const arrayFromQuery = []
+        let data
+        querySnapshot.forEach(doc => {
+            data = doc.data()
+            data.id = doc.id
+            arrayFromQuery.push(data)
+        })
+        return arrayFromQuery
     }
 
     if(method === 'delete') {
-        await deleteDoc(doc(db, type, payload))
+        await deleteDoc(doc(db, type, id))
     }
 
     if(method === 'update') {
-        await setDoc(doc(db, type, payload.id), payload)
+        console.log(type)
+        console.log(id)
+        console.log(payload)
+        await setDoc(doc(db, type, id), payload)
     }
         
 }
