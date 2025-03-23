@@ -35,8 +35,9 @@ const movementsActions = {
             delete movimentacaoToFetch.categoria
             delete movimentacaoToFetch.usuario
             delete movimentacaoToFetch.valorAnterior
+            console.log(movimentacaoToFetch)
 
-            await firestore('movimentações', 'update', movimentacaoToFetch)
+            await firestore('movimentações', 'update', movimentacaoToFetch.id, movimentacaoToFetch)
             dispatch({ type: 'atualizarMovimentacao', payload: { movimentacao } })
             dispatch({ 
                 type: 'atualizarSaldo', 
@@ -59,8 +60,8 @@ const movementsActions = {
             delete movimentacaoToFetch.categoria
             delete movimentacaoToFetch.usuario
 
-            const id = await firestore('movimentações', 'save', null, movimentacaoToFetch)
-            dispatch({ type: 'adicionarMovimentacao', payload: { movimentacao, id } })
+            const docRef = await firestore('movimentações', 'save', null, movimentacaoToFetch)
+            dispatch({ type: 'adicionarMovimentacao', payload: { movimentacao, id: docRef.id } })
             dispatch({ 
                 type: 'atualizarSaldo', 
                 payload: 

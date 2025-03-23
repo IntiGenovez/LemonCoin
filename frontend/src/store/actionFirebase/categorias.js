@@ -25,8 +25,6 @@ const categoriesActions = {
     },
     adicionarCategoria: async (dispatch, categoria) => {
         try {
-            console.log(categoria)
-            console.log(categoria.id)
             const docRef = await firestore('categorias', 'save', categoria.id, { nome: categoria.nome })
             dispatch({ type: 'adicionarCategoria', payload: { categoria, id: docRef.id } })
         } catch (error) {

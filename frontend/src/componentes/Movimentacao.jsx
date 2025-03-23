@@ -143,8 +143,7 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
                         <i
                             className='bx bx-trash'
                             onClick={() => {
-                                movimentacao.valor = movimentacao.valor.replace('R$ ', '').replace(',', '.')
-                                movimentacao.valor = +movimentacao.valor
+                                console.log(movimentacao)
                                 movementsActions.deletarMovimentacao(contexto.dispatch, movimentacao)}
                             }
                         ></i>

@@ -143,19 +143,20 @@ export default function AdicionarMovimentacao({ tipo }){
                     <button onClick={
                         e => {
                             e.preventDefault()
+                            let valor
                             movimentacao.categoria = categoriaSelecionada.nome
                             movimentacao.categoriaId = categoriaSelecionada.id
                             movimentacao.conta = contaSelecionada.nome
                             movimentacao.contaId = contaSelecionada.id
 
                             if (movimentacao.valor) {
-                                movimentacao.valor = movimentacao.valor.replace('R$ ', '').replace(',', '.')
-                                movimentacao.valor = +movimentacao.valor
+                                valor = movimentacao.valor.replace('R$ ', '').replace(',', '.')
+                                valor = valor
                             }
 
                             movimentacao.data = `${movimentacao.data} 00:00:00`
                             
-                            movementsActions.adicionarMovimentacao(contexto.dispatch, movimentacao)
+                            movementsActions.adicionarMovimentacao(contexto.dispatch, { ...movimentacao, valor })
                         }
                     }>Confirmar</button>
                     </div>
