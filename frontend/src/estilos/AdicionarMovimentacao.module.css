@@ -56,6 +56,10 @@ form {
         font-size: 18px;
         border-radius: 10px;
         cursor: pointer;
+        text-transform: capitalize;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }
 

@@ -1,11 +1,9 @@
 
-import {
-    Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button
-} from '@mui/material';
-import Alert from '@mui/material/Alert';
-import { Link } from 'react-router-dom';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material'
+import Alert from '@mui/material/Alert'
+import { Link } from 'react-router-dom'
 
-function Mensagem({ open, onClose, titulo, tipo, mensagem, link, textoBotao }) {
+export default function Mensagem({ open, onClose, titulo, tipo, mensagem, link, textoBotao }) {
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>{titulo}</DialogTitle>
@@ -20,7 +18,5 @@ function Mensagem({ open, onClose, titulo, tipo, mensagem, link, textoBotao }) {
                 </Button>
             </DialogActions>
         </Dialog>
-    );
+    )
 }
-
-export default Mensagem;

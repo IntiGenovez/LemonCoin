@@ -14,7 +14,7 @@ export default function BotaoAdicionar({ path, onClick }) {
     }
     return <img 
         src={iconeAdd} 
-        alt="adicionar" 
+        alt='adicionar' 
         className={styles.iconeAdd}
         onClick={handleClick} />
 }

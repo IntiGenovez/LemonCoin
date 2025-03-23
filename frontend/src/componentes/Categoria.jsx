@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useState, useRef, useEffect } from "react"
 import { DadosContexto } from "../store"
 
 import { categoriesActions } from "../store/actionFirebase"
@@ -11,8 +11,40 @@ export default function Categoria({ id, nome, adicionar, naoAdicionar, categoria
         nome: nome,
         id: null
     })
-    const atualizarCategoria = () => {
+    const inputRef = useRef(null)
+
+    useEffect(() => {
+        inputRef.current?.focus()
+    }, [newCategoria])
+
+    const handleConfirmar = e => {
+        if(e.type === 'keyup' && e.key === 'Escape') {
+            console.log('aqui')
+            setCategoriaEditavel(null)
+            naoAdicionar()  
+            return
+        }
+        if(e.type === 'keyup' && e.key != 'Enter') return
+        
+        if (adicionar) {
+            categoriesActions.adicionarCategoria(contexto.dispatch, newCategoria)
+            naoAdicionar()  
+        } else {
+            setNewCategoria(prev => ({ ...prev, id}))
+            categoriesActions.atualizarCategoria(contexto.dispatch, newCategoria)
+            setCategoriaEditavel(null)
+        }
+    }
+
+    const handleEditar = e => {
+        if (categoriaEditavel === id) {
+            setCategoriaEditavel(null)
+            return
+        } 
+
+        setCategoriaEditavel(id)
         setNewCategoria(prev => ({ ...prev, id}))
+        naoAdicionar()
     }
 
     return (
@@ -21,19 +53,9 @@ export default function Categoria({ id, nome, adicionar, naoAdicionar, categoria
             {
                 adicionar || categoriaEditavel ?
                 (<input 
+                    ref={ inputRef }
                     value={ newCategoria.nome } 
-                    onKeyUp={e => 
-                        {if(e.key === 'Enter'){
-                            if (adicionar) {
-                                categoriesActions.adicionarCategoria(contexto.dispatch, newCategoria)
-                                naoAdicionar()  
-                            } else {
-                                setNewCategoria(prev => ({ ...prev, id}))
-                                categoriesActions.atualizarCategoria(contexto.dispatch, newCategoria)
-                                setCategoriaEditavel(null)
-                            }
-                        }}
-                    } 
+                    onKeyUp={ e => handleConfirmar(e) }
                     onChange={ e => setNewCategoria(prev => ({...prev, nome: e.target.value})) } />)
                 :
                 (<p>{ nome }</p>)
@@ -43,28 +65,12 @@ export default function Categoria({ id, nome, adicionar, naoAdicionar, categoria
                         adicionar || categoriaEditavel ?
                         <i 
                             className='bx bx-check'
-                            onClick={() => {
-                                if (adicionar) {
-                                    categoriesActions.adicionarCategoria(contexto.dispatch, newCategoria)
-                                    naoAdicionar()  
-                                } else {
-                                    categoriesActions.atualizarCategoria(contexto.dispatch, newCategoria)
-                                    setCategoriaEditavel(null)
-                                }
-                            }}
+                            onClick={e => handleConfirmar(e)}
                         ></i>
                         :
                         <i 
                             className='bx bx-edit-alt'
-                            onClick={() => {
-                                if (categoriaEditavel === id) {
-                                    setCategoriaEditavel(null)
-                                } else {
-                                    setCategoriaEditavel(id)
-                                    atualizarCategoria()
-                                }
-                                naoAdicionar()
-                            }}
+                            onClick={e => handleEditar(e)}
                         ></i>
                     }
                     

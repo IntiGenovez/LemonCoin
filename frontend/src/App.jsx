@@ -10,8 +10,7 @@ import { allReducers } from "./store/reducer"
 //importações de telas
 import Layout from "./telas/Layout"
 import Apresentacao from "./telas/Apresentacao"
-import Despesas from "./telas/Despesas"
-import Receitas from "./telas/Receitas"
+import TelaMovimentacoes from "./telas/TelaMovimentacoes.jsx"
 import Categorias from "./telas/Categorias"
 import Contas from "./telas/Contas"
 import Relatorios from "./telas/Relatorios"
@@ -19,10 +18,8 @@ import Pagina404 from "./telas/Pagina404"
 import Login from "./telas/Login"
 import RecuperarSenha from "./telas/RecuperarSenha"
 import Cadastro from "./telas/Cadastro.jsx"
-import AdicionarDespesa from "./telas/AdicionarDespesa.jsx"
-import AdicionarReceita from "./telas/AdicionarReceita.jsx"
+import TelaAdicionarMovimentacao from "./telas/TelaAdicionarMovimentacao.jsx"
 import AdicionarConta from "./telas/AdicionarConta.jsx"
-import EditarConta from "./telas/EditarConta.jsx"
 
 import ComponentePrivado from "./componentes/ComponentePrivado.jsx"
 
@@ -44,11 +41,11 @@ function App() {
         },
         {
           path: '/despesas',
-          element:<ComponentePrivado><Despesas /></ComponentePrivado> 
+          element:<ComponentePrivado><TelaMovimentacoes tipo='Despesa' /></ComponentePrivado> 
         },
         {
           path: '/receitas',
-          element:<ComponentePrivado><Receitas /></ComponentePrivado> 
+          element:<ComponentePrivado><TelaMovimentacoes tipo='Receita' /></ComponentePrivado> 
         },
         {
           path: '/categorias',
@@ -76,19 +73,23 @@ function App() {
         },
         {
           path: '/adicionar-receita',
-          element: <ComponentePrivado><AdicionarReceita /></ComponentePrivado>
+          element: <ComponentePrivado><TelaAdicionarMovimentacao tipo='Receita' /></ComponentePrivado>
         },
         {
           path: '/adicionar-despesa',
-          element: <ComponentePrivado><AdicionarDespesa /></ComponentePrivado>
+          element: <ComponentePrivado><TelaAdicionarMovimentacao tipo='Despesa' /></ComponentePrivado>
         },
         {
           path: '/adicionar-conta',
-          element: <ComponentePrivado><AdicionarConta /></ComponentePrivado>
+          element: <ComponentePrivado><AdicionarConta tipo="Adicionar" /></ComponentePrivado>
         },
         {
           path: '/editar-conta/:id',
-          element: <ComponentePrivado><EditarConta /></ComponentePrivado>
+          element: <ComponentePrivado><AdicionarConta tipo='Atualizar' /></ComponentePrivado>
+        },
+        {
+          path: '/editar-conta',
+          element: <ComponentePrivado><AdicionarConta tipo='Atualizar' /></ComponentePrivado>
         },
         {
           path: '/home',

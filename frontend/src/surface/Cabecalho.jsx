@@ -1,76 +1,34 @@
-import { useContext, useEffect, useState } from "react"
-import { Link, useLocation } from "react-router-dom"
+import { useContext, useEffect, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 
-import { DadosContexto } from "../store"
-import { userActions } from "../store/actionFirebase"
-import { isUserSignedIn } from "../store/actionFirebase/firebase"
+import { DadosContexto } from '../store'
+import { userActions } from '../store/actionFirebase'
+import { isUserSignedIn } from '../store/actionFirebase/firebase'
 
-import styles from "../estilos/Cabecalho.module.css"
-import logo from "../assets/logo.png"
+import styles from '../estilos/Cabecalho.module.css'
+import logo from '../assets/logo.png'
 
 export default function Cabecalho() {
     const contexto = useContext(DadosContexto)
 
-    const [menuOpen, setMenuOpen] = useState(false);
-    const toggleMenu = () => {
-        setMenuOpen(!menuOpen);
-    };
-    const [usuario, setUsuario] = useState(null) //define se botao de login vai estar escrito login ou logout
+    const [menuOpen, setMenuOpen] = useState(false)
+    const [usuario, setUsuario] = useState(null) 
+    let location = useLocation() //usado para saber o path atual
+    const [titulo, setTitulo] = useState('')
 
     useEffect(() => {
         const unsubscribe = isUserSignedIn(setUsuario)
 
         return () => unsubscribe()
     }, [])
-   
-    let location = useLocation(); //usado para saber o path atual
-    let barraNav //lista de telas no cabecalho
-    let linkLogo //para onde o logo vai levar ao clicar
-    let iconeLista //serve para manipular o botão de lista
 
-    // Pega o nome do path atual
-    let titulo = location.pathname;
-    if(titulo === '/'){
-        titulo = ''
-    } else {
-        titulo = titulo.replace('/', '').replace('-', ' ');
-        titulo = titulo.split('/')[0];
-    }
-
-    // muda o cabecalho de acordo com a tela atual
-    if (titulo === '' || titulo === 'login' || titulo === 'cadastro'){
-        barraNav = (<></>)
-        iconeLista = (<></>)
-        linkLogo = '/'
-    } else {
-        iconeLista = (
-            <button className={styles.botaoMenu} onClick={toggleMenu}>
-                &#9776; {/*icone de lista*/}
-            </button>
-        )
-        if (menuOpen){
-            barraNav = (
-                <nav className={`${styles.containerNavegacao} ${styles.open}`}>
-                    <Link to='/despesas'>Despesas</Link>
-                    <Link to='/receitas'>Receitas</Link>
-                    <Link to='/categorias'>Categorias</Link>
-                    <Link to='/contas'>Contas</Link>
-                    <Link to='/relatorios'>Relatórios</Link>
-                </nav>
-            )
+    useEffect(() => {
+        if(location.pathname === '/'){
+            setTitulo('')
         } else {
-            barraNav = (
-                <nav className={`${styles.containerNavegacao} ${styles.close}`}>
-                    <Link to='/despesas'>Despesas</Link>
-                    <Link to='/receitas'>Receitas</Link>
-                    <Link to='/categorias'>Categorias</Link>
-                    <Link to='/contas'>Contas</Link>
-                    <Link to='/relatorios'>Relatórios</Link>
-                </nav>
-            )
+            setTitulo(location.pathname.replace('/', '').replace('-', ' ').split('/')[0])
         }
-        linkLogo = '/home'
-    }
+    }, [location.pathname])
 
     const handleClick = () => {
         if (usuario) {
@@ -80,10 +38,10 @@ export default function Cabecalho() {
 
     return (
         <header>
-            <div className={styles.cabecalho}>
+            <div className={ styles.cabecalho }>
                 <div>
-                    <Link to={linkLogo} className={styles.containerLogo}>
-                        <img src={logo} alt='Logo LemonCoin' />
+                    <Link to='/home' className={ styles.containerLogo }>
+                        <img src={ logo } alt='Logo LemonCoin' />
                         <h1>LemonCoin</h1>
                     </Link>
                 </div>
@@ -91,11 +49,27 @@ export default function Cabecalho() {
                     <h2 className={styles.titulo}>{titulo}</h2>
                 </div>
                 <div>
-                    <Link to='/login' onClick={handleClick}>{ usuario ? 'LOGOUT' : 'LOGIN' }</Link>
+                    <Link to='/login' onClick={ handleClick }>{ usuario ? 'LOGOUT' : 'LOGIN' }</Link>
                 </div>
             </div>
-            {iconeLista}
-            {barraNav}
+            
+            {
+                (location.pathname === '' || location.pathname === '/login' || location.pathname === '/cadastro') ?
+                    null
+                :
+                    <>
+                        <button className={ styles.botaoMenu } onClick={ () => setMenuOpen(prev => !prev) }>
+                            <i className='bx bx-menu'></i> 
+                        </button>
+                        <nav className={`${styles.containerNavegacao} ${menuOpen ? styles.open : styles.close}`}>
+                            <Link to='/despesas' onClick={ () => setMenuOpen(prev => !prev) }>Despesas</Link>
+                            <Link to='/receitas' onClick={ () => setMenuOpen(prev => !prev) }>Receitas</Link>
+                            <Link to='/categorias' onClick={ () => setMenuOpen(prev => !prev) }>Categorias</Link>
+                            <Link to='/contas' onClick={ () => setMenuOpen(prev => !prev) }>Contas</Link>
+                            <Link to='/relatorios' onClick={ () => setMenuOpen(prev => !prev) }>Relatórios</Link>
+                        </nav>
+                    </>
+            }
         </header>
     )
 }

@@ -1,50 +1,14 @@
-import lapis from '../assets/lapis.png';
-import nubank from '../assets/nubank.png';
-import bancoDoBrasil from '../assets/Banco-do-Brasil.png';
-import bradesco from '../assets/Bradesco.png';
-import caixa from '../assets/Caixa.png';
-import itau from '../assets/Itau.png';
-import santander from '../assets/Santander.png';
-import picpay from '../assets/PicPay.png';
-import sicredi from '../assets/Sicredi.png';
-import mercadoPago from '../assets/Mercado-Pago.png'
-import inter from '../assets/inter.png'
-import stone from '../assets/stone.png'
-import wise from '../assets/wise.png'
+import lapis from '../assets/lapis.png'
+import iconeMap from '../store/utils/iconeMap'
+import formatarValor from '../store/utils/formatCurrency'
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 
 import styles from '../estilos/CardConta.module.css'
-import { useEffect } from 'react';
 
-export default function CardConta({id, icone, proprietario, nome, saldo}) {
-    
-    // Mapeamento de nome de ícone para imagem importada
-    // useEffect(() => {
-    //     console.log(nome)
-    //     console.log(nome)
-    // })
-    const iconeMap = {
-        lapis: lapis,
-        nubank: nubank,
-        'banco_do_brasil': bancoDoBrasil,
-        bradesco: bradesco,
-        caixa: caixa,
-        itau: itau,
-        santander: santander,
-        picpay: picpay,
-        sicredi: sicredi,
-        'mercado_pago': mercadoPago,
-        inter: inter,
-        stone: stone,
-        wise: wise
-    };
-
-    // Obtém a imagem correspondente ao nome da variavel icone, ou ícone lápis padrão se não for encontrado
-    const iconeSrc = iconeMap[icone] || lapis; 
-
-    let newNome = nome.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, (letra) => letra.toUpperCase())
-    let newSaldo = saldo.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+export default function CardConta({ id, nome, saldo }) {
+    const iconeSrc = iconeMap[nome] || lapis 
+    let saldoFormatado = formatarValor(saldo)
 
     const navigate = useNavigate()
     const handleClick = () => {
@@ -52,12 +16,11 @@ export default function CardConta({id, icone, proprietario, nome, saldo}) {
     }
 
     return (
-        <div className={styles.CardConta} onClick={handleClick}>
-            <img src={iconeSrc} alt="Icone" className={styles.icone}/>
-            <div className={styles.divTexto}>
-                <span>{newNome}</span>
-                <span>{proprietario}</span>
-                <span>{newSaldo}</span>
+        <div className={ styles.CardConta } onClick={ handleClick }>
+            <img src={ iconeSrc } alt={ iconeSrc } className={ styles.icone }/>
+            <div className={ styles.divTexto }>
+                <span>{ nome }</span>
+                <span>{ saldoFormatado }</span>
             </div>
         </div>
     )

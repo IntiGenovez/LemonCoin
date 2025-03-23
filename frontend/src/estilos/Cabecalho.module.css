@@ -107,7 +107,7 @@
     }
 
     .botaoMenu{
-        display: block;
+        display: flex;
         color: black;
         background-color: #e7efc4;
         font-size: 30px;

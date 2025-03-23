@@ -1,16 +1,17 @@
-import InputDia from "./InputDia";
-import InputRecorrencia from "./InputRecorrencia";
-import { useState, useContext, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom"
+import InputDia from './InputDia'
+import InputRecorrencia from './InputRecorrencia'
+import { useState, useContext, useEffect } from 'react'
 
-import { DadosContexto } from "../store"
-import { movementsActions } from "../store/actionFirebase";
+import { DadosContexto } from '../store'
+import { movementsActions } from '../store/actionFirebase'
+import formatarMoeda from '../store/utils/formatCurrency'
 
-import styles from "../estilos/AdicionarMovimentacao.module.css";
+import styles from '../estilos/AdicionarMovimentacao.module.css'
+import BotaoNavegar from './BotaoNavegar'
+import BotaoAcao from './BotaoAcao'
 
 export default function AdicionarMovimentacao({ tipo }){
     const contexto = useContext(DadosContexto)
-    const navigate = useNavigate()
     const [ movimentacao, setMovimentacao ] = useState({
         nome: '',
         valor: '',
@@ -24,37 +25,17 @@ export default function AdicionarMovimentacao({ tipo }){
 
     const [ categoriaSelecionada, setCategoriaSelecionada ] = useState({ 
         nome: '',
-        id: '',
+        id: ''
     })
 
-    const formatarValor = valor => {
-        valor = valor === 0 ? '' : valor
+    const [ contaSelecionada, setContaSelecionada ] = useState({ 
+        nome: '',
+        id: ''
+    })
 
-        // Remove tudo o que não for dígito
-        valor = valor.replace(/\D/g, '');
-
-        // Se o valor estiver vazio ou não tiver centavos, adiciona "00" como default
-        if (valor.length <= 2) {
-            valor = '00' + valor
-        }
-
-        let reais = valor.slice(0, -2)
-        let centavos = valor.slice(-2)
-
-        if (centavos.length === 1) {
-            centavos = '0' + centavos;
-        }
-
-        // Se o valor de reais for menor que 100, remove os zeros à esquerda
-        reais = reais.replace(/^0+/, '') || '0'; // Remove os zeros à esquerda ou garante que tenha pelo menos 1 dígito
-    
-        let valorFormatado = `R$ ${reais},${centavos}`;
-        return valorFormatado
-
-    }
-
+    //Define a data do input['date'] para a data de hoje
     useEffect(() => {
-        let dataAtual = new Date().toLocaleString("en-US", { timeZone: "America/Sao_Paulo" }).toString()
+        let dataAtual = new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }).toString()
         let dia = dataAtual.split('/')[1]
         let mes = dataAtual.split('/')[0]
         let ano = dataAtual.split(',')[0].split('/')[2]
@@ -71,11 +52,6 @@ export default function AdicionarMovimentacao({ tipo }){
             id: e.target[e.target.selectedIndex].id
         })
     }
-    
-    const [ contaSelecionada, setContaSelecionada ] = useState({ 
-        nome: '',
-        id: '',
-    })
 
     const handleChangeConta = e => {
         setContaSelecionada({
@@ -84,13 +60,23 @@ export default function AdicionarMovimentacao({ tipo }){
         })
     }
 
-    const handleInputData = e => {
-        console.log(e)
-        setMovimentacao(prev => ({ ...prev, data: e }))
-    }
+    const handleConfirmar = e => {
+        e.preventDefault()
+        const novaMovimentacao = { 
+            ...movimentacao,
+            categoria: categoriaSelecionada.nome,
+            categoriaId: categoriaSelecionada.id,
+            conta: contaSelecionada.nome,
+            contaId: contaSelecionada.id,
+            data: `${movimentacao.data} 00:00:00`
+        }
 
-    const handleInputValor = e => {
-        setMovimentacao(prev => ({ ...prev, valor: formatarValor(e.target.value) }))
+        if (novaMovimentacao.valor) {
+            novaMovimentacao.valor = novaMovimentacao.valor.replace('R$ ', '').replace(',', '.')
+            novaMovimentacao.valor = +novaMovimentacao.valor
+        }
+        
+        movementsActions.adicionarMovimentacao(contexto.dispatch, novaMovimentacao)
     }
 
     return(
@@ -99,22 +85,22 @@ export default function AdicionarMovimentacao({ tipo }){
                     <h1>Adicionar {tipo}</h1>
 
                     <input className={styles.inputNome}
-                        type="text" 
-                        name="nome" 
-                        id="nome" 
-                        placeholder="Nome: " 
+                        type='text' 
+                        name='nome' 
+                        id='nome' 
+                        placeholder='Nome: ' 
                         value={movimentacao.nome} 
                         onChange={e => setMovimentacao(prev => ({ ...prev, nome: e.target.value }))}
                     />
 
                     <div className={styles.containerValor}>
                          <input 
-                            type="text" 
-                            name="valor" 
-                            id="valor" 
-                            placeholder="Valor: R$" 
+                            type='text' 
+                            name='valor' 
+                            id='valor' 
+                            placeholder='Valor: R$' 
                             value={movimentacao.valor} 
-                            onChange={e => handleInputValor(e)}
+                            onChange={e => setMovimentacao(prev => ({ ...prev, valor: formatarMoeda(e.target.value) }))}
                         />
                         <select value={ categoriaSelecionada.nome } onChange={ handleChangeCategoria }>
                             <option value={null}>Categoria</option>
@@ -127,41 +113,22 @@ export default function AdicionarMovimentacao({ tipo }){
                         <select value={ contaSelecionada.nome } onChange={ handleChangeConta }>
                             <option value={null}>Conta</option>
                             { contexto.state.contas.map((conta, i) => (
-                                <option key={i} id={conta.id}>
-                                    {conta.nome.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, (letra) => letra.toUpperCase())}: {conta.proprietario} {/*nome conta sem underline*/}
-                                </option>)) }
+                                <option key={i} id={conta.id}> {conta.nome} </option>)) }
                         </select>
                     </div>
                     <div className={styles.divData}>
                         <span>Data: </span>
-                        <InputDia valor={ movimentacao.data } onChange={ e => handleInputData(e) } />
+                        <InputDia 
+                            valor={ movimentacao.data } 
+                            onChange={ e => setMovimentacao(prev => ({ ...prev, data: e })) } 
+                        />
                     </div>
                     <div className={styles.Botoes}>
-                    <button>
-                        <Link to={`/${tipo}s`} style={{color: "white"}}>Cancelar</Link>
-                    </button>
-                    <button onClick={
-                        e => {
-                            e.preventDefault()
-                            let valor
-                            movimentacao.categoria = categoriaSelecionada.nome
-                            movimentacao.categoriaId = categoriaSelecionada.id
-                            movimentacao.conta = contaSelecionada.nome
-                            movimentacao.contaId = contaSelecionada.id
-
-                            if (movimentacao.valor) {
-                                valor = movimentacao.valor.replace('R$ ', '').replace(',', '.')
-                                valor = valor
-                            }
-
-                            movimentacao.data = `${movimentacao.data} 00:00:00`
-                            
-                            movementsActions.adicionarMovimentacao(contexto.dispatch, { ...movimentacao, valor })
-                        }
-                    }>Confirmar</button>
+                        <BotaoNavegar link={`/${ tipo }s`}>Cancelar</BotaoNavegar>
+                        <BotaoAcao onClick={ handleConfirmar }>Confirmar</BotaoAcao>
                     </div>
                 </div>      
                     
         </form>
-    );
+    )
 }

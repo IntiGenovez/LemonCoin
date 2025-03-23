@@ -1,13 +1,13 @@
-import { useState, useContext, useEffect } from "react"
-import Movimentacao from "../componentes/Movimentacao"
-import Seletor from "../componentes/Seletor"
-import BotaoNavegar from "../componentes/BotaoNavegar"
-import styles from "../estilos/Movimentacoes.module.css"
-import { useLocation } from "react-router-dom"
+import { useState, useContext, useEffect } from 'react'
+import Movimentacao from '../componentes/Movimentacao'
+import Seletor from '../componentes/Seletor'
+import BotaoNavegar from '../componentes/BotaoNavegar'
+import styles from '../estilos/Movimentacoes.module.css'
+import { useLocation } from 'react-router-dom'
 
 
-import { DadosContexto } from "../store"
-import { movementsActions } from "../store/actionFirebase"
+import { DadosContexto } from '../store'
+import { movementsActions } from '../store/actionFirebase'
 
 export default function Movimentacoes({ tipo }) {
     const [ seletorAtivo, setSeletorAtivo ] = useState(null)
@@ -18,7 +18,7 @@ export default function Movimentacoes({ tipo }) {
     const location = useLocation()
     let linkAdicionar = location.pathname
     linkAdicionar = linkAdicionar.replace('/', '').slice(0, -1)
-    linkAdicionar = "/adicionar-" + linkAdicionar
+    linkAdicionar = '/adicionar-' + linkAdicionar
 
     const [tamanho, setTamanho] = useState({
         largura: window.innerWidth,
@@ -34,12 +34,18 @@ export default function Movimentacoes({ tipo }) {
             })
         }
 
-        window.addEventListener("resize", handleResize)
-        return () => window.removeEventListener("resize", handleResize)
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
     }, [])
+
+    
+    useEffect(() => 
+        movementsActions.ordenarMovimentacoes(contexto.dispatch, seletorAtivo, isUp), 
+        [isUp, seletorAtivo]
+    )
     
 
-    const tratarClique = (seletor) => {
+    const handleClick = (seletor) => {
         if (seletor === seletorAtivo) {
             setIsUp(prev => !prev)
         } else {
@@ -48,13 +54,6 @@ export default function Movimentacoes({ tipo }) {
         }
         movementsActions.ordenarMovimentacoes(contexto.dispatch, {seletorOrdenador: seletor, invertido: isUp })
     }
-
-    useEffect(() => 
-        movementsActions.ordenarMovimentacoes(contexto.dispatch, seletorAtivo, isUp), 
-        [isUp, seletorAtivo]
-    )
-
-
 
     return (
         <section className={ styles.containerMovimentacoes }>            
@@ -65,7 +64,7 @@ export default function Movimentacoes({ tipo }) {
                         key={ seletor } 
                         isAtivo={ seletorAtivo === seletor }
                         isUp= { isUp && seletorAtivo === seletor }
-                        setAtivo={ tratarClique }
+                        setAtivo={ handleClick }
                     />)
                 )}
             </div>
@@ -86,9 +85,7 @@ export default function Movimentacoes({ tipo }) {
                             />
                         ))}
                 </ul>
-
-            : //else
-
+            :
                 <ul>
                     { contexto.state.movimentacoes
                         .filter(movimentacao => movimentacao.tipo === tipo)

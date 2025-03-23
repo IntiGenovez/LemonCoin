@@ -1,15 +1,14 @@
-import { useContext, useEffect } from "react"
-import { Outlet } from "react-router-dom"
-import { userActions, errorMessageActions } from "../store/actionFirebase"
-import BotaoVoltar from "../componentes/BotaoVoltar"
-import { useLocation } from "react-router-dom"
+import { useContext, useEffect } from 'react'
+import { Outlet } from 'react-router-dom'
+import { userActions, errorMessageActions } from '../store/actionFirebase'
+import BotaoVoltar from '../componentes/BotaoVoltar'
+import { useLocation } from 'react-router-dom'
 
-import { DadosContexto } from "../store"
-import { userKey } from "../global"
+import { DadosContexto } from '../store'
 
-import Cabecalho from "../surface/Cabecalho"
-import Mensagem from "../componentes/Mensagem"
-import Rodape from "../surface/Rodape"
+import Cabecalho from '../surface/Cabecalho'
+import Mensagem from '../componentes/Mensagem'
+import Rodape from '../surface/Rodape'
 
 export default function Layout() {
     

@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react"
-import { DadosContexto } from "../store"
+import { useContext, useState } from 'react'
+import { DadosContexto } from '../store'
 
 import Categoria from '../componentes/Categoria'
 import BotaoAdicionar from '../componentes/BotaoAdicionar'
@@ -13,7 +13,7 @@ export default function Categorias() {
 
     return (
         <div className='tela-padrao'>
-            <div className={styles.container}>
+            <div className={ styles.container }>
                 {
                     contexto.state.categorias.map((categoria, i) => 
                         <Categoria 
