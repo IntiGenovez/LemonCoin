@@ -1,13 +1,12 @@
-import RelatorioCategoria from "../componentes/RelatorioCategoria"
-import CardContaText from "../componentes/CardContaText"
-import TextGasto from "../componentes/TextGasto"
-import BotaoNavegar from "../componentes/BotaoNavegar"
+import RelatorioCategoria from '../componentes/RelatorioCategoria'
+import CardContaText from '../componentes/CardContaText'
+import TextGasto from '../componentes/TextGasto'
+import BotaoNavegar from '../componentes/BotaoNavegar'
 
-import styles from "../estilos/Home.module.css"
-import { useContext, useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { DadosContexto } from "../store"
-import { urlBaseAPI } from "../global"
+import styles from '../estilos/Home.module.css'
+import { useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { DadosContexto } from '../store'
 
 export default function Home(){
     
@@ -32,9 +31,7 @@ export default function Home(){
                             return (
                                 <CardContaText 
                                     key={conta.id} 
-                                    icone={conta.icone}
-                                    conta={conta.nome} 
-                                    saldo={conta.saldo}                             
+                                    conta={conta}                           
                                 />
                             );
                         })
@@ -65,8 +62,8 @@ export default function Home(){
                     </div> 
 
                     <div className={styles.containerBotoes}>
-                        <BotaoNavegar link="/adicionar-receita">Adicionar Receita</BotaoNavegar>
-                        <BotaoNavegar link="/adicionar-despesa">Adicionar Despesa</BotaoNavegar>                        
+                        <BotaoNavegar link='/adicionar-receita'>Adicionar Receita</BotaoNavegar>
+                        <BotaoNavegar link='/adicionar-despesa'>Adicionar Despesa</BotaoNavegar>                        
                     </div>
                 </div>
             </div>

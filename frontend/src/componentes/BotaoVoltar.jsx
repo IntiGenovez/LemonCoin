@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import styles from '../estilos/Botao.module.css'
 
 export default function BotaoVoltar() {

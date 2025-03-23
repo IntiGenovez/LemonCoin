@@ -1,11 +1,11 @@
 import { useState, useContext, useEffect, useTransition } from 'react'
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate } from 'react-router-dom'
 import BotaoAcao from '../componentes/BotaoAcao'
 
-import globalStyle from "../estilos/Login.module.css"
+import globalStyle from '../estilos/Login.module.css'
 
-import { DadosContexto } from "../store"
-import { userActions, movementsActions, accountsActions, categoriesActions } from "../store/actionFirebase"
+import { DadosContexto } from '../store'
+import { userActions } from '../store/actionFirebase'
 
 export default function Login() {
     const contexto = useContext(DadosContexto)
@@ -14,8 +14,8 @@ export default function Login() {
     const [error, setError] = useState(null)
 
     const [usuario, setUsuario] = useState({
-        email: '12345@gmail.com',
-        senha: '123456'
+        email: '',
+        senha: ''
     })
 
     const handleClick = async e => {
@@ -30,11 +30,12 @@ export default function Login() {
             try {
                 navigate('/home')
             } catch (err) {
-                setError("Erro ao obter dados: " + err.message)
+                setError('Erro ao obter dados: ' + err.message)
             }
-        } else {
-            setError("Usuário inválido")
+            return
         }
+        
+        setError('Usuário inválido')
     }
 
     const handleRecuperarSenha = async e => {
@@ -47,9 +48,9 @@ export default function Login() {
         if (sucesso) {
             setError(null)
             return
-        } else {
-            setError("Informe seu email")
         }
+
+        setError('Informe seu email')
     }
 
     return (
@@ -58,7 +59,7 @@ export default function Login() {
             <div className={globalStyle.formulario}>
                 <h1>Usuário</h1>
                 <input 
-                    type="text" 
+                    type='text' 
                     value={ usuario.email } 
                     onChange={ e => setUsuario(prev => ({...prev, email: e.target.value})) }
                     disabled={loading}
@@ -66,7 +67,7 @@ export default function Login() {
 
                 <h1>Senha</h1>
                 <input 
-                    type="password" 
+                    type='password' 
                     value={ usuario.senha } 
                     onChange={ e => setUsuario(prev => ({...prev, senha: e.target.value})) }
                     disabled={loading}
@@ -77,10 +78,10 @@ export default function Login() {
                 {error && <p>{error}</p>}
 
                 <BotaoAcao onClick={ handleClick } disabled={loading}>
-                    {loading ? "Entrando..." : "Entrar"}
+                    {loading ? 'Entrando...' : 'Entrar'}
                 </BotaoAcao>
 
-                <Link to="/cadastro">Ainda não possuo conta</Link>
+                <Link to='/cadastro'>Ainda não possuo conta</Link>
             </div>
         </form>
     );

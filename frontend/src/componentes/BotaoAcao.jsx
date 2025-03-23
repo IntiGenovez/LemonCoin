@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import styles from '../estilos/Botao.module.css'
 
 export default function BotaoAcao({ children, onClick }) {

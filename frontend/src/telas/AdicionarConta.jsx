@@ -1,7 +1,7 @@
-import CrudConta from "../componentes/CrudConta"
+import CrudConta from '../componentes/CrudConta'
 
-export default function AdicionarConta(){
+export default function AdicionarConta({ tipo }){
     return(
-        <div className="tela-padrao"><CrudConta tipo="Adicionar" /></div>
+        <div className='tela-padrao'><CrudConta tipo={ tipo } /></div>
     )
 }

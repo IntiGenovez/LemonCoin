@@ -1,25 +1,26 @@
 
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from 'react-router-dom'
+import formatarValor from '../store/utils/formatCurrency'
 
 export default function TextGasto({nome, valor, tipo}){
     const navigate = useNavigate()
 
-    let valorDespesa
+    let valorMovimentacao
     let caminho
 
-    if (tipo === "Receita") {
-        valorDespesa = "+ " + valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
-        caminho = "/receitas"
-    } else if(tipo === "Despesa") {
-        valorDespesa = "- " + valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
-        caminho = "/despesas"
+    if (tipo === 'Receita') {
+        valorMovimentacao = '+ ' + formatarValor(valor)
+        caminho = '/receitas'
+    } else if(tipo === 'Despesa') {
+        valorMovimentacao = '- ' + formatarValor(valor)
+        caminho = '/despesas'
     }
 
     return (
         <div onClick={() => navigate(caminho)}
         style={{display: 'flex', justifyContent: 'space-between'}}>
             <span>{nome}</span>
-            <span>{valorDespesa}</span>
+            <span>{valorMovimentacao}</span>
         </div>
     );
 }

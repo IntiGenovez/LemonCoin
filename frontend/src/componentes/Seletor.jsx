@@ -1,4 +1,4 @@
-import styles from "../estilos/Movimentacoes.module.css"
+import styles from '../estilos/Movimentacoes.module.css'
 
 export default function Seletor({ nome, isAtivo, isUp, setAtivo }) {
     return (

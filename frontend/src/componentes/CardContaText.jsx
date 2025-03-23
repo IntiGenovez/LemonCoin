@@ -1,14 +1,15 @@
-import styles from "../estilos/CardContaText.module.css"
+import styles from '../estilos/CardContaText.module.css'
+import formatarValor from '../store/utils/formatCurrency'
 
-export default function CardContaText({conta, saldo}){
-    
-    conta = conta.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, (letra) => letra.toUpperCase())
-    saldo = saldo.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+import { useNavigate } from 'react-router-dom'
+
+export default function CardContaText({ conta }){
+    const navigate = useNavigate()
     return (
-        <div className={styles.card}>
-            {conta}
+        <div className={ styles.card } onClick={ () => navigate(`/editar-conta/${conta.id}`) } >
+            { conta.nome }
             <br />
-            {saldo}
+            { formatarValor(conta.saldo) }
         </div>
     )
 }

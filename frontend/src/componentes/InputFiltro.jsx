@@ -1,9 +1,9 @@
 export default function InputFiltro() {
 
     return (
-        <select name="filtro" id="filtro">
+        <select name='filtro' id='filtro'>
             { seletores.map((seletor) =>
-                (<option value="#">
+                (<option value='#'>
                     <Seletor
                         nome={ seletor }
                         key={ seletor }
@@ -14,5 +14,5 @@ export default function InputFiltro() {
                 </option>)
             )}
         </select>
-    );
+    )
 }
