@@ -1,8 +1,8 @@
-import { initializeApp } from "firebase/app"
-import { getAnalytics } from "firebase/analytics"
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "firebase/auth"
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, setDoc, doc } from "firebase/firestore"
-import { getStorage } from "firebase/storage"
+import { initializeApp } from 'firebase/app'
+import { getAnalytics } from 'firebase/analytics'
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from 'firebase/auth'
+import { getFirestore, collection, addDoc, getDocs, getDoc, deleteDoc, setDoc, doc } from 'firebase/firestore'
+import { getStorage } from 'firebase/storage'
 
 const env = import.meta.env
 
@@ -23,31 +23,52 @@ const analytics = getAnalytics(app)
 
 
 export const firestore = async (type, method, id, payload) => {
-    let querySnapshot
-    if(method === 'save')
-        return await addDoc(collection(db, type), payload)
+    let querySnapshot, docSnap
+    if(method === 'save') {
+        if (auth.currentUser) return await addDoc(collection(db, 'usuarios', auth.currentUser.uid, type), payload)
+        else return await addDoc(collection(db, type), payload)
+    }
 
     if(method === 'read') {
-        querySnapshot = await getDocs(collection(db, type))
-        const arrayFromQuery = []
-        let data
-        querySnapshot.forEach(doc => {
-            data = doc.data()
-            data.id = doc.id
+        const arrayFromQuery = new Array()
+        querySnapshot = await getDocs(collection(db, 'usuarios', id, type))
+        for (const document of querySnapshot.docs) {
+            let data = document.data()
+            if (data.data) data.data = data.data.toDate()
+            data.id = document.id
+
+            if (type === 'movimentações') {
+                let docRef = doc(db, 'usuarios', id, 'categorias', data.categoriaId)
+                let docSnap = await getDoc(docRef)
+                if (docSnap.exists()) {
+                    data.categoria = docSnap.data().nome
+                }
+
+                docRef = doc(db, 'usuarios', id, 'contas', data.contaId)
+                docSnap = await getDoc(docRef)
+                if (docSnap.exists()) {
+                    data.conta = docSnap.data().nome
+                }
+            }
             arrayFromQuery.push(data)
-        })
+        }
         return arrayFromQuery
     }
 
+    if(method === 'readbyid') {
+        const docRef = doc(db, type, id)
+        docSnap = await getDoc(docRef)
+        return docSnap.data()
+    }
+
     if(method === 'delete') {
-        await deleteDoc(doc(db, type, id))
+        if (auth.currentUser) return await deleteDoc(doc(db, 'usuarios', auth.currentUser.uid, type, id))
+        else return await deleteDoc(doc(db, type, id))
     }
 
     if(method === 'update') {
-        console.log(type)
-        console.log(id)
-        console.log(payload)
-        await setDoc(doc(db, type, id), payload)
+        if (auth.currentUser) return await setDoc(doc(db, 'usuarios', auth.currentUser.uid, type, id), payload)
+        else return await setDoc(doc(db, type, id), payload)
     }
         
 }
@@ -57,16 +78,48 @@ export const isUserSignedIn = (callback) => {
 }
 
 const signInUser = async (email, password) => {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password)
-    return userCredential.user
+    await signInWithEmailAndPassword(auth, email, password)
+    const usuario = await getUserData()
+    return usuario
+}
+
+const getUserData = async () => {
+    return new Promise((resolve) => {
+        isUserSignedIn(async (user) => {
+            if (!user) {
+                resolve(null) // Retorna null se o usuário não estiver logado
+                return
+            }
+            
+            const categorias = await firestore('categorias', 'read', user.uid)
+            const contas = await firestore('contas', 'read', user.uid)
+            const movimentacoes = await firestore('movimentações', 'read', user.uid)
+            const usuario = await firestore('usuarios', 'readbyid', user.uid)
+
+            resolve({
+                usuario,
+                categorias,
+                contas,
+                movimentacoes
+            })
+        })
+    })
 }
 
 const signOutUser = async () => {
     await signOut(auth)
 }
 
-const signUpUser = async (email, password) => {
+const signUpUser = async (usuario) => {
+    const email = usuario.email
+    const password = usuario.senha
+    delete usuario.email
+    delete usuario.senha
+    delete usuario.confirmarSenha
+
+    
     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+    firestore('usuarios', 'update', userCredential.user?.uid, usuario)
     return userCredential.user
 }
 
@@ -74,6 +127,6 @@ const resetPassword = async (email) => {
     await sendPasswordResetEmail(auth, email)
 }
 
-const firebase = { signInUser, signOutUser, signUpUser, resetPassword }
+const firebase = { signInUser, signOutUser, signUpUser, resetPassword, getUserData }
 
 export default firebase 

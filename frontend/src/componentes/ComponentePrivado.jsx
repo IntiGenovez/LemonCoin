@@ -7,8 +7,12 @@ export default function ComponentePrivado({ children }) {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        isUserSignedIn(setUsuarioAutenticado)
-        setLoading(false)
+        const unsubscribe = isUserSignedIn(user => {
+            setUsuarioAutenticado(user)
+            setLoading(false)
+        })
+        
+        return () => unsubscribe()
     }, [])
 
     if (loading) return <p>Carregando...</p>
@@ -17,7 +21,7 @@ export default function ComponentePrivado({ children }) {
         <>
             { 
                 !usuarioAutenticado ? 
-                    <Navigate to='/home' replace />
+                    <Navigate to='/' replace />
                 :
                     children 
             }

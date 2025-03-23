@@ -20,9 +20,7 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
         id: movimentacao.contaId,
     })
 
-    let dataFormatada = movimentacao.data.split('T').length === 2 ? 
-        movimentacao.data.split('T')[0].split('-').reverse().join('/') : 
-        movimentacao.data.split(' ')[0].split('-').reverse().join('/')
+    let dataFormatada = movimentacao.data.toLocaleString('pt-BR').split(',')[0] 
 
     const formatarValor = valor => {
         if (typeof valor === 'number') {
@@ -135,7 +133,6 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
                     <span onClick={(() => navigate(`/editar-conta/${movimentacao.contaId}`))}>
                         <div className={styles.nomeLinha}>Conta: </div>
                         { movimentacao.conta
-                        .replace(/_/g, ' ')
                         .toLowerCase().replace(/\b\w/g, (letra) => letra.toUpperCase())}
                     </span>
                     <span>

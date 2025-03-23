@@ -6,21 +6,13 @@ const handleError = (dispatch, error, link) => {
 }
 
 const accountsActions = {
-    obterContas: async (dispatch) => {
-        try {
-            const data = await firestore('contas', 'read')
-            dispatch({ type: 'obterContas', payload: { contas: data } })
-        } catch (error) {
-            handleError(dispatch, error, '/contas')
-        }
-    },
     atualizarConta: async (dispatch, conta) => {
         try {
-            await firestore('contas', 'update', conta)
+            await firestore('contas', 'update', conta.id, conta)
             dispatch({ type: 'atualizarConta', payload: { conta } })
             dispatch({ type: 'exibirMensagem', payload: { mensagem: "Conta atualizada.", titulo: 'Sucesso', tipo: 'success', link: '/contas' } })
         } catch (error) {
-            handleError(dispatch, error, '/contas')
+            handleError(dispatch, error, '/editar-conta/' + conta.id)
         }
     },
     deletarConta: async (dispatch, conta) => {
@@ -34,11 +26,11 @@ const accountsActions = {
     },
     adicionarConta: async (dispatch, conta) => {
         try {
-            const id = await firestore('contas', 'save', conta)
+            const id = await firestore('contas', 'save', conta.id, conta)
             dispatch({ type: 'adicionarConta', payload: { conta, id } })
             dispatch({ type: 'exibirMensagem', payload: { mensagem: "Conta cadastrada.", titulo: 'Sucesso', tipo: 'success', link: '/contas' } })
         } catch (error) {
-            handleError(dispatch, error, '/contas')
+            handleError(dispatch, error, '/adicionar-conta')
         }
     }
 }

@@ -6,14 +6,6 @@ const handleError = (dispatch, error, link) => {
 }
 
 const movementsActions = {
-    obterMovimentacoes: async (dispatch) => {
-        try {
-            const data = await firestore('movimentações', 'read')
-            dispatch({ type: 'obterMovimentacoes', payload: { movimentacoes: data } })
-        } catch (error) {
-            handleError(dispatch, error, `${movimentacao.tipo.toLowerCase()}s`)
-        }
-    },
     ordenarMovimentacoes: (dispatch, seletorOrdenador, invertido) => {
         dispatch({ type: 'ordenarMovimentacoes', payload: { seletorOrdenador, invertido } })
     },
@@ -61,12 +53,13 @@ const movementsActions = {
     },
     adicionarMovimentacao: async (dispatch, movimentacao) => {
         try {
+            movimentacao.data = new Date(movimentacao.data)
             const movimentacaoToFetch = { ...movimentacao }
             delete movimentacaoToFetch.conta
             delete movimentacaoToFetch.categoria
             delete movimentacaoToFetch.usuario
 
-            const id = await firestore('movimentações', 'save', movimentacaoToFetch)
+            const id = await firestore('movimentações', 'save', null, movimentacaoToFetch)
             dispatch({ type: 'adicionarMovimentacao', payload: { movimentacao, id } })
             dispatch({ 
                 type: 'atualizarSaldo', 

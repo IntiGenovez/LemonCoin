@@ -23,7 +23,6 @@ import AdicionarDespesa from "./telas/AdicionarDespesa.jsx"
 import AdicionarReceita from "./telas/AdicionarReceita.jsx"
 import AdicionarConta from "./telas/AdicionarConta.jsx"
 import EditarConta from "./telas/EditarConta.jsx"
-import Home from "./telas/Home.jsx"
 
 import ComponentePrivado from "./componentes/ComponentePrivado.jsx"
 
@@ -93,7 +92,7 @@ function App() {
         },
         {
           path: '/home',
-          element: <Apresentacao><Home /></Apresentacao>
+          element: <Apresentacao />
         }
       ]
     }

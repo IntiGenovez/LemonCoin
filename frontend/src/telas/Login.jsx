@@ -15,7 +15,7 @@ export default function Login() {
 
     const [usuario, setUsuario] = useState({
         email: '12345@gmail.com',
-        senha: '12345'
+        senha: '123456'
     })
 
     const handleClick = async e => {
@@ -29,11 +29,6 @@ export default function Login() {
         if(sucesso) {
             try {
                 navigate('/home')
-                await Promise.all([
-                    movementsActions.obterMovimentacoes(contexto.dispatch),
-                    accountsActions.obterContas(contexto.dispatch),
-                    categoriesActions.obterCategorias(contexto.dispatch)
-                ])
             } catch (err) {
                 setError("Erro ao obter dados: " + err.message)
             }
