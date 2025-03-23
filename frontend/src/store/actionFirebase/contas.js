@@ -26,8 +26,8 @@ const accountsActions = {
     },
     adicionarConta: async (dispatch, conta) => {
         try {
-            const id = await firestore('contas', 'save', conta.id, conta)
-            dispatch({ type: 'adicionarConta', payload: { conta, id } })
+            const docRef = await firestore('contas', 'save', conta.id, conta)
+            dispatch({ type: 'adicionarConta', payload: { conta, id: docRef.id } })
             dispatch({ type: 'exibirMensagem', payload: { mensagem: "Conta cadastrada.", titulo: 'Sucesso', tipo: 'success', link: '/contas' } })
         } catch (error) {
             handleError(dispatch, error, '/adicionar-conta')
