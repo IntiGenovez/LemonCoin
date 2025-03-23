@@ -1,9 +1,9 @@
-import { useState, useContext, useEffect } from "react";
-import Movimentacao from "../componentes/Movimentacao";
-import Seletor from "../componentes/Seletor";
-import BotaoNavegar from "../componentes/BotaoNavegar";
+import { useState, useContext, useEffect } from "react"
+import Movimentacao from "../componentes/Movimentacao"
+import Seletor from "../componentes/Seletor"
+import BotaoNavegar from "../componentes/BotaoNavegar"
 import styles from "../estilos/Movimentacoes.module.css"
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom"
 
 
 import { DadosContexto } from "../store"
@@ -23,21 +23,21 @@ export default function Movimentacoes({ tipo }) {
     const [tamanho, setTamanho] = useState({
         largura: window.innerWidth,
         altura: window.innerHeight
-    });
+    })
+    const contexto = useContext(DadosContexto)
 
     useEffect(() => {
         const handleResize = () => {
             setTamanho({
                 largura: window.innerWidth,
                 altura: window.innerHeight
-            });
-        };
+            })
+        }
 
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
+        window.addEventListener("resize", handleResize)
+        return () => window.removeEventListener("resize", handleResize)
+    }, [])
     
-    const contexto = useContext(DadosContexto)
 
     const tratarClique = (seletor) => {
         if (seletor === seletorAtivo) {
@@ -91,9 +91,7 @@ export default function Movimentacoes({ tipo }) {
 
                 <ul>
                     { contexto.state.movimentacoes
-                        .filter(movimentacao => {
-                            return movimentacao.tipo === tipo
-                        })
+                        .filter(movimentacao => movimentacao.tipo === tipo)
                         .map(movimentacao => {
                             return (<Movimentacao  
                                 tipo={ tipo } 

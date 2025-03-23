@@ -7,14 +7,6 @@ const handleError = (dispatch, error, link) => {
 }
 
 const categoriesActions = {
-    obterCategorias: async (dispatch) => {
-        try {
-            const data = await firestore('categorias', 'read')
-            dispatch({ type: 'obterCategorias', payload: { categorias: data } })
-        } catch (error) {
-            handleError(dispatch, error, '/categorias')
-        }
-    },
     atualizarCategoria: async (dispatch, categoria) => {
         try {
             await firestore('categorias', 'update', categoria.id, { nome: categoria.nome })
@@ -33,6 +25,8 @@ const categoriesActions = {
     },
     adicionarCategoria: async (dispatch, categoria) => {
         try {
+            console.log(categoria)
+            console.log(categoria.id)
             const docRef = await firestore('categorias', 'save', categoria.id, { nome: categoria.nome })
             dispatch({ type: 'adicionarCategoria', payload: { categoria, id: docRef.id } })
         } catch (error) {

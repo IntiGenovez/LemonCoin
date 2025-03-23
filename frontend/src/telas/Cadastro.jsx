@@ -1,15 +1,12 @@
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { DadosContexto } from "../store"
-import { userActions } from "../store/actionFirebase"
+import { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { DadosContexto } from '../store'
+import { userActions } from '../store/actionFirebase'
 
-import InputDia from "../componentes/InputDia";
-import InputAno from "../componentes/InputAno";
-import InputMes from "../componentes/InputMes";
-import Mensagem from "../componentes/Mensagem"
+import InputDia from '../componentes/InputDia'
 
-import styles from "../estilos/Cadastro.module.css"
-import BotaoAcao from "../componentes/BotaoAcao";
+import styles from '../estilos/Cadastro.module.css'
+import BotaoAcao from '../componentes/BotaoAcao'
 
 export default function Cadastro(){
     const contexto = useContext(DadosContexto)
@@ -35,15 +32,14 @@ export default function Cadastro(){
                 genero: usuario.genero
             })
 
-            console.log(usuario)
 
             if (cadastrar) {
-                console.log("Cadastro realizado com sucesso")
+                console.log('Cadastro realizado com sucesso')
             } else {
                 console.log(cadastrar)
             }
         } catch (error) {
-            console.log("Erro ao realizar cadastro: ", error)
+            console.log('Erro ao realizar cadastro: ', error)
         }
     }
 
@@ -61,11 +57,11 @@ export default function Cadastro(){
     return (
         <form className={styles.formulario}>
             <h1>CADASTRE-SE AQUI</h1>
-            <input type="text" value={ usuario.nome } placeholder='Nome Completo: ' 
+            <input type='text' value={ usuario.nome } placeholder='Nome Completo: ' 
                 onChange={ e => setUsuario({ ...usuario, nome: e.target.value}) } />
-            <input type="text" value={ usuario.email } placeholder='Email: ' 
+            <input type='text' value={ usuario.email } placeholder='Email: ' 
                 onChange={ e => setUsuario({ ...usuario, email: e.target.value}) } />
-            <input type="text" value={ usuario.telefone } placeholder='Telefone: ' 
+            <input type='text' value={ usuario.telefone } placeholder='Telefone: ' 
                 onChange={e => handleInputTelefone(e)} />
             
             <div>
@@ -102,10 +98,10 @@ export default function Cadastro(){
                 
                 <div className={styles.divSenha}>
                     <span>Senha</span>
-                    <input type="password" name="Senha" id="Senha" value={usuario.senha} 
+                    <input type='password' name='Senha' id='Senha' value={usuario.senha} 
                         onChange={ e => setUsuario({ ...usuario, senha: e.target.value}) } />                
                     <span>Confirmar Senha</span>
-                    <input type="password" name="Confirm-senha" id="Confirm-senha" value={usuario.confirmarSenha} 
+                    <input type='password' name='Confirm-senha' id='Confirm-senha' value={usuario.confirmarSenha} 
                         onChange={ e => setUsuario({ ...usuario, confirmarSenha: e.target.value}) } />
                 </div>
                 <BotaoAcao onClick={ handleClick }>Cadastrar</BotaoAcao>
@@ -114,5 +110,5 @@ export default function Cadastro(){
             
             
         </form>
-    );
+    )
 }

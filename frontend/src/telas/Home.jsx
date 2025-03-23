@@ -26,15 +26,14 @@ export default function Home(){
             <div className={styles.divDados}>
                 <div className={styles.containerContas}>
                     { contexto.state.contas
-                        .sort((a, b) => parseFloat(b.saldo) - parseFloat(a.saldo)) //oredena pelos maiores saldos
+                        .sort((a, b) => parseFloat(b.saldo) - parseFloat(a.saldo)) //ordena pelos maiores saldos
                         .slice(0, 4) 
                         .map(conta => {
                             return (
                                 <CardContaText 
                                     key={conta.id} 
                                     icone={conta.icone}
-                                    conta={conta.proprietario} 
-                                    proprietario={conta.proprietario} 
+                                    conta={conta.nome} 
                                     saldo={conta.saldo}                             
                                 />
                             );

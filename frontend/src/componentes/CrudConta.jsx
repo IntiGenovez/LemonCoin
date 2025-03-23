@@ -34,7 +34,6 @@ export default function CrudConta({ tipo }){
         nome: '',
         saldo: '',
         icone: null,
-        proprietario: '',
         descricao: ''
     })
 
@@ -73,7 +72,7 @@ export default function CrudConta({ tipo }){
 
     useEffect(() => {
         if (tipo === 'Atualizar' && id) {
-            const contaParaAtualizar = contexto.state.contas.find(conta => conta.id === +id)
+            const contaParaAtualizar = contexto.state.contas.find(conta => conta.id === id)
             if (contaParaAtualizar) {
                 contaParaAtualizar.saldo = formatarSaldo(contaParaAtualizar.saldo)
                 setConta(contaParaAtualizar)

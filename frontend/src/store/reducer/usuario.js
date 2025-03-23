@@ -2,7 +2,7 @@ function usuarioReducer(estado, action) {
     let novoEstado
     switch (action.type) {
         case 'signin':
-            novoEstado = { ...estado, usuario: action.payload.usuario }
+            novoEstado = { ...estado, ...action.payload }
             break
         case 'signout': 
             novoEstado = { 

@@ -22,7 +22,6 @@ export default function Contas() {
                                 id={conta.id}
                                 icone={conta.icone}
                                 nome={conta.nome} 
-                                proprietario={conta.proprietario} 
                                 saldo={conta.saldo}                             
                             />
                         )
