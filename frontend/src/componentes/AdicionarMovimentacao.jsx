@@ -9,6 +9,7 @@ import formatarMoeda from '../store/utils/formatCurrency'
 import styles from '../estilos/AdicionarMovimentacao.module.css'
 import BotaoNavegar from './BotaoNavegar'
 import BotaoAcao from './BotaoAcao'
+import { useNavigate } from 'react-router-dom'
 
 export default function AdicionarMovimentacao({ tipo }){
     const contexto = useContext(DadosContexto)
@@ -32,6 +33,8 @@ export default function AdicionarMovimentacao({ tipo }){
         nome: '',
         id: ''
     })
+
+    const navigate = useNavigate()
 
     //Define a data do input['date'] para a data de hoje
     useEffect(() => {
@@ -60,7 +63,7 @@ export default function AdicionarMovimentacao({ tipo }){
         })
     }
 
-    const handleConfirmar = e => {
+    const handleConfirmar = async e => {
         e.preventDefault()
         const novaMovimentacao = { 
             ...movimentacao,
@@ -76,7 +79,8 @@ export default function AdicionarMovimentacao({ tipo }){
             novaMovimentacao.valor = +novaMovimentacao.valor
         }
         
-        movementsActions.adicionarMovimentacao(contexto.dispatch, novaMovimentacao)
+        const sucesso = await movementsActions.adicionarMovimentacao(contexto.dispatch, novaMovimentacao)
+        if(sucesso) navigate(`/${tipo}s`)
     }
 
     return(
