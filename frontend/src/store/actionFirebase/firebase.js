@@ -33,19 +33,19 @@ export const firestore = async (type, method, id, payload) => {
         querySnapshot = await getDocs(collection(db, 'usuarios', id, type))
         for (const document of querySnapshot.docs) {
             let data = document.data()
-            if (data.data) data.data = data.data.toDate()
+            if(data.data) data.data = data.data.toDate()
             data.id = document.id
 
-            if (type === 'movimentações') {
+            if(type === 'movimentações') {
                 let docRef = doc(db, 'usuarios', id, 'categorias', data.categoriaId)
                 let docSnap = await getDoc(docRef)
-                if (docSnap.exists()) {
+                if(docSnap.exists()) {
                     data.categoria = docSnap.data().nome
                 }
 
                 docRef = doc(db, 'usuarios', id, 'contas', data.contaId)
                 docSnap = await getDoc(docRef)
-                if (docSnap.exists()) {
+                if(docSnap.exists()) {
                     data.conta = docSnap.data().nome
                 }
             }
@@ -61,12 +61,13 @@ export const firestore = async (type, method, id, payload) => {
     }
 
     if(method === 'delete') {
-        if (auth.currentUser) return await deleteDoc(doc(db, 'usuarios', auth.currentUser.uid, type, id))
+        if(auth.currentUser) return await deleteDoc(doc(db, 'usuarios', auth.currentUser.uid, type, id))
         else return await deleteDoc(doc(db, type, id))
     }
 
     if(method === 'update') {
-        if (auth.currentUser) return await setDoc(doc(db, 'usuarios', auth.currentUser.uid, type, id), payload)
+        if(type === 'usuarios') return await setDoc(doc(db, type, id), payload)
+        if(auth.currentUser) return await setDoc(doc(db, 'usuarios', auth.currentUser.uid, type, id), payload)
         else return await setDoc(doc(db, type, id), payload)
     }
      
@@ -94,7 +95,7 @@ const signInUser = async (email, password) => {
 const getUserData = async () => {
     return new Promise((resolve) => {
         isUserSignedIn(async (user) => {
-            if (!user) {
+            if(!user) {
                 resolve(null) // Retorna null se o usuário não estiver logado
                 return
             }
@@ -127,7 +128,7 @@ const signUpUser = async (usuario) => {
 
     
     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-    firestore('usuarios', 'save', userCredential.user?.uid, usuario)
+    firestore('usuarios', 'update', userCredential.user?.uid, usuario)
     return userCredential.user
 }
 

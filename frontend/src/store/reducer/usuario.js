@@ -7,6 +7,9 @@ function usuarioReducer(estado, action) {
         case 'signout': 
             novoEstado = { 
                 ...estado, 
+                movimentacoes: [],
+                contas: [],
+                categorias: [],
                 usuario: {
                     id: null,
                     nome: '',
