@@ -1,11 +1,11 @@
-import { useContext, useState, useRef, useEffect } from "react"
+import { useContext, useState, useRef, useEffect, useImperativeHandle, forwardRef } from "react"
 import { DadosContexto } from "../store"
 
 import { categoriesActions } from "../store/actionFirebase"
 
 import styles from '../estilos/Categoria.module.css'
 
-export default function Categoria({ id, nome, adicionar, naoAdicionar, categoriaEditavel, setCategoriaEditavel }) {
+const Categoria = forwardRef(function Categoria({ id, nome, adicionar, naoAdicionar, categoriaEditavel, setCategoriaEditavel }, ref) {
     const contexto = useContext(DadosContexto)
     const [ newCategoria, setNewCategoria ] = useState({
         nome: nome,
@@ -13,18 +13,25 @@ export default function Categoria({ id, nome, adicionar, naoAdicionar, categoria
     })
     const inputRef = useRef(null)
 
+    useImperativeHandle(ref, () => ({
+        adicionarCategoria: () => {
+            handleConfirmar()
+        }
+    }))
+
     useEffect(() => {
-        inputRef.current?.focus()
-    }, [newCategoria])
+        if (adicionar || categoriaEditavel) {
+            inputRef.current?.focus()
+        }
+    }, [adicionar, categoriaEditavel])
 
     const handleConfirmar = e => {
-        if(e.type === 'keyup' && e.key === 'Escape') {
-            console.log('aqui')
+        if(e && e.type === 'keyup' && e.key === 'Escape') {
             setCategoriaEditavel(null)
             naoAdicionar()  
             return
         }
-        if(e.type === 'keyup' && e.key != 'Enter') return
+        if(e && e.type === 'keyup' && e.key != 'Enter') return
         
         if (adicionar) {
             categoriesActions.adicionarCategoria(contexto.dispatch, newCategoria)
@@ -88,4 +95,6 @@ export default function Categoria({ id, nome, adicionar, naoAdicionar, categoria
             </div>
         </>
     )
-}
+})
+
+export default Categoria

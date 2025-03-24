@@ -1,5 +1,4 @@
 import { useContext, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { DadosContexto } from '../store'
 import { userActions } from '../store/actionFirebase'
 
@@ -19,28 +18,27 @@ export default function Cadastro(){
         senha: '',
         confirmarSenha: ''
     })
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
 
     const handleClick = async e => {
         e.preventDefault()
         try {
-            const cadastrar = await userActions.signup(contexto.dispatch, {
-                nome: usuario.nome,
-                email: usuario.email,
-                senha: usuario.senha,
-                confirmarSenha: usuario.confirmarSenha,
-                telefone: usuario.telefone,
-                genero: usuario.genero
-            })
+            setLoading(true)
+            setError(null)
 
+            const sucesso = await userActions.signup(contexto.dispatch, { ...usuario })
+            setLoading(false)
 
-            if (cadastrar) {
+            if (sucesso) {
                 console.log('Cadastro realizado com sucesso')
-            } else {
-                console.log(cadastrar)
-            }
+                return
+            } 
         } catch (error) {
-            console.log('Erro ao realizar cadastro: ', error)
+            setError(err.message)
         }
+
+        setError('Verifique os Dados e Tente Novamente')
     }
 
     const handleInputTelefone = e => {
@@ -57,10 +55,11 @@ export default function Cadastro(){
     return (
         <form className={styles.formulario}>
             <h1>CADASTRE-SE AQUI</h1>
+            {error && <p>{error}</p>}
             <input type='text' value={ usuario.nome } placeholder='Nome Completo: ' 
-                onChange={ e => setUsuario({ ...usuario, nome: e.target.value}) } />
+                onChange={ e => setUsuario(prev => ({ ...prev, nome: e.target.value})) } />
             <input type='text' value={ usuario.email } placeholder='Email: ' 
-                onChange={ e => setUsuario({ ...usuario, email: e.target.value}) } />
+                onChange={ e => setUsuario(prev => ({ ...prev, email: e.target.value})) } />
             <input type='text' value={ usuario.telefone } placeholder='Telefone: ' 
                 onChange={e => handleInputTelefone(e)} />
             
@@ -80,19 +79,19 @@ export default function Cadastro(){
                         Masculino 
                         <input type='radio' value='M' 
                             checked={ usuario.genero === 'M'} 
-                            onChange={ e => setUsuario({ ...usuario, genero: e.target.value }) }/>
+                            onChange={ e => setUsuario(prev => ({ ...prev, genero: e.target.value })) }/>
                     </label>
                     <label className={styles.margin} style={{fontWeight: '600'}}>
                         Feminino 
                         <input type='radio' value='F' 
                             checked={ usuario.genero === 'F'} 
-                            onChange={ e => setUsuario({ ...usuario, genero: e.target.value }) }/>
+                            onChange={ e => setUsuario(prev => ({ ...prev, genero: e.target.value })) }/>
                     </label>
                     <label className={styles.margin} style={{fontWeight: '600'}}>
                         Outro 
                         <input type='radio' value='O' 
                             checked={ usuario.genero === 'O'} 
-                            onChange={ e => setUsuario({ ...usuario, genero: e.target.value }) }/>
+                            onChange={ e => setUsuario(prev => ({ ...prev, genero: e.target.value })) }/>
                     </label>
                 </div>
                 
@@ -105,10 +104,7 @@ export default function Cadastro(){
                         onChange={ e => setUsuario({ ...usuario, confirmarSenha: e.target.value}) } />
                 </div>
                 <BotaoAcao onClick={ handleClick }>Cadastrar</BotaoAcao>
-
             </div>
-            
-            
         </form>
     )
 }

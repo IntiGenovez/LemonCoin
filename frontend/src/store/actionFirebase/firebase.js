@@ -25,8 +25,7 @@ const analytics = getAnalytics(app)
 export const firestore = async (type, method, id, payload) => {
     let querySnapshot, docSnap
     if(method === 'save') {
-        if (auth.currentUser) return await addDoc(collection(db, 'usuarios', auth.currentUser.uid, type), payload)
-        else return await addDoc(collection(db, type), payload)
+        return await addDoc(collection(db, 'usuarios', auth.currentUser.uid, type), payload)
     }
 
     if(method === 'read') {
@@ -70,7 +69,16 @@ export const firestore = async (type, method, id, payload) => {
         if (auth.currentUser) return await setDoc(doc(db, 'usuarios', auth.currentUser.uid, type, id), payload)
         else return await setDoc(doc(db, type, id), payload)
     }
-        
+     
+    if(method === 'updateBalance') {
+        const docRef = doc(db, 'usuarios', auth.currentUser.uid, type, id)
+        docSnap = await getDoc(docRef)
+        const data = docSnap.data()
+        console.log(payload)
+        data.saldo = data.saldo + payload
+
+        await setDoc(doc(db, 'usuarios', auth.currentUser.uid, type, id), data)
+    }
 }
 
 export const isUserSignedIn = (callback) => {
@@ -119,7 +127,7 @@ const signUpUser = async (usuario) => {
 
     
     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-    firestore('usuarios', 'update', userCredential.user?.uid, usuario)
+    firestore('usuarios', 'save', userCredential.user?.uid, usuario)
     return userCredential.user
 }
 
