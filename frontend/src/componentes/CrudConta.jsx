@@ -37,8 +37,9 @@ export default function CrudConta({ tipo }){
         } else navigate('/adicionar-conta')
     }, [contexto.state.contas])
 
-    const handleConfirmar = (e) => { //quando o botão de confirmar é precionado
+    const handleConfirmar = async (e) => { //quando o botão de confirmar é precionado
         e.preventDefault()
+        let sucesso
 
         let NovoSaldo = conta.saldo.replace('R$ ', '').replace(',', '.')
         NovoSaldo = +NovoSaldo
@@ -46,15 +47,17 @@ export default function CrudConta({ tipo }){
         const novaConta = { ...conta, saldo: NovoSaldo }
 
         if (tipo === 'Adicionar') 
-            accountsActions.adicionarConta(contexto.dispatch, novaConta)
+            sucesso = await accountsActions.adicionarConta(contexto.dispatch, novaConta)
         else if(tipo === 'Atualizar'){
-            accountsActions.atualizarConta(contexto.dispatch, novaConta)
-        }                            
+            sucesso = await accountsActions.atualizarConta(contexto.dispatch, novaConta)
+        }        
+        if(sucesso) navigate('/contas')              
     }    
 
-    const handleExcluir = e => {
+    const handleExcluir = async e => {
         e.preventDefault()
-        accountsActions.deletarConta(contexto.dispatch, conta)
+        const sucesso = accountsActions.deletarConta(contexto.dispatch, conta)
+        if(sucesso) navigate('/contas')
     } 
 
     return(

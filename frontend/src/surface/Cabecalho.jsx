@@ -54,7 +54,7 @@ export default function Cabecalho() {
             </div>
             
             {
-                (location.pathname === '' || location.pathname === '/login' || location.pathname === '/cadastro') ?
+                (location.pathname === '/' || location.pathname === '/login' || location.pathname === '/cadastro') ?
                     null
                 :
                     <>

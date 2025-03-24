@@ -89,9 +89,11 @@ const movementsActions = {
                     id: movimentacao.contaId
                 }})
             dispatch({ type: 'exibirMensagem', payload: { mensagem: `${movimentacao.tipo} cadastrada com sucesso.`, titulo: 'Sucesso', tipo: 'success', link: `/${movimentacao.tipo.toLowerCase()}s` } })
+            return true
         } catch (error) {
             console.log(error.message)
             handleError(dispatch, error, `/adicionar-${movimentacao.tipo.toLowerCase()}`)
+            return true
         }
     }
 }

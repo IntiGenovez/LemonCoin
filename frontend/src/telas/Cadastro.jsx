@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { DadosContexto } from '../store'
 import { userActions } from '../store/actionFirebase'
 
@@ -20,6 +21,7 @@ export default function Cadastro(){
     })
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
+    const navigate = useNavigate()
 
     const handleClick = async e => {
         e.preventDefault()
@@ -31,7 +33,7 @@ export default function Cadastro(){
             setLoading(false)
 
             if (sucesso) {
-                console.log('Cadastro realizado com sucesso')
+                navigate('/home')
                 return
             } 
         } catch (error) {
