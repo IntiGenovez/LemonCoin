@@ -42,7 +42,7 @@ export default function Login() {
         e.preventDefault()
         setLoading(true)
         setError(null)
-        const sucesso = await userActions.recuperarSenhaPedido(contexto.dispatch, usuario)
+        const sucesso = await userActions.recuperarSenha(contexto.dispatch, usuario)
         setLoading(false)
 
         if (sucesso) {

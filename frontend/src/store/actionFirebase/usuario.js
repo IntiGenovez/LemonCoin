@@ -15,9 +15,9 @@ const objetoValido = objeto => {
     }
 }
 
-const senhasValidas = usuario => {
-    if (usuario.senha.length < 6) throw new Error('A Senha Deve Conter 6 Dígitos')
-    if (usuario.senha !== usuario.confirmarSenha) throw new Error('Senhas Diferentes')
+const senhasValidas = (senha, confirmarSenha) => {
+    if (senha.length < 6) throw new Error('A Senha Deve Conter 6 Dígitos')
+    if (senha !== confirmarSenha) throw new Error('Senhas Diferentes')
 }
 
 const userActions = {
@@ -37,7 +37,7 @@ const userActions = {
             objetoValido(usuario)
             emailValido(usuario.email)
             telefoneValido(usuario.telefone)
-            senhasValidas(usuario)
+            senhasValidas(usuario.senha, usuario.confirmarSenha)
             usuario.dataNascimento = new Date(usuario.dataNascimento)
             await firebase.signUpUser(usuario)
             const cadastroUsuario = { ...usuario }
@@ -70,40 +70,20 @@ const userActions = {
         await firebase.signOutUser()
         dispatch({ type: 'signout' })
     },
-    recuperarSenhaPedido: async (dispatch, usuario) => {
+    recuperarSenha: async (dispatch, usuario) => {
         try {
             await firebase.resetPassword(usuario.email)
             return true
         } catch (error) {
+            dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, tipo: 'warning', titulo: 'Atenção!', link: '/login' } })
             console.error('Erro ao recuperar senha: ', error)
             return false
         }
     },
-    recuperarSenha: async (dispatch, token, novaSenha, confirmarNovaSenha) => {
+    atualizarSenha: async (dispatch, oobCode, novaSenha, confirmarNovaSenha) => {
         try {
-            const response = await fetch(`${urlBaseAPI}/recuperarsenha`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ token, novaSenha, confirmarNovaSenha })
-            })
-            const contentType = response.headers.get('content-type')
-            let data;
-    
-            if (contentType && contentType.includes('application/json')) {
-                data = await response.json() // Lê como JSON
-            } else {
-                data = await response.text() // Lê como texto
-            }
-
-            console.log('Resposta da API: ', response.status, response.statusText)
-            console.log('Dados retornados pela API: ', data)
-
-            if (!response.ok) {
-                throw new Error(data || 'Erro ao recuperar senha')
-            }
-
+            senhasValidas(novaSenha, confirmarNovaSenha)
+            await firebase.updatePassword(oobCode, novaSenha)
             dispatch({ type: 'exibirMensagem', payload: { mensagem: 'Senha alterada', tipo: 'success', titulo: 'Senha alterada!', link: '/login' } })
             return true
         } catch (error) {

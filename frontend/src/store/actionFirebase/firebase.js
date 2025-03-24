@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, confirmPasswordReset } from 'firebase/auth'
 import { getFirestore, collection, addDoc, getDocs, getDoc, deleteDoc, setDoc, doc } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
 
@@ -136,6 +136,11 @@ const resetPassword = async (email) => {
     await sendPasswordResetEmail(auth, email)
 }
 
-const firebase = { signInUser, signOutUser, signUpUser, resetPassword, getUserData }
+const updatePassword = async (oobCode, password) => {
+    if(!oobCode) throw new Error('Solicitação inválida ou expirada')
+    await confirmPasswordReset(auth, oobCode, password)
+}
+
+const firebase = { signInUser, signOutUser, signUpUser, resetPassword, getUserData, updatePassword }
 
 export default firebase 
