@@ -16,7 +16,6 @@ function usuarioReducer(estado, action) {
                     email: '',
                     telefone: '',
                     genero: '',
-                    token: null
                 } }
             break
         default:

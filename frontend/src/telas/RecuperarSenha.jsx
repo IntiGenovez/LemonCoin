@@ -11,7 +11,7 @@ export default function RecuperarSenha() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [searchParams] = useSearchParams()
-    const token = searchParams.get('token')
+    const oobCode = searchParams.get("oobCode")
     const contexto = useContext(DadosContexto)
 
     const [senha, setSenha] = useState({
@@ -23,7 +23,7 @@ export default function RecuperarSenha() {
         e.preventDefault()
         setLoading(true)
         setError(null)
-        const sucesso = await userActions.recuperarSenha(contexto.dispatch, token, senha.senha, senha.confirmarSenha)
+        const sucesso = await userActions.atualizarSenha(contexto.dispatch, oobCode, senha.senha, senha.confirmarSenha)
         setLoading(false)
 
         if (sucesso) {
