@@ -39,3 +39,9 @@
     padding: 30px;
     border-radius: 20px;
 }
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear,
+input[type="password"]::-webkit-credentials-auto-fill-button {
+    display: none;
+}

@@ -38,14 +38,17 @@ const userActions = {
             emailValido(usuario.email)
             telefoneValido(usuario.telefone)
             senhasValidas(usuario)
+            usuario.dataNascimento = new Date(usuario.dataNascimento)
             await firebase.signUpUser(usuario)
-            delete usuario.senha
-            delete usuario.confirmarSenha
+            const cadastroUsuario = { ...usuario }
+            delete cadastroUsuario.senha
+            delete cadastroUsuario.confirmarSenha
 
-            dispatch({ type: 'signin', payload: usuario })
+            dispatch({ type: 'signin', payload: cadastroUsuario })
             dispatch({ type: 'exibirMensagem', payload: { mensagem: 'Cadastro Realizado com Sucesso', tipo: 'success', titulo: 'Cadastrado!', link: '/home' } })
             return true
         } catch (error) {
+            if (error.code === 'auth/email-already-in-use') error.message = 'Esse endereço de email já foi utilizado'
             dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, tipo: 'warning', titulo: 'Atenção!', link: '/cadastro' } })
             console.error('Erro no cadastro: ', error.code || error.message)
             return false

@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useRef } from 'react'
 import { DadosContexto } from '../store'
 
 import Categoria from '../componentes/Categoria'
@@ -10,6 +10,14 @@ export default function Categorias() {
     const contexto = useContext(DadosContexto)
     const [ adicionar, setAdicionar ] = useState(false)
     const [ categoriaEditavel, setCategoriaEditavel ] = useState(false)
+    const ref = useRef(null)
+
+    const adicionarCategoria = () => {
+        setCategoriaEditavel(null)
+        setAdicionar(prev => !prev)
+
+        if(adicionar) ref.current?.adicionarCategoria()
+    }
 
     return (
         <div className='tela-padrao'>
@@ -22,7 +30,8 @@ export default function Categorias() {
                             nome={ categoria.nome } 
                             categoriaEditavel={ categoriaEditavel === categoria.id }
                             setCategoriaEditavel={ setCategoriaEditavel }
-                            naoAdicionar={() => setAdicionar(false)}    
+                            naoAdicionar={() => setAdicionar(false)}
+                            ref={ ref }  
                         />
                     )
                 }
@@ -32,14 +41,11 @@ export default function Categorias() {
                             nome=''
                             adicionar 
                             naoAdicionar={() => setAdicionar(false)}
+                            ref={ ref }
                         /> 
                     : null
                 }
-                <BotaoAdicionar onClick={() => {
-                        setAdicionar(prev => !prev)
-                        setCategoriaEditavel(null)
-                    }
-                } />
+                <BotaoAdicionar onClick={ adicionarCategoria } />
             </div>
         </div>
     )

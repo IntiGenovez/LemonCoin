@@ -47,6 +47,24 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
         setMovimentacao(prev => ({ ...prev, valor: formatarValor(valor) }));
     }
 
+    const handleAtualizar = () => {
+        movimentacao.valor = movimentacao.valor.replace('R$ ', '').replace(',', '.')
+        movimentacao.valor = +movimentacao.valor
+
+        setMovimentacaoEditavel(null)
+        movimentacao.categoria = categoriaSelecionada.nome
+        movimentacao.categoriaId = categoriaSelecionada.id
+        movimentacao.conta = contaSelecionada.nome
+        movimentacao.contaId = contaSelecionada.id
+        movimentacao.valorAnterior = movimentacaoListada.valor
+        movementsActions.atualizarMovimentacao(contexto.dispatch, movimentacao)
+    }
+
+    const handleDeletar = () => {
+        movimentacao.valor = movimentacao.valor.replace('R$ ', '').replace(',', '.')
+        movimentacao.valor = +movimentacao.valor
+        movementsActions.deletarMovimentacao(contexto.dispatch, movimentacao)
+    }
 
     return (
         <li className={ styles.movimentacao }>
@@ -69,26 +87,11 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
                     <span>
                         <i 
                             className='bx bx-check'
-                            onClick={() => {
-                                movimentacao.valor = movimentacao.valor.replace('R$ ', '').replace(',', '.')
-                                movimentacao.valor = +movimentacao.valor
-
-                                setMovimentacaoEditavel(null)
-                                movimentacao.categoria = categoriaSelecionada.nome
-                                movimentacao.categoriaId = categoriaSelecionada.id
-                                movimentacao.conta = contaSelecionada.nome
-                                movimentacao.contaId = contaSelecionada.id
-                                movimentacao.valorAnterior = movimentacaoListada.valor
-                                movementsActions.atualizarMovimentacao(contexto.dispatch, movimentacao)
-                            }}
+                            onClick={ handleAtualizar }
                         ></i>
                         <i 
                             className='bx bx-trash' 
-                            onClick={() => {                                
-                                movimentacao.valor = movimentacao.valor.replace('R$ ', '').replace(',', '.')
-                                movimentacao.valor = +movimentacao.valor
-                                movementsActions.deletarMovimentacao(contexto.dispatch, movimentacao)
-                            }}
+                            onClick={ handleDeletar }
                         ></i>
                     </span>
                 </>)
@@ -110,10 +113,7 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
                         ></i>
                         <i
                             className='bx bx-trash'
-                            onClick={() => {
-                                console.log(movimentacao)
-                                movementsActions.deletarMovimentacao(contexto.dispatch, movimentacao)}
-                            }
+                            onClick={ handleDeletar }
                         ></i>
                     </span>
                 </>)
