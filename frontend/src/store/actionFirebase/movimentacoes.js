@@ -25,7 +25,7 @@ const movementsActions = {
             console.log(movimentacao.valor)
 
             await firestore('movimentações', 'delete', movimentacao.id)
-            await firestore('contas', 'updateBalance', movimentacao.contaId, transacao)
+            await firestore('contas', 'updatebalance', movimentacao.contaId, transacao)
             dispatch({ type: 'deletarMovimentacao', payload: { id } })
             dispatch({ 
                 type: 'atualizarSaldo', 
@@ -52,7 +52,7 @@ const movementsActions = {
             delete movimentacaoToFetch.valorAnterior
 
             await firestore('movimentações', 'update', movimentacaoToFetch.id, movimentacaoToFetch)
-            await firestore('contas', 'updateBalance', movimentacao.contaId, transacao)
+            await firestore('contas', 'updatebalance', movimentacao.contaId, transacao)
             dispatch({ type: 'atualizarMovimentacao', payload: { movimentacao } })
             dispatch({ 
                 type: 'atualizarSaldo', 
@@ -79,7 +79,7 @@ const movementsActions = {
             delete movimentacaoToFetch.usuario
 
             const docRef = await firestore('movimentações', 'save', null, movimentacaoToFetch)
-            await firestore('contas', 'updateBalance', movimentacao.contaId, transacao)
+            await firestore('contas', 'updatebalance', movimentacao.contaId, transacao)
             dispatch({ type: 'adicionarMovimentacao', payload: { movimentacao, id: docRef.id } })
             dispatch({ 
                 type: 'atualizarSaldo', 

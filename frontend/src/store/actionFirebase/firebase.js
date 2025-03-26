@@ -21,64 +21,62 @@ const auth = getAuth()
 const db = getFirestore(app)
 const analytics = getAnalytics(app)
 
+const getUserDocRef = (type, id) => doc(db, 'usuarios', auth.currentUser.uid, type, id)
+
+const getCategoryOrAccountName = async (userId, type, itemId) => {
+    const docRef = doc(db, 'usuarios', userId, type, itemId)
+    const docSnap = await getDoc(docRef)
+    return docSnap.exists() ? docSnap.data().nome : null
+}
 
 export const firestore = async (type, method, id, payload) => {
-    let querySnapshot, docSnap
-    if(method === 'save') {
-        return await addDoc(collection(db, 'usuarios', auth.currentUser.uid, type), payload)
-    }
+    if(!auth.currentUser) return
+    const userId = auth.currentUser.uid
+    let docSnap
 
-    if(method === 'read') {
-        const arrayFromQuery = new Array()
-        querySnapshot = await getDocs(collection(db, 'usuarios', id, type))
-        for (const document of querySnapshot.docs) {
-            let data = document.data()
-            if(data.data) data.data = data.data.toDate()
-            data.id = document.id
+    switch(method) {
+        case 'save':
+            return await addDoc(collection(db, 'usuarios', auth.currentUser.uid, type), payload)
 
-            if(type === 'movimentações') {
-                let docRef = doc(db, 'usuarios', id, 'categorias', data.categoriaId)
-                let docSnap = await getDoc(docRef)
-                if(docSnap.exists()) {
-                    data.categoria = docSnap.data().nome
+        case 'read':
+            const querySnapshot= await getDocs(collection(db, 'usuarios', id, type))
+            const dataPromises = querySnapshot.docs.map(async (document) => {
+                let data = document.data()
+                if (data.data) data.data = data.data.toDate()
+                data.id = document.id
+
+                if(type === 'movimentações') {
+                    const [categoria, conta] = await Promise.all([
+                        getCategoryOrAccountName(userId, 'categorias', data.categoriaId),
+                        getCategoryOrAccountName(userId, 'contas', data.contaId)
+                    ])
+                    data.categoria = categoria
+                    data.conta = conta
                 }
+                return data
+            })
+            return Promise.all(dataPromises)
 
-                docRef = doc(db, 'usuarios', id, 'contas', data.contaId)
-                docSnap = await getDoc(docRef)
-                if(docSnap.exists()) {
-                    data.conta = docSnap.data().nome
-                }
+        case 'readbyid':
+            docSnap = await getDoc(getUserDocRef(type, id))
+            return docSnap.exists() ? docSnap.data() : null
+
+        case 'delete':
+            return await deleteDoc(getUserDocRef(type, id))
+        
+        case 'update':
+            return await setDoc(getUserDocRef(type, id), payload)
+
+        case 'updatebalance':
+            const docRef = getUserDocRef(type, id)
+            docSnap = await getDoc(docRef)
+
+            if(docSpan.exists()) {
+                const data = docSnap.data()
+                data.saldo += payload
+                await setDoc(docRef, data)
             }
-            arrayFromQuery.push(data)
-        }
-        return arrayFromQuery
-    }
-
-    if(method === 'readbyid') {
-        const docRef = doc(db, type, id)
-        docSnap = await getDoc(docRef)
-        return docSnap.data()
-    }
-
-    if(method === 'delete') {
-        if(auth.currentUser) return await deleteDoc(doc(db, 'usuarios', auth.currentUser.uid, type, id))
-        else return await deleteDoc(doc(db, type, id))
-    }
-
-    if(method === 'update') {
-        if(type === 'usuarios') return await setDoc(doc(db, type, id), payload)
-        if(auth.currentUser) return await setDoc(doc(db, 'usuarios', auth.currentUser.uid, type, id), payload)
-        else return await setDoc(doc(db, type, id), payload)
-    }
-     
-    if(method === 'updateBalance') {
-        const docRef = doc(db, 'usuarios', auth.currentUser.uid, type, id)
-        docSnap = await getDoc(docRef)
-        const data = docSnap.data()
-        console.log(payload)
-        data.saldo = data.saldo + payload
-
-        await setDoc(doc(db, 'usuarios', auth.currentUser.uid, type, id), data)
+            break
     }
 }
 
