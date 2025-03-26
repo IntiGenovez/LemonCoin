@@ -14,8 +14,8 @@ export default function Login() {
     const [error, setError] = useState(null)
 
     const [usuario, setUsuario] = useState({
-        email: '',
-        senha: ''
+        email: 'intigenovezinti@gmail.com',
+        senha: '123456'
     })
 
     const handleClick = async e => {
