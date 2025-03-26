@@ -1,12 +1,12 @@
 export default function InputNomeConta({ valor, onChange }){
     return(
-        <select name='nomeConta' id='nomeConta' onChange={onChange} value={valor.nome}>
+        <select name='nomeConta' id='nomeConta' onChange={onChange} value={valor}>
             <option value=''>Conta</option>
             <option value='Banco do Brasil'>Banco do Brasil</option>
             <option value='Bradesco'>Bradesco</option>
             <option value='Caixa'>Caixa</option>
             <option value='Inter'>Inter</option>
-            <option value='Itau'>Itaú</option>
+            <option value='Itaú'>Itaú</option>
             <option value='Mercado Pago'>Mercado Pago</option>
             <option value='Nubank'>Nubank</option>
             <option value='PicPay'>PicPay</option>

@@ -37,6 +37,7 @@ const Categoria = forwardRef(function Categoria({ id, nome, adicionar, naoAdicio
             categoriesActions.adicionarCategoria(contexto.dispatch, newCategoria)
             naoAdicionar()  
         } else {
+            console.log(newCategoria)
             setNewCategoria(prev => ({ ...prev, id}))
             categoriesActions.atualizarCategoria(contexto.dispatch, newCategoria)
             setCategoriaEditavel(null)
@@ -50,7 +51,7 @@ const Categoria = forwardRef(function Categoria({ id, nome, adicionar, naoAdicio
         } 
 
         setCategoriaEditavel(id)
-        setNewCategoria(prev => ({ ...prev, id}))
+        setNewCategoria(prev => ({ ...prev, id, nome }))
         naoAdicionar()
     }
 

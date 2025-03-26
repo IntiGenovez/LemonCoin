@@ -10,6 +10,7 @@ import styles from '../estilos/AdicionarMovimentacao.module.css'
 import BotaoNavegar from './BotaoNavegar'
 import BotaoAcao from './BotaoAcao'
 import { useNavigate } from 'react-router-dom'
+import formatDateToInputDate from '../store/utils/formatDateToInputDate'
 
 export default function AdicionarMovimentacao({ tipo }){
     const contexto = useContext(DadosContexto)
@@ -38,13 +39,7 @@ export default function AdicionarMovimentacao({ tipo }){
 
     //Define a data do input['date'] para a data de hoje
     useEffect(() => {
-        let dataAtual = new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }).toString()
-        let dia = dataAtual.split('/')[1]
-        let mes = dataAtual.split('/')[0]
-        let ano = dataAtual.split(',')[0].split('/')[2]
-        if (dia.length === 1) dia = '0' + dia
-        if (mes.length === 1) mes = '0' + mes
-        dataAtual = `${ano}-${mes}-${dia}`
+        const dataAtual = formatDateToInputDate(true)
 
         setMovimentacao(prev => ({ ...prev, data: dataAtual }))
     }, [])

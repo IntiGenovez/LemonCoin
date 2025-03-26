@@ -17,7 +17,6 @@ const categoriesActions = {
         try {
             objetoValido({ nome: categoria.nome })
             await firestore('categorias', 'update', categoria.id, { nome: categoria.nome })
-            dispatch({ type: 'atualizarCategoria', payload: { categoria } })
         } catch (error) {
             handleError(dispatch, error, '/categorias')
         }
@@ -25,7 +24,6 @@ const categoriesActions = {
     deletarCategoria: async (dispatch, id) => {
         try {
             await firestore('categorias', 'delete', id)
-            dispatch({ type: 'deletarCategoria', payload: { categoria: { id } } })
         } catch (error) {
             handleError(dispatch, error, '/categorias')
         }
@@ -33,8 +31,7 @@ const categoriesActions = {
     adicionarCategoria: async (dispatch, categoria) => {
         try {
             objetoValido({ nome: categoria.nome })
-            const docRef = await firestore('categorias', 'save', categoria.id, { nome: categoria.nome })
-            dispatch({ type: 'adicionarCategoria', payload: { categoria, id: docRef.id } })
+            await firestore('categorias', 'save', categoria.id, { nome: categoria.nome })
         } catch (error) {
             handleError(dispatch, error, '/categorias')
         }

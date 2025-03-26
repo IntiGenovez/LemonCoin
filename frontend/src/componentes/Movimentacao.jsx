@@ -5,11 +5,26 @@ import { useNavigate } from 'react-router-dom'
 import formatarValor from '../store/utils/formatCurrency'
 
 import styles from "../estilos/Movimentacoes.module.css"
+import formatDateToInputDate from '../store/utils/formatDateToInputDate'
 
 
 export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel, setMovimentacaoEditavel }) {
     const contexto = useContext(DadosContexto)
-    const [ movimentacao, setMovimentacao ] = useState({ ...movimentacaoListada, valor: +movimentacaoListada.valor.toFixed(2) })
+    const [ movimentacao, setMovimentacao ] = useState({ 
+        ...movimentacaoListada, 
+        valor: formatarValor(+movimentacaoListada.valor.toFixed(2)),
+        data: movimentacaoListada.data.toDate ? 
+            movimentacaoListada.data.toDate().toLocaleString('pt-BR').split(',')[0] :
+            movimentacaoListada.data
+    })
+    const [ movimentacaoInput, setMovimentacaoInput ] = useState({ 
+        ...movimentacaoListada,
+        valor: formatarValor(+movimentacaoListada.valor.toFixed(2)),
+        data: movimentacaoListada.data.toDate ? 
+            formatDateToInputDate(false, movimentacaoListada.data.toDate()) : 
+            movimentacaoListada.data
+    })
+
     const navigate = useNavigate()
     const [ categoriaSelecionada, setCategoriaSelecionada ] = useState({ 
         nome: movimentacao.categoria,
@@ -21,11 +36,18 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
         id: movimentacao.contaId,
     })
 
-    let dataFormatada = movimentacao.data.toLocaleString('pt-BR').split(',')[0] 
+    useEffect(() => {
+        setMovimentacao(prev => ({ ...prev, valor: formatarValor(movimentacaoInput.valor) }))
+    }, [movimentacaoInput.valor])
 
     useEffect(() => {
-        setMovimentacao(prev => ({ ...prev, valor: formatarValor(movimentacao.valor) }))
-    }, [movimentacao.valor])
+        setMovimentacao({       
+            ...movimentacaoListada, 
+            valor: formatarValor(+movimentacaoListada.valor.toFixed(2)),
+            data: movimentacaoListada.data.toDate ? 
+                movimentacaoListada.data.toDate().toLocaleString('pt-BR').split(',')[0] :
+                movimentacaoListada.data })
+    }, [movimentacaoListada])
 
     const handleChangeCategoria = e => {
         setCategoriaSelecionada({
@@ -44,20 +66,24 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
     const handleChangeValor = e => {
         let valor = e.target.value;
     
-        setMovimentacao(prev => ({ ...prev, valor: formatarValor(valor) }));
+        setMovimentacaoInput(prev => ({ ...prev, valor: formatarValor(valor) }));
     }
 
     const handleAtualizar = () => {
-        movimentacao.valor = movimentacao.valor.replace('R$ ', '').replace(',', '.')
-        movimentacao.valor = +movimentacao.valor
+        const movimentacaoToFetch = { ...movimentacaoInput }
+        movimentacaoToFetch.valor = movimentacaoToFetch.valor.replace('R$ ', '').replace(',', '.')
+        movimentacaoToFetch.valor = +movimentacaoToFetch.valor
 
+        movimentacaoToFetch.categoria = categoriaSelecionada.nome
+        movimentacaoToFetch.categoriaId = categoriaSelecionada.id
+        movimentacaoToFetch.conta = contaSelecionada.nome
+        movimentacaoToFetch.contaId = contaSelecionada.id
+        movimentacaoToFetch.valorAnterior = movimentacaoListada.valor
+
+        movimentacaoToFetch.data = `${movimentacaoToFetch.data} 00:00:00`
+        
         setMovimentacaoEditavel(null)
-        movimentacao.categoria = categoriaSelecionada.nome
-        movimentacao.categoriaId = categoriaSelecionada.id
-        movimentacao.conta = contaSelecionada.nome
-        movimentacao.contaId = contaSelecionada.id
-        movimentacao.valorAnterior = movimentacaoListada.valor
-        movementsActions.atualizarMovimentacao(contexto.dispatch, movimentacao)
+        movementsActions.atualizarMovimentacao(contexto.dispatch, movimentacaoToFetch)
     }
 
     const handleDeletar = () => {
@@ -70,11 +96,13 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
         <li className={ styles.movimentacao }>
             { movimentacaoEditavel ? 
                 (<> 
-                    <input type='date' value={movimentacao.data} onChange={ e => setMovimentacao({ ...movimentacao, data: e.target.value }) } />
+                    <input type='date' value={ movimentacaoInput.data } 
+                        onChange={ e => setMovimentacaoInput({ ...movimentacaoInput, data: e.target.value }) } 
+                    />
 
-                    <input value={movimentacao.nome} onChange={ e => setMovimentacao({ ...movimentacao, nome: e.target.value }) } />
+                    <input value={movimentacaoInput.nome} onChange={ e => setMovimentacaoInput({ ...movimentacaoInput, nome: e.target.value }) } />
 
-                    <input value={movimentacao.valor} onChange={ e => handleChangeValor(e) } />
+                    <input value={movimentacaoInput.valor} onChange={ e => handleChangeValor(e) } />
 
                     <select value={ categoriaSelecionada.nome } onChange={ handleChangeCategoria }>
                         { contexto.state.categorias.map((categoria, i) => (<option key={i} id={categoria.id}>{categoria.nome}</option>)) }
@@ -97,19 +125,18 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
                 </>)
             : 
                 (<> 
-                    <span><div className={styles.nomeLinha}>Data: </div>{ dataFormatada }</span>
+                    <span><div className={styles.nomeLinha}>Data: </div>{ movimentacao.data }</span>
                     <span><div className={styles.nomeLinha}>Nome: </div>{ movimentacao.nome }</span>
                     <span><div className={styles.nomeLinha}>Valor: </div>{ movimentacao.valor }</span>
                     <span><div className={styles.nomeLinha}>Categoria: </div>{ movimentacao.categoria }</span>
                     <span onClick={(() => navigate(`/editar-conta/${movimentacao.contaId}`))}>
                         <div className={styles.nomeLinha}>Conta: </div>
-                        { movimentacao.conta
-                        .toLowerCase().replace(/\b\w/g, (letra) => letra.toUpperCase())}
+                        { movimentacao.conta }
                     </span>
                     <span>
                         <i
                             className='bx bx-edit-alt'
-                            onClick={() => setMovimentacaoEditavel(movimentacao.id)}
+                            onClick={ () => setMovimentacaoEditavel(movimentacao.id) }
                         ></i>
                         <i
                             className='bx bx-trash'

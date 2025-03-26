@@ -16,7 +16,7 @@ const iconeMap = {
     'Banco do Brasil': bancoDoBrasil,
     'Bradesco': bradesco,
     'Caixa': caixa,
-    'Itau': itau,
+    'Itaú': itau,
     'Santander': santander,
     'PicPay': picpay,
     'Sicredi': sicredi,

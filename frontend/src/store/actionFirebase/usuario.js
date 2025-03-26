@@ -21,13 +21,26 @@ const senhasValidas = (senha, confirmarSenha) => {
 }
 
 const userActions = {
+    ouvirMovimentacoes: dispatch => {
+        return firebase.subscribeMoviments(dispatch)
+    },
+    ouvirContas: dispatch => {
+        return firebase.subscribeAccounts(dispatch)
+    },
+    ouvirCategorias: dispatch => {
+        return firebase.subscribeCategories(dispatch)
+    },
     obterDadosUsuario: async (dispatch) => {
         try {
-            const usuario = await firebase.getUserData()
-            if (!usuario) return
-            dispatch({ type: 'signin', payload: usuario })
+            const data = await firebase.getUserData()
+            if (!data) return
+            dispatch({ type: 'signin', payload: data })
+
+            userActions.ouvirMovimentacoes(dispatch)
+            userActions.ouvirContas(dispatch)
+            userActions.ouvirCategorias(dispatch)
         } catch (error) {
-            dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, tipo: 'warning', titulo: 'Atenção!', link: '/cadastro' } })
+            dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, tipo: 'warning', titulo: 'Atenção!', link: '/contas' } })
             console.error('Erro no cadastro: ', error.code || error.message)
             return false
         }
