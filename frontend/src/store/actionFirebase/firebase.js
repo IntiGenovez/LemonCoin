@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, confirmPasswordReset } from 'firebase/auth'
-import { getFirestore, collection, addDoc, getDocs, getDoc, deleteDoc, setDoc, doc } from 'firebase/firestore'
+import { getFirestore, collection, addDoc, getDocs, getDoc, deleteDoc, setDoc, doc, onSnapshot } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
 
 const env = import.meta.env
@@ -42,7 +42,6 @@ export const firestore = async (type, method, id, payload) => {
             const querySnapshot= await getDocs(collection(db, 'usuarios', id, type))
             const dataPromises = querySnapshot.docs.map(async (document) => {
                 let data = document.data()
-                if (data.data) data.data = data.data.toDate()
                 data.id = document.id
 
                 if(type === 'movimentações') {
@@ -58,7 +57,7 @@ export const firestore = async (type, method, id, payload) => {
             return Promise.all(dataPromises)
 
         case 'readbyid':
-            docSnap = await getDoc(getUserDocRef(type, id))
+            docSnap = await getDoc(doc(db, 'usuarios', id))
             return docSnap.exists() ? docSnap.data() : null
 
         case 'delete':
@@ -71,13 +70,50 @@ export const firestore = async (type, method, id, payload) => {
             const docRef = getUserDocRef(type, id)
             docSnap = await getDoc(docRef)
 
-            if(docSpan.exists()) {
+            if(docSnap.exists()) {
                 const data = docSnap.data()
                 data.saldo += payload
                 await setDoc(docRef, data)
             }
             break
     }
+}
+
+const subscribeMoviments = dispatch => {
+    if(!auth.currentUser) return
+    onSnapshot(collection(db, 'usuarios', auth.currentUser.uid, 'movimentações'), (snapshot) => {
+        const movimentacoes = snapshot.docs.map(async document => {
+            const data = document.data()
+
+            const [categoria, conta] = await Promise.all([
+                getCategoryOrAccountName(auth.currentUser.uid, 'categorias', data.categoriaId),
+                getCategoryOrAccountName(auth.currentUser.uid, 'contas', data.contaId)
+            ])
+            data.categoria = categoria
+            data.conta = conta
+
+            return { ...data, id: document.id }
+        })
+        Promise.all(movimentacoes).then(movimentacoes => {
+            dispatch({ type: 'atualizarMovimentacoes', payload: movimentacoes })
+        })
+    })
+}
+
+const subscribeCategories = dispatch => {
+    if(!auth.currentUser) return
+    onSnapshot(collection(db, 'usuarios', auth.currentUser.uid, 'categorias'), (snapshot) => {
+        const categorias = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+        dispatch({ type: 'atualizarCategorias', payload: categorias })
+    })
+}
+
+const subscribeAccounts = dispatch => {
+    if(!auth.currentUser) return
+    onSnapshot(collection(db, 'usuarios', auth.currentUser.uid, 'contas'), (snapshot) => {
+        const contas = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+        dispatch({ type: 'atualizarContas', payload: contas })
+    })
 }
 
 export const isUserSignedIn = (callback) => {
@@ -139,6 +175,16 @@ const updatePassword = async (oobCode, password) => {
     await confirmPasswordReset(auth, oobCode, password)
 }
 
-const firebase = { signInUser, signOutUser, signUpUser, resetPassword, getUserData, updatePassword }
+const firebase = { 
+    signInUser, 
+    signOutUser, 
+    signUpUser, 
+    resetPassword, 
+    getUserData, 
+    updatePassword,
+    subscribeAccounts, 
+    subscribeMoviments,
+    subscribeCategories
+}
 
 export default firebase 

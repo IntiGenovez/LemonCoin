@@ -16,7 +16,7 @@ const accountsActions = {
         try {
             objetoValido(conta)
             await firestore('contas', 'update', conta.id, conta)
-            dispatch({ type: 'atualizarConta', payload: { conta } })
+            // dispatch({ type: 'atualizarConta', payload: { conta } })
             dispatch({ type: 'exibirMensagem', payload: { mensagem: "Conta atualizada.", titulo: 'Sucesso', tipo: 'success', link: '/contas' } })
             return true
         } catch (error) {
@@ -27,7 +27,6 @@ const accountsActions = {
     deletarConta: async (dispatch, conta) => {
         try {
             await firestore('contas', 'delete', conta.id)
-            dispatch({ type: 'deletarConta', payload: { conta } })
             dispatch({ type: 'exibirMensagem', payload: { mensagem: "Conta deletada.", titulo: 'Sucesso', tipo: 'success', link: '/contas' } })
             return true
         } catch (error) {
@@ -38,8 +37,7 @@ const accountsActions = {
     adicionarConta: async (dispatch, conta) => {
         try {
             objetoValido(conta)
-            const docRef = await firestore('contas', 'save', conta.id, conta)
-            dispatch({ type: 'adicionarConta', payload: { conta, id: docRef.id } })
+            await firestore('contas', 'save', conta.id, conta)
             dispatch({ type: 'exibirMensagem', payload: { mensagem: "Conta cadastrada.", titulo: 'Sucesso', tipo: 'success', link: '/contas' } })
             return true
         } catch (error) {

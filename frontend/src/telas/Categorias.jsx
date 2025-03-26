@@ -1,4 +1,4 @@
-import { useContext, useState, useRef } from 'react'
+import { useContext, useState, useRef, useEffect } from 'react'
 import { DadosContexto } from '../store'
 
 import Categoria from '../componentes/Categoria'
@@ -9,7 +9,7 @@ import styles from '../estilos/Categorias.module.css'
 export default function Categorias() {
     const contexto = useContext(DadosContexto)
     const [ adicionar, setAdicionar ] = useState(false)
-    const [ categoriaEditavel, setCategoriaEditavel ] = useState(false)
+    const [ categoriaEditavel, setCategoriaEditavel ] = useState(null)
     const ref = useRef(null)
 
     const adicionarCategoria = () => {

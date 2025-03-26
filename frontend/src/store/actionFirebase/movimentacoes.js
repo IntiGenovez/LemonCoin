@@ -26,7 +26,6 @@ const movementsActions = {
 
             await firestore('movimentações', 'delete', movimentacao.id)
             await firestore('contas', 'updatebalance', movimentacao.contaId, transacao)
-            dispatch({ type: 'deletarMovimentacao', payload: { id } })
             dispatch({ 
                 type: 'atualizarSaldo', 
                 payload: 
@@ -44,6 +43,7 @@ const movementsActions = {
                 movimentacao.valor - movimentacao.valorAnterior :
                 movimentacao.valorAnterior + movimentacao.valor
 
+            movimentacao.data = new Date(movimentacao.data)
             objetoValido(movimentacao)
             const movimentacaoToFetch = { ...movimentacao }
             delete movimentacaoToFetch.conta
@@ -53,14 +53,6 @@ const movementsActions = {
 
             await firestore('movimentações', 'update', movimentacaoToFetch.id, movimentacaoToFetch)
             await firestore('contas', 'updatebalance', movimentacao.contaId, transacao)
-            dispatch({ type: 'atualizarMovimentacao', payload: { movimentacao } })
-            dispatch({ 
-                type: 'atualizarSaldo', 
-                payload: 
-                { 
-                    valor: transacao,
-                    id: movimentacao.contaId
-                }})
         } catch (error) {
             handleError(dispatch, error, `${movimentacao.tipo.toLowerCase()}s`)
         }
@@ -78,16 +70,7 @@ const movementsActions = {
             delete movimentacaoToFetch.categoria
             delete movimentacaoToFetch.usuario
 
-            const docRef = await firestore('movimentações', 'save', null, movimentacaoToFetch)
-            await firestore('contas', 'updatebalance', movimentacao.contaId, transacao)
-            dispatch({ type: 'adicionarMovimentacao', payload: { movimentacao, id: docRef.id } })
-            dispatch({ 
-                type: 'atualizarSaldo', 
-                payload: 
-                { 
-                    valor: transacao, 
-                    id: movimentacao.contaId
-                }})
+            await firestore('movimentações', 'save', null, movimentacaoToFetch)
             dispatch({ type: 'exibirMensagem', payload: { mensagem: `${movimentacao.tipo} cadastrada com sucesso.`, titulo: 'Sucesso', tipo: 'success', link: `/${movimentacao.tipo.toLowerCase()}s` } })
             return true
         } catch (error) {
