@@ -72,6 +72,10 @@ const userActions = {
             objetoValido(usuario)
             const data = await firebase.signInUser(usuario.email, usuario.senha)
             dispatch({ type: 'signin', payload: data })
+
+            userActions.ouvirMovimentacoes(dispatch)
+            userActions.ouvirContas(dispatch)
+            userActions.ouvirCategorias(dispatch)
             return true
         } catch (error) {
             dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, tipo: 'warning', titulo: 'Atenção!', link: '/login' } })
