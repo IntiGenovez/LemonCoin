@@ -4,15 +4,6 @@ function usuarioReducer(estado, action) {
         case 'signin':
             novoEstado = { ...estado, ...action.payload }
             break
-        case 'atualizarMovimentacoes':
-            novoEstado = { ...estado, movimentacoes: action.payload }
-            break
-        case 'atualizarContas':
-            novoEstado = { ...estado, contas: action.payload }
-            break
-        case 'atualizarCategorias':
-            novoEstado = { ...estado, categorias: action.payload }
-            break
         case 'signout': 
             novoEstado = { 
                 ...estado, 

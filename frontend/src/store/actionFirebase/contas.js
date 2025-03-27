@@ -16,7 +16,6 @@ const accountsActions = {
         try {
             objetoValido(conta)
             await firestore('contas', 'update', conta.id, conta)
-            // dispatch({ type: 'atualizarConta', payload: { conta } })
             dispatch({ type: 'exibirMensagem', payload: { mensagem: "Conta atualizada.", titulo: 'Sucesso', tipo: 'success', link: '/contas' } })
             return true
         } catch (error) {
