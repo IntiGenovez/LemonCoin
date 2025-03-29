@@ -1,24 +1,5 @@
 import firebase from './firebase'
-const emailValido = email => {
-    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!regexEmail.test(email)) throw new Error('Email Inválido')
-}
-
-const telefoneValido = telefone => {
-        const regexTelefone = /^\(\d{2}\) \d{5}-\d{4}$/
-        if (!regexTelefone.test(telefone)) throw new Error('Telefone Não É Válido')
-}
-
-const objetoValido = objeto => {
-    for (const valor of Object.values(objeto)) {
-        if (!valor) throw new Error('Preencha Todos Os Campos')
-    }
-}
-
-const senhasValidas = (senha, confirmarSenha) => {
-    if (senha.length < 6) throw new Error('A Senha Deve Conter 6 Dígitos')
-    if (senha !== confirmarSenha) throw new Error('Senhas Diferentes')
-}
+import { handleError, objetoValido, emailValido, senhasValidas, telefoneValido } from '../utils'
 
 const userActions = {
     ouvirMovimentacoes: dispatch => {
@@ -40,8 +21,8 @@ const userActions = {
             userActions.ouvirContas(dispatch)
             userActions.ouvirCategorias(dispatch)
         } catch (error) {
-            dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, tipo: 'warning', titulo: 'Atenção!', link: '/contas' } })
             console.error('Erro no cadastro: ', error.code || error.message)
+            handleError(dispatch, error, `/login`)
             return false
         }
     },
@@ -62,7 +43,8 @@ const userActions = {
             return true
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') error.message = 'Esse endereço de email já foi utilizado'
-            dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, tipo: 'warning', titulo: 'Atenção!', link: '/cadastro' } })
+            
+            handleError(dispatch, error, `/cadastro`)
             console.error('Erro no cadastro: ', error.code || error.message)
             return false
         }
@@ -78,7 +60,7 @@ const userActions = {
             userActions.ouvirCategorias(dispatch)
             return true
         } catch (error) {
-            dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, tipo: 'warning', titulo: 'Atenção!', link: '/login' } })
+            handleError(dispatch, error, `/login`)
             console.error('Erro no login: ', error)
             return false
         }
@@ -92,7 +74,7 @@ const userActions = {
             await firebase.resetPassword(usuario.email)
             return true
         } catch (error) {
-            dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, tipo: 'warning', titulo: 'Atenção!', link: '/login' } })
+            handleError(dispatch, error, `/login`)
             console.error('Erro ao recuperar senha: ', error)
             return false
         }

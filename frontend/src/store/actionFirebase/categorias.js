@@ -1,17 +1,5 @@
 import { firestore } from './firebase'
-
-const objetoValido = objeto => {
-    for (const valor of Object.values(objeto)) {
-        if (!valor) throw new Error('Preencha Todos Os Campos')
-    }
-}
-
-const handleError = (dispatch, error, link) => {
-    console.log(error)
-    console.error(error.message)    
-    dispatch({ type: 'exibirMensagem', payload: { mensagem: 'Ocorreu um erro, tente novamente!', titulo: 'ATENÇÃO', link, tipo: 'error' } })
-
-}
+import { objetoValido, handleError } from '../utils'
 
 const categoriesActions = {
     atualizarCategoria: async (dispatch, categoria) => {

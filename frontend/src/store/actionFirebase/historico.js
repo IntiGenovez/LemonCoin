@@ -1,7 +1,4 @@
-const handleError = (dispatch, error, link) => {
-    console.error(error.message)
-    dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, titulo: 'ATENÇÃO', link } })
-}
+import { handleError } from '../utils'
 
 const historyActions = {
     atualizarHistorico: async (dispatch, novoPath) => {
