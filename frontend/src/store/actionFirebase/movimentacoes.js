@@ -8,7 +8,7 @@ const objetoValido = objeto => {
 
 const handleError = (dispatch, error, link) => {
     console.error(error.message)
-    dispatch({ type: 'exibirMensagem', payload: { mensagem: error.message, titulo: 'ATENÇÃO', link } })
+    dispatch({ type: 'exibirMensagem', payload: { mensagem: 'Ocorreu um erro, tente novamente!', titulo: 'ATENÇÃO', link, tipo: 'error' } })
 }
 
 const movementsActions = {

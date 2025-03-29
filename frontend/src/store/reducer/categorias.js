@@ -4,7 +4,6 @@ function categoriasReducer(estado, action) {
             case 'atualizarCategorias':
                 novoEstado = { ...estado, categorias: action.payload }
                 break
-            break
         default:
             novoEstado = estado      
     }

@@ -4,11 +4,11 @@ import { DadosContexto } from '../store'
 import { accountsActions } from '../store/actionFirebase'
 import formatarValor from '../store/utils/formatCurrency'
 import iconeMap from '../store/utils/iconeMap'
-import { useRef } from "react";
 
 import lapis from '../assets/lapis.png'
 
-import InputNomeConta from './InputNomeConta'
+import BancoSeletor from './BancoSeletor.jsx'
+import NomeBanco from './NomeBanco.jsx'
 import BotaoAcao from './BotaoAcao'
 
 import styles from '../estilos/CrudConta.module.css'
@@ -24,6 +24,7 @@ export default function CrudConta({ tipo }) {
         saldo: '',
         descricao: ''
     })
+    const [open, setOpen] = useState(false)
 
     // Obtém a imagem correspondente ao nome da variavel icone, ou ícone lápis padrão se não for encontrado
     const iconeSrc = iconeMap[conta.nome] || lapis
@@ -34,7 +35,7 @@ export default function CrudConta({ tipo }) {
             if (contaParaAtualizar) {
                 contaParaAtualizar.saldo = formatarValor(contaParaAtualizar.saldo)
                 setConta(contaParaAtualizar)
-            }
+            } else navigate('/adicionar-conta')
         } else navigate('/adicionar-conta')
     }, [contexto.state.contas])
 
@@ -61,14 +62,9 @@ export default function CrudConta({ tipo }) {
         if (sucesso) navigate('/contas')
     }
 
-    const iconeKeys = Object.keys(iconeMap); // Obtém as chaves do iconeMap
-    const iconeIndex = useRef(0); // busca o indice atual do icone
-
-    const handleImageClick = () => {
-        iconeIndex.current = (iconeIndex.current + 1) % iconeKeys.length; // Incrementa o índice e faz o loop, se o índice atual for maior que o tamanho do iconeKeys, reinicia para 0
-        const novoNome = iconeKeys[iconeIndex.current]; // Obtém o próximo nome do ícone
-        setConta(prev => ({ ...prev, nome: novoNome })); // Atualiza o nome da conta
-    };
+    const selecionarBanco = () => {
+        setOpen(prev => !prev)
+    }
 
     return (
         <form className={styles}>
@@ -78,18 +74,14 @@ export default function CrudConta({ tipo }) {
                     src={iconeSrc}
                     alt={iconeSrc}
                     style={{ width: '200px', height: '200px' }}
-                    onClick={handleImageClick}
+                    onClick={ selecionarBanco }
                 />
 
                 <div className={styles.containerForm}>
                     <div className={styles.dados}>
                         <div className={styles.cabecalho}>
-                            <InputNomeConta valor={conta.nome}
-                                onChange={e =>
-                                    setConta(prev =>
-                                        ({ ...prev, nome: e.target.value })
-                                    )
-                                }
+                            <NomeBanco valor={conta.nome}
+                                onClick={ selecionarBanco }
                             />
                             <input
                                 className={styles.saldo}
@@ -133,6 +125,11 @@ export default function CrudConta({ tipo }) {
                     </div>
                 </div>
             </div>
+            <BancoSeletor 
+                open={ open }
+                selecionarBanco={ nome => setConta(prev => ({ ...prev, nome })) }
+                closeBancoSeletor={ () => setOpen(prev => !prev) }
+            />
         </form>
     )
 }

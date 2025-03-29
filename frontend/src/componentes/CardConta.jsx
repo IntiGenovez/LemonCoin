@@ -8,7 +8,7 @@ import styles from '../estilos/CardConta.module.css'
 
 export default function CardConta({ id, nome, saldo }) {
     const iconeSrc = iconeMap[nome] || lapis 
-    let saldoFormatado = formatarValor(saldo)
+    let saldoFormatado = saldo ? formatarValor(saldo) : ''
 
     const navigate = useNavigate()
     const handleClick = () => {
@@ -19,7 +19,7 @@ export default function CardConta({ id, nome, saldo }) {
         <div className={ styles.CardConta } onClick={ handleClick }>
             <img src={ iconeSrc } alt={ iconeSrc } className={ styles.icone }/>
             <div className={ styles.divTexto }>
-                <span>{ nome }</span>
+                <span>{ nome || '' }</span>
                 <span>{ saldoFormatado }</span>
             </div>
         </div>

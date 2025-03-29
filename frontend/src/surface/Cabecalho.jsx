@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import BotaoNavegar from '../componentes/BotaoNavegar'
 
 import { DadosContexto } from '../store'
-import { userActions } from '../store/actionFirebase'
 import { isUserSignedIn } from '../store/actionFirebase/firebase'
 
 import styles from '../estilos/Cabecalho.module.css'
@@ -15,6 +15,7 @@ export default function Cabecalho() {
     const [usuario, setUsuario] = useState(null) 
     let location = useLocation() //usado para saber o path atual
     const [titulo, setTitulo] = useState('')
+    const navigate = useNavigate()
 
     useEffect(() => {
         const unsubscribe = isUserSignedIn(setUsuario)
@@ -30,12 +31,6 @@ export default function Cabecalho() {
         }
     }, [location.pathname])
 
-    const handleClick = () => {
-        if (usuario) {
-            userActions.signout(contexto.dispatch)
-        }
-    }
-
     return (
         <header>
             <div className={ styles.cabecalho }>
@@ -49,7 +44,7 @@ export default function Cabecalho() {
                     <h2 className={styles.titulo}>{titulo}</h2>
                 </div>
                 <div>
-                    <Link to='/login' onClick={ handleClick }>{ usuario ? 'LOGOUT' : 'LOGIN' }</Link>
+                    <BotaoNavegar link={ usuario ? '/perfil' : '/login' }>{ usuario ? (<i className='bx bx-user' ></i>) : 'LOGIN' }</BotaoNavegar>
                 </div>
             </div>
             
