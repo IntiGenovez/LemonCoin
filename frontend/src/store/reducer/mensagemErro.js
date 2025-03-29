@@ -5,7 +5,7 @@ function mensagemErroReducer(estado, action) {
             novoEstado = { ...estado, mensagemErro: { ...action.payload, openDialog: true } }
             break
         case 'fecharMensagem':
-            novoEstado = { ...estado, mensagemErro: { openDialog: false } }
+            novoEstado = { ...estado, mensagemErro: { ...estado.mensagemErro, openDialog: false } }
             break
         default:
             novoEstado = estado      

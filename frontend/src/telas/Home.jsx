@@ -13,6 +13,14 @@ export default function Home(){
     const contexto = useContext(DadosContexto)
     const navigate = useNavigate()
 
+    const handleClickConta = () => {
+        if(contexto.state.contas.length > 0) {
+            navigate('/contas')
+            return
+        }
+        navigate('/adicionar-conta')
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.divGrafico}>
@@ -36,7 +44,7 @@ export default function Home(){
                             );
                         })
                     }
-                    <button onClick={(() => navigate('/contas'))}>Ver mais...</button>
+                    <button onClick={ handleClickConta }>{ contexto.state.contas.length > 0 ? 'Ver mais...' : 'Adicionar conta' }</button>
                 </div>
 
                 <div className={styles.containerGastos}>
