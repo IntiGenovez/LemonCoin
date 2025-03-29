@@ -1,8 +1,7 @@
-import { useContext, useEffect } from 'react'
-import { Outlet } from 'react-router-dom'
-import { userActions, errorMessageActions } from '../store/actionFirebase'
+import { useContext, useState, useEffect } from 'react'
+import { Outlet, useLocation } from 'react-router-dom'
+import { userActions, errorMessageActions, historyActions } from '../store/actionFirebase'
 import BotaoVoltar from '../componentes/BotaoVoltar'
-import { useLocation } from 'react-router-dom'
 
 import { DadosContexto } from '../store'
 
@@ -11,14 +10,21 @@ import Mensagem from '../componentes/Mensagem'
 import Rodape from '../surface/Rodape'
 
 export default function Layout() {
+    const [ultimoPath, setUltimoPath] = useState()
     
     const contexto = useContext(DadosContexto)
+    let titulo = useLocation().pathname
 
     useEffect(() => {
         userActions.obterDadosUsuario(contexto.dispatch)
     }, [])
 
-    let titulo = useLocation().pathname
+
+    useEffect(() => {
+        setUltimoPath(titulo)
+        if(ultimoPath !== titulo) 
+            historyActions.atualizarHistorico(contexto.dispatch, titulo)
+    }, [titulo])
 
     return (
         <>

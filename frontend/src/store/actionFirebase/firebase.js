@@ -5,7 +5,6 @@ import { getFirestore, collection, addDoc, getDocs, getDoc, deleteDoc, setDoc, d
 import { getStorage } from 'firebase/storage'
 
 const env = import.meta.env
-console.log("env: " + env.VITE_API_KEY)
 
 const firebaseConfig = {
     apiKey: env.VITE_API_KEY,
@@ -62,12 +61,15 @@ export const firestore = async (type, method, id, payload) => {
             return docSnap.exists() ? docSnap.data() : null
 
         case 'delete':
+            if(!id) throw new Error(`${type.slice(0, -1).replace(/^./, c => c.toUpperCase())} não encontrado (a)!`)
             return await deleteDoc(getUserDocRef(type, id))
         
         case 'update':
+            if(!id) throw new Error(`${type.slice(0, -1).replace(/^./, c => c.toUpperCase())} não encontrado (a)!`)
             return await setDoc(getUserDocRef(type, id), payload)
-
+            
         case 'updatebalance':
+            if(!id) throw new Error(`${type.slice(0, -1).replace(/^./, c => c.toUpperCase())} não encontrado (a)!`)
             const docRef = getUserDocRef(type, id)
             docSnap = await getDoc(docRef)
 

@@ -18,7 +18,8 @@ export const initialState = {
         tipo: '',
         link: '',
         titulo: ''
-    }
+    },
+    historico: ['/home']
 }
 
 

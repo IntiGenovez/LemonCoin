@@ -20,6 +20,7 @@ import RecuperarSenha from "./telas/RecuperarSenha"
 import Cadastro from "./telas/Cadastro.jsx"
 import TelaAdicionarMovimentacao from "./telas/TelaAdicionarMovimentacao.jsx"
 import AdicionarConta from "./telas/AdicionarConta.jsx"
+import Perfil from "./telas/Perfil.jsx"
 
 import ComponentePrivado from "./componentes/ComponentePrivado.jsx"
 
@@ -94,6 +95,10 @@ function App() {
         {
           path: '/home',
           element: <Apresentacao />
+        },
+        {
+          path: '/perfil',
+          element: <ComponentePrivado><Perfil /></ComponentePrivado>
         }
       ]
     }

@@ -33,7 +33,7 @@
     justify-content: flex-end;
 }
 
-.cabecalho > :last-child a {
+.cabecalho > :last-child button {
     background-color: var(--background-botoes);
     color: var(--cor-fonte-secundaria);
     border: none;
@@ -41,8 +41,14 @@
 
     display: flex;
     align-items: center;
-    padding: 0 30px 0;
+    padding: 0 20px 0;
     border-radius: 10px;
+
+    & i {
+        color:#d8e6aa;
+        font-weight: 100;
+        font-size: 30px;
+    }
 }
 
 .containerLogo {

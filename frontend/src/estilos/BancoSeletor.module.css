@@ -1,0 +1,50 @@
+.bancoSeletor {
+    position: absolute;
+    background-color: var(--cor-fonte-secundaria);
+    width: 50vw;
+    min-width: 250px;
+    height: 40vh;
+    border-radius: 30px;
+    border: 1px solid #d8e6aa;
+    padding: 30px 15px 30px 30px;
+
+    overflow: hidden;
+}
+
+.bancoSeletor .scroll {
+    overflow-y: scroll;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    & .imagem {
+        padding: 15px 5px 15px 5px;
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+
+        & img {
+            width: 100%;
+        }
+    }
+}
+
+.bancoSeletor .scroll::-webkit-scrollbar {
+    width: 7px;
+}
+
+.bancoSeletor .scroll::-webkit-scrollbar-track {
+    background: #0000;
+}
+
+.bancoSeletor .scroll::-webkit-scrollbar-thumb {
+    background-color: var(--background-botoes);
+    border-radius: 5px;
+    border: 5px solid #0000;
+}
