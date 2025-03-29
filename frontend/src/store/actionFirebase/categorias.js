@@ -1,4 +1,4 @@
-import { firestore } from './firebase'
+import firebase, { firestore } from './firebase'
 import { objetoValido, handleError } from '../utils'
 
 const categoriesActions = {
@@ -13,6 +13,10 @@ const categoriesActions = {
     deletarCategoria: async (dispatch, id) => {
         try {
             await firestore('categorias', 'delete', id)
+            
+            const data = await firebase.getUserData()
+            if (!data) return
+            dispatch({ type: 'signin', payload: data })
         } catch (error) {
             handleError(dispatch, error, '/categorias')
         }

@@ -26,7 +26,7 @@ const getUserDocRef = (type, id) => doc(db, 'usuarios', auth.currentUser.uid, ty
 const getCategoryOrAccountName = async (userId, type, itemId) => {
     const docRef = doc(db, 'usuarios', userId, type, itemId)
     const docSnap = await getDoc(docRef)
-    return docSnap.exists() ? docSnap.data().nome : null
+        return docSnap.exists() ? docSnap.data().nome : null
 }
 
 export const firestore = async (type, method, id, payload) => {

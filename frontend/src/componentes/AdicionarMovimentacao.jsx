@@ -39,7 +39,6 @@ export default function AdicionarMovimentacao({ tipo }){
 
     //Define a data do input['date'] para a data de hoje
     useEffect(() => {
-        console.log(contexto.state.contas.length)
         if(contexto.state.contas.length <= 0) {
             errorMessageActions.exibirMensagem(contexto.dispatch, {
                 mensagem: "Adicione uma conta antes de seguir.", 
