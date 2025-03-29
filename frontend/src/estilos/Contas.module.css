@@ -12,6 +12,13 @@
     flex-wrap: wrap;
     gap: 150px;
     justify-content: space-between;
+
+    & .semConta {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 .container::after {

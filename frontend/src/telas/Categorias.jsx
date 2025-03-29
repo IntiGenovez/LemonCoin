@@ -22,18 +22,22 @@ export default function Categorias() {
     return (
         <div className='tela-padrao'>
             <div className={ styles.container }>
-                {
-                    contexto.state.categorias.map((categoria, i) => 
-                        <Categoria 
-                            key={ i } 
-                            id={ categoria.id } 
-                            nome={ categoria.nome } 
-                            categoriaEditavel={ categoriaEditavel === categoria.id }
-                            setCategoriaEditavel={ setCategoriaEditavel }
-                            naoAdicionar={() => setAdicionar(false)}
-                            ref={ ref }  
-                        />
-                    )
+                { (contexto.state.categorias.length > 0 || adicionar)?
+                        contexto.state.categorias.map((categoria, i) => 
+                            <Categoria 
+                                key={ i } 
+                                id={ categoria.id } 
+                                nome={ categoria.nome } 
+                                categoriaEditavel={ categoriaEditavel === categoria.id }
+                                setCategoriaEditavel={ setCategoriaEditavel }
+                                naoAdicionar={() => setAdicionar(false)}
+                                ref={ ref }  
+                            />
+                        )
+                :   
+                    <div className={ styles.semCategoria }>
+                        <p>Adicione uma Categoria</p>
+                    </div>
                 }
                 { 
                     adicionar ?
