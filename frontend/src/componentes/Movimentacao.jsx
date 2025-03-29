@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { DadosContexto } from "../store"
-import { movementsActions } from "../store/actionFirebase"
+import { movementsActions, errorMessageActions } from "../store/actionFirebase"
 import { useNavigate } from 'react-router-dom'
 import formatarValor from '../store/utils/formatCurrency'
 
@@ -27,13 +27,13 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
 
     const navigate = useNavigate()
     const [ categoriaSelecionada, setCategoriaSelecionada ] = useState({ 
-        nome: movimentacao.categoria,
-        id: movimentacao.categoriaId,
+        nome: movimentacao.categoria ?? contexto.state.categorias[0].nome,
+        id: movimentacao.categoria?  movimentacao.categoriaId : contexto.state.categorias[0].id,
     })
 
     const [ contaSelecionada, setContaSelecionada ] = useState({ 
-        nome: movimentacao.conta,
-        id: movimentacao.contaId,
+        nome: movimentacao.conta ?? contexto.state.contas[0].nome,
+        id: movimentacao.conta ? movimentacao.contaId : contexto.state.contas[0].id,
     })
 
     useEffect(() => {
@@ -92,6 +92,30 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
         movementsActions.deletarMovimentacao(contexto.dispatch, movimentacao)
     }
 
+    const handleEditar = () => {
+        
+        if(contexto.state.contas.length <= 0) {
+            errorMessageActions.exibirMensagem(contexto.dispatch, {
+                mensagem: "Adicione uma conta antes de seguir.", 
+                titulo: 'Aviso', 
+                tipo: 'warning', 
+                link: '/contas'
+            })
+            return
+        }
+        if(contexto.state.categorias.length <= 0) {
+            errorMessageActions.exibirMensagem(contexto.dispatch, {
+                mensagem: "Adicione uma categoria antes de seguir.", 
+                titulo: 'Aviso', 
+                tipo: 'warning', 
+                link: '/categorias'
+            })
+            return
+        }
+
+        setMovimentacaoEditavel(movimentacao.id)
+    }
+
     return (
         <li className={ styles.movimentacao }>
             { movimentacaoEditavel ? 
@@ -128,15 +152,15 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
                     <span><div className={styles.nomeLinha}>Data: </div>{ movimentacao.data }</span>
                     <span><div className={styles.nomeLinha}>Nome: </div>{ movimentacao.nome }</span>
                     <span><div className={styles.nomeLinha}>Valor: </div>{ movimentacao.valor }</span>
-                    <span><div className={styles.nomeLinha}>Categoria: </div>{ movimentacao.categoria }</span>
+                    <span><div className={styles.nomeLinha}>Categoria: </div>{ movimentacao.categoria ?? 'Sem Categoria' }</span>
                     <span onClick={(() => navigate(`/editar-conta/${movimentacao.contaId}`))}>
                         <div className={styles.nomeLinha}>Conta: </div>
-                        { movimentacao.conta }
+                        { movimentacao.conta ?? 'Sem Conta' }
                     </span>
                     <span>
                         <i
                             className='bx bx-edit-alt'
-                            onClick={ () => setMovimentacaoEditavel(movimentacao.id) }
+                            onClick={ handleEditar }
                         ></i>
                         <i
                             className='bx bx-trash'

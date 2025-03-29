@@ -1,4 +1,4 @@
-import { firestore } from "./firebase"
+import firebase, { firestore } from "./firebase"
 import { objetoValido, handleError } from '../utils'
 
 const accountsActions = {
@@ -17,6 +17,11 @@ const accountsActions = {
     deletarConta: async (dispatch, conta) => {
         try {
             await firestore('contas', 'delete', conta.id)
+            
+            const data = await firebase.getUserData()
+            if (!data) return
+            dispatch({ type: 'signin', payload: data })
+
             dispatch({ type: 'exibirMensagem', payload: { mensagem: "Conta deletada.", titulo: 'Sucesso', tipo: 'success', link: '/contas' } })
             return true
         } catch (error) {
