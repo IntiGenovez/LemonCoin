@@ -53,18 +53,21 @@ export default function Home(){
                         <h3>HISTÓRICO DE MOVIMENTAÇÕES</h3>
 
                         <div style={{display: 'flex', gap: '3px', flexDirection: 'column'}}>
-                            { contexto.state.movimentacoes
-                                .slice(0, 10) 
-                                .map(movimentacao => {
-                                    return (
-                                        <TextGasto 
-                                            key={movimentacao.id}
-                                            nome={movimentacao.nome} 
-                                            valor={movimentacao.valor} 
-                                            tipo={movimentacao.tipo}                         
-                                        />
-                                    );
-                                })
+                            { contexto.state.movimentacoes.length > 0 ?
+                                contexto.state.movimentacoes
+                                    .slice(0, 10) 
+                                    .map(movimentacao => {
+                                        return (
+                                            <TextGasto 
+                                                key={movimentacao.id}
+                                                nome={movimentacao.nome} 
+                                                valor={movimentacao.valor} 
+                                                tipo={movimentacao.tipo}                         
+                                            />
+                                        );
+                                    })
+                            :
+                                    'Suas movimentações apareceram aqui'
                             }
                         </div>
                     </div> 

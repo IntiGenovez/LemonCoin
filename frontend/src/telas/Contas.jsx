@@ -13,17 +13,21 @@ export default function Contas() {
     return (
         <div className={ styles.contas }>
             <div className={ styles.container }>
-                { 
-                    contexto.state.contas.map((conta, i) => {
-                        return (
-                            <CardConta 
-                                key={conta.id} 
-                                id={conta.id}
-                                nome={conta.nome} 
-                                saldo={conta.saldo}                             
-                            />
-                        )
-                    })
+                {   contexto.state.contas.length > 0 ?
+                        contexto.state.contas.map((conta, i) => {
+                            return (
+                                <CardConta 
+                                    key={conta.id} 
+                                    id={conta.id}
+                                    nome={conta.nome} 
+                                    saldo={conta.saldo}                             
+                                />
+                            )
+                        })
+                    :
+                        <div className={ styles.semConta }>
+                            <p>Adicione uma nova conta para monitorar seus gastos</p>
+                        </div>
                 }
                 
             </div>

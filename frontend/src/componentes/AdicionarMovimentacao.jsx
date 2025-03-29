@@ -3,7 +3,7 @@ import InputRecorrencia from './InputRecorrencia'
 import { useState, useContext, useEffect } from 'react'
 
 import { DadosContexto } from '../store'
-import { movementsActions } from '../store/actionFirebase'
+import { movementsActions, errorMessageActions } from '../store/actionFirebase'
 import formatarMoeda from '../store/utils/formatCurrency'
 
 import styles from '../estilos/AdicionarMovimentacao.module.css'
@@ -39,6 +39,24 @@ export default function AdicionarMovimentacao({ tipo }){
 
     //Define a data do input['date'] para a data de hoje
     useEffect(() => {
+        console.log(contexto.state.contas.length)
+        if(contexto.state.contas.length <= 0) {
+            errorMessageActions.exibirMensagem(contexto.dispatch, {
+                mensagem: "Adicione uma conta antes de seguir.", 
+                titulo: 'Aviso', 
+                tipo: 'warning', 
+                link: '/contas'
+            })
+        }
+        if(contexto.state.categorias.length <= 0) {
+            errorMessageActions.exibirMensagem(contexto.dispatch, {
+                mensagem: "Adicione uma categoria antes de seguir.", 
+                titulo: 'Aviso', 
+                tipo: 'warning', 
+                link: '/categorias'
+            })
+        }
+
         const dataAtual = formatDateToInputDate(true)
 
         setMovimentacao(prev => ({ ...prev, data: dataAtual }))

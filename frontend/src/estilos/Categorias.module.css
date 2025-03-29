@@ -7,6 +7,13 @@
     height: 350px;
     margin: auto;
     overflow-y: auto;
+
+    & .semCategoria {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 @media (max-width: 768px) {

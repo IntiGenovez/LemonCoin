@@ -69,25 +69,9 @@ export default function Movimentacoes({ tipo }) {
                 )}
             </div>
 
-            {tamanho.largura <= 768 ? //se a tela for mobile, ira fazer uma ul em ordem alfabetica da data
-                <ul>
-                    {contexto.state.movimentacoes
-                        .filter(movimentacao => movimentacao.tipo === tipo)
-                        .slice() 
-                        .sort((a, b) => new Date(b.data) - new Date(a.data)) //ordena por data
-                        .map(movimentacao => (
-                            <Movimentacao  
-                                tipo={tipo} 
-                                key={movimentacao.id} 
-                                movimentacaoListada={movimentacao}
-                                movimentacaoEditavel={movimentacaoEditavel === movimentacao.id}
-                                setMovimentacaoEditavel={setMovimentacaoEditavel}
-                            />
-                        ))}
-                </ul>
-            :
-                <ul>
-                    { contexto.state.movimentacoes
+            <ul>
+                { contexto.state.movimentacoes.length > 0 ?
+                    contexto.state.movimentacoes
                         .filter(movimentacao => movimentacao.tipo === tipo)
                         .map(movimentacao => {
                             return (<Movimentacao  
@@ -97,10 +81,13 @@ export default function Movimentacoes({ tipo }) {
                                 movimentacaoEditavel={ movimentacaoEditavel === movimentacao.id }
                                 setMovimentacaoEditavel={ setMovimentacaoEditavel }
                             />)
-                    }
-                    ) }
-                </ul>
-            }
+                        })
+                :
+                    <div className={ styles.semMovimentacao }>
+                        <p>Adicione uma Nova { tipo }</p>
+                    </div>
+                }
+            </ul>
             
             <div className={styles.total}>
                 <p>Total: <span>{ contexto.state.movimentacoes
