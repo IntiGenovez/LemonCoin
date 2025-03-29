@@ -43,6 +43,27 @@
     cursor: pointer;
 
     & * {
+        font-size: 23px;
+    }
+}
+
+.btnVoltar2 {    background-color: #809c34;
+    border: 0;
+    color: white;
+    font-size: 18px;
+    border-radius: 50%;
+    
+    position: absolute;
+    width: 35px;
+    aspect-ratio: 1/1;
+    display: grid;
+    place-items: center;
+
+    top: 115px;
+    left: 50px;
+    cursor: pointer;
+
+    & * {
         font-size: 30px;
     }
 }

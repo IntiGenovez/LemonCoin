@@ -38,7 +38,8 @@ export default function Layout() {
                     :
                     (
                         <>
-                            <BotaoVoltar />
+                            <BotaoVoltar home={ false } />
+                            <BotaoVoltar home={ true } />
                         </>
                     )
             }
