@@ -40,6 +40,10 @@ const userActions = {
 
             dispatch({ type: 'signin', payload: cadastroUsuario })
             dispatch({ type: 'exibirMensagem', payload: { mensagem: 'Cadastro Realizado com Sucesso', tipo: 'success', titulo: 'Cadastrado!', link: '/home' } })
+
+            userActions.ouvirMovimentacoes(dispatch)
+            userActions.ouvirContas(dispatch)
+            userActions.ouvirCategorias(dispatch)
             return true
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') error.message = 'Esse endereço de email já foi utilizado'

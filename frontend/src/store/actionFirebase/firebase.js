@@ -166,6 +166,11 @@ const signUpUser = async (usuario) => {
     
     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
     firestore('usuarios', 'update', userCredential.user?.uid, usuario)
+    firestore('categorias', 'save', null, { nome: 'Alimentação' })
+    firestore('categorias', 'save', null, { nome: 'Moradia' })
+    firestore('categorias', 'save', null, { nome: 'Transporte' })
+    firestore('categorias', 'save', null, { nome: 'Lazer' })
+    firestore('categorias', 'save', null, { nome: 'Saúde' })
     return userCredential.user
 }
 
