@@ -1,4 +1,4 @@
-export default function InputNomeConta({ valor, onChange }){
+export default function InputNomeConta({ valor, onChange }) {
     return(
         <select name='nomeConta' id='nomeConta' onChange={onChange} value={valor}>
             <option value=''>Conta</option>
