@@ -5,6 +5,7 @@ import { getFirestore, collection, addDoc, getDocs, getDoc, deleteDoc, setDoc, d
 import { getStorage } from 'firebase/storage'
 
 const env = import.meta.env
+console.log("env: " + env.VITE_API_KEY)
 
 const firebaseConfig = {
     apiKey: env.VITE_API_KEY,
