@@ -3,7 +3,7 @@ import { handleError, objetoValido, emailValido, senhasValidas, telefoneValido }
 
 const userActions = {
     ouvirMovimentacoes: dispatch => {
-        return firebase.subscribeMoviments(dispatch)
+        return firebase.subscribeMovements(dispatch)
     },
     ouvirContas: dispatch => {
         return firebase.subscribeAccounts(dispatch)
@@ -16,6 +16,7 @@ const userActions = {
             const data = await firebase.getUserData()
             if (!data) return
             dispatch({ type: 'signin', payload: data })
+            dispatch({ type: 'loaded' })
 
             userActions.ouvirMovimentacoes(dispatch)
             userActions.ouvirContas(dispatch)
@@ -40,6 +41,7 @@ const userActions = {
 
             dispatch({ type: 'signin', payload: cadastroUsuario })
             dispatch({ type: 'exibirMensagem', payload: { mensagem: 'Cadastro Realizado com Sucesso', tipo: 'success', titulo: 'Cadastrado!', link: '/home' } })
+            dispatch({ type: 'loaded' })
 
             userActions.ouvirMovimentacoes(dispatch)
             userActions.ouvirContas(dispatch)
@@ -58,6 +60,7 @@ const userActions = {
             objetoValido(usuario)
             const data = await firebase.signInUser(usuario.email, usuario.senha)
             dispatch({ type: 'signin', payload: data })
+            dispatch({ type: 'loaded' })
 
             userActions.ouvirMovimentacoes(dispatch)
             userActions.ouvirContas(dispatch)

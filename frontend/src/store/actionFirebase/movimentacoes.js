@@ -11,8 +11,6 @@ const movementsActions = {
             const transacao =  movimentacao.tipo === 'Receita' ? 
                 - movimentacao.valor :
                 movimentacao.valor
-                
-            console.log(movimentacao.valor)
 
             await firestore('movimentações', 'delete', movimentacao.id)
             await firestore('contas', 'updatebalance', movimentacao.contaId, transacao)

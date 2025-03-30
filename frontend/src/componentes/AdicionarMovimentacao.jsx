@@ -1,5 +1,4 @@
 import InputDia from './InputDia'
-import InputRecorrencia from './InputRecorrencia'
 import { useState, useContext, useEffect } from 'react'
 
 import { DadosContexto } from '../store'
@@ -39,6 +38,13 @@ export default function AdicionarMovimentacao({ tipo }){
 
     //Define a data do input['date'] para a data de hoje
     useEffect(() => {
+        const dataAtual = formatDateToInputDate(true)
+
+        setMovimentacao(prev => ({ ...prev, data: dataAtual }))
+    }, [])
+
+    useEffect(() => {
+        if(contexto.state.loading) return
         if(contexto.state.contas.length <= 0) {
             errorMessageActions.exibirMensagem(contexto.dispatch, {
                 mensagem: "Adicione uma conta antes de seguir.", 
@@ -55,11 +61,7 @@ export default function AdicionarMovimentacao({ tipo }){
                 link: '/categorias'
             })
         }
-
-        const dataAtual = formatDateToInputDate(true)
-
-        setMovimentacao(prev => ({ ...prev, data: dataAtual }))
-    }, [])
+    }, [contexto.state.contas, contexto.state.categorias, contexto.state.loading])
 
     const handleChangeCategoria = e => {
         setCategoriaSelecionada({
@@ -125,7 +127,6 @@ export default function AdicionarMovimentacao({ tipo }){
 
                     </div>
                     <div className={styles.divContaRecorrencia}>
-                        <InputRecorrencia />
                         <select value={ contaSelecionada.nome } onChange={ handleChangeConta }>
                             <option value={null}>Conta</option>
                             { contexto.state.contas.map((conta, i) => (

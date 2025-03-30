@@ -18,6 +18,9 @@ function usuarioReducer(estado, action) {
                     genero: '',
                 } }
             break
+        case 'loaded': {
+            novoEstado = { ...estado, loading: false }
+        }
         default:
             novoEstado = estado      
     }

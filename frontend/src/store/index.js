@@ -10,7 +10,6 @@ export const initialState = {
         email: '',
         telefone: '',
         genero: '',
-        token: null
     },
     mensagemErro: {
         mensagem: '',
@@ -19,7 +18,8 @@ export const initialState = {
         link: '',
         titulo: ''
     },
-    historico: ['/home']
+    historico: ['/home'],
+    loading: true
 }
 
 

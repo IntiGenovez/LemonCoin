@@ -87,9 +87,10 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
     }
 
     const handleDeletar = () => {
-        movimentacao.valor = movimentacao.valor.replace('R$ ', '').replace(',', '.')
-        movimentacao.valor = +movimentacao.valor
-        movementsActions.deletarMovimentacao(contexto.dispatch, movimentacao)
+        const newMovimentacao = { ...movimentacao }
+        newMovimentacao.valor = newMovimentacao.valor.replace('R$ ', '').replace(',', '.')
+        newMovimentacao.valor = +newMovimentacao.valor
+        movementsActions.deletarMovimentacao(contexto.dispatch, newMovimentacao)
     }
 
     const handleEditar = () => {
