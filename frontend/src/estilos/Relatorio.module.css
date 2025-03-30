@@ -13,6 +13,33 @@
             text-align: center;
             flex: 1;
         }
+
+        & .legenda {
+            display: flex; 
+            flex-direction: column;
+            align-items: start;
+            
+            & > div {
+                display: flex;
+                gap: 5px;
+                & div {
+                    height: 15px;
+                    aspect-ratio: 1 / 1;
+                }
+            }
+
+            & > div:first-child {
+                & div {
+                    background-color: var(--cor-fonte-principal);
+                }
+            }
+
+            & > div:last-child {
+                & div {
+                    background-color: var(--background-botoes);
+                }
+            }
+        }
     }
     
     & .alinharRelatorio {

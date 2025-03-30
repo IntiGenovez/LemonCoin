@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState, useRef } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BotaoNavegar from '../componentes/BotaoNavegar'
 
 import { DadosContexto } from '../store'
+import { historyActions } from '../store/actionFirebase'
 import { isUserSignedIn } from '../store/actionFirebase/firebase'
 
 import styles from '../estilos/Cabecalho.module.css'
@@ -15,6 +16,7 @@ export default function Cabecalho() {
     const [usuario, setUsuario] = useState(null) 
     let location = useLocation() //usado para saber o path atual
     const [titulo, setTitulo] = useState('')
+    const ref = useRef(null)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -30,6 +32,14 @@ export default function Cabecalho() {
             setTitulo(location.pathname.replace('/', '').replace('-', ' ').split('/')[0])
         }
     }, [location.pathname])
+
+    const handleMouseOver = () => {
+        ref.current.style.display = 'flex'
+    }
+    
+    const handleMouseOut = () => {
+        ref.current.style.display = 'none'
+    }
 
     return (
         <header>
@@ -61,7 +71,23 @@ export default function Cabecalho() {
                             <Link to='/receitas' onClick={ () => setMenuOpen(prev => !prev) }>Receitas</Link>
                             <Link to='/categorias' onClick={ () => setMenuOpen(prev => !prev) }>Categorias</Link>
                             <Link to='/contas' onClick={ () => setMenuOpen(prev => !prev) }>Contas</Link>
-                            <Link to='/relatorios' onClick={ () => setMenuOpen(prev => !prev) }>Relatórios</Link>
+                            <nav onClick={ () => setMenuOpen(prev => !prev) } className={ styles.subNav }
+                                onMouseOver={ handleMouseOver}
+                                onMouseOut={ handleMouseOut} 
+                            >
+                                Relatórios
+                                <div className={ styles.menu } ref={ ref }>
+                                    <a onClick={ () => {
+                                        historyActions.mudarRelatorio(contexto.dispatch, 'Movimentações')
+                                        navigate('/relatorios')
+                                    } } >Movimentações</a>
+                                    <hr />
+                                    <a onClick={ () => {
+                                        historyActions.mudarRelatorio(contexto.dispatch, 'Categorias')
+                                        navigate('/relatorios')
+                                    } } >Categorias</a>
+                                </div>
+                            </nav>
                         </nav>
                     </>
             }

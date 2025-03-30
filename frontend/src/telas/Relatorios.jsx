@@ -1,19 +1,23 @@
-import { useState } from "react"
+import { useContext } from "react"
+import { DadosContexto } from "../store"
 import RelatorioCategoria from "../componentes/RelatorioCategoria"
 import RelatorioMovimentacao from "../componentes/RelatorioMovimentacao"
-import styles from "../estilos/Relatorio.module.css"
 
 export default function Relatorios() {
-    const [ relatorio, setRelatorio ] = useState('Despesas')
-    const mudarRelatorio = () => {
-        setRelatorio(prev => prev === 'Despesas' ? 'Categorias': 'Despesas') 
-    }
+    const contexto = useContext(DadosContexto)
     return (
         <div className='tela-padrao'>
             {
-                // relatorio === 'Despesas' ?
-                //     <RelatorioCategoria mudarRelatorio={mudarRelatorio} /> :
+                contexto.state.relatorio === 'Movimentações' ? 
                     <RelatorioMovimentacao />
+                :
+                    null
+            }
+            {
+                contexto.state.relatorio === 'Categorias' ? 
+                    <RelatorioCategoria />
+                :
+                    null
             }
         </div>
     )

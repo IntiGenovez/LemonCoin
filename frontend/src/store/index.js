@@ -19,7 +19,8 @@ export const initialState = {
         titulo: ''
     },
     historico: ['/home'],
-    loading: true
+    loading: true,
+    relatorio: 'Movimentações'
 }
 
 

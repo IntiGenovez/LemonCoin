@@ -18,6 +18,9 @@ const historyActions = {
             handleError(dispatch, error, '/home')
             return false
         }
+    },
+    mudarRelatorio: (dispatch, relatorio) => {
+        dispatch({ type: 'mudarRelatorio', payload: relatorio })
     }
 }
 
