@@ -11,9 +11,9 @@ export default function Relatorios() {
     return (
         <div className='tela-padrao'>
             {
-                relatorio === 'Despesas' ?
-                    <RelatorioCategoria mudarRelatorio={mudarRelatorio} /> :
-                    <RelatorioMovimentacao mudarRelatorio={mudarRelatorio} />
+                // relatorio === 'Despesas' ?
+                //     <RelatorioCategoria mudarRelatorio={mudarRelatorio} /> :
+                    <RelatorioMovimentacao />
             }
         </div>
     )

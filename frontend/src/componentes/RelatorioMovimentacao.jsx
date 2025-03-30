@@ -9,48 +9,57 @@ export default function RelatorioMovimentacao({ mudarRelatorio }) {
     const contexto = useContext(DadosContexto)
     const [ movimentacoesPorMes, setMovimentacoesPorMes ] = useState([{
         mes: '',
-        saldo: 0
+        valor: 0,
+        tipo: ''
     }])
-    const [ maiorSaldo, setMaiorSaldo ] = useState(0)
+    const [ maiorValor, setMaiorValor ] = useState(0)
 
     useEffect(() => {
         const agrupamento = {}
 
-        contexto.state.movimentacoes.forEach(movimentacao => {
-            const mes = movimentacao.data.split('-')[1]
-            const ano = movimentacao.data.split('-')[0]
-            const chaveMes = `${ano}-${mes}`
+        contexto.state.movimentacoes
+            .sort((a, b) => a.data.toDate() - b.data.toDate())
+            .forEach(movimentacao => {
+            const dataMovimentacao = movimentacao.data.toDate().toLocaleString('pt-BR').split(',')[0] 
+            const mes = dataMovimentacao.split('/')[1]
+            const ano = dataMovimentacao.split('/')[2]
+            const chaveMes = `${mes}/${ano}`
 
             if (!agrupamento[chaveMes]) {
-                agrupamento[chaveMes] = 0
+                agrupamento[chaveMes] = [0, 0]
             }
 
-            if (movimentacao.tipo === 'Receita') {
-                agrupamento[chaveMes] += movimentacao.valor
-            }
+            if(movimentacao.tipo === 'Receita') agrupamento[chaveMes][0] += movimentacao.valor
+            if(movimentacao.tipo === 'Despesa') agrupamento[chaveMes][1] += movimentacao.valor
         })
 
-        const resultado = Object.entries(agrupamento).map(([mes, saldo]) => ({
+        const resultado = Object.entries(agrupamento).map(([mes, valor]) => ({
             mes,
-            saldo
+            valor
         }))
 
         setMovimentacoesPorMes(resultado)
     }, [contexto.state.movimentacoes])
 
     useEffect(() => {
-        setMaiorSaldo(movimentacoesPorMes.reduce((acc, {saldo}) => {
-            return acc > saldo ? acc: saldo
-        }, maiorSaldo))
+        setMaiorValor(movimentacoesPorMes.reduce((acc, { valor }) => {
+            valor = valor[0] > valor[1] ? valor[0] : valor[1]
+            return acc > valor ? acc: valor
+        }, maiorValor))
     }, [movimentacoesPorMes])
 
     return (
         <div className={ styles.relatorio }>
-            <p className={ styles.mudarTelas } onClick={mudarRelatorio}>Despesas</p>
+            <div className={ styles.titulo } >
+                <div></div>
+                <h1>Movimentações</h1>
+                <div></div>
+            </div>
             <div className={ styles.alinharRelatorio }>
                 { movimentacoesPorMes.map((movimentacao, i) => {
-                    return <Coluna key={i} movimentacao={ movimentacao } cemPorcento={ maiorSaldo } />
+                    return <Coluna key={i} movimentacao={ movimentacao } cemPorcento={ maiorValor } />
                 }) }
+                
             </div>
         </div>
     )
