@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, confirmPasswordReset } from 'firebase/auth'
-import { getFirestore, collection, addDoc, getDocs, getDoc, deleteDoc, setDoc, doc, onSnapshot } from 'firebase/firestore'
+import { getFirestore, collection, addDoc, getDocs, getDoc, deleteDoc, setDoc, doc, onSnapshot, query, where } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
 
 const env = import.meta.env
@@ -66,6 +66,7 @@ export const firestore = async (type, method, id, payload) => {
         
         case 'update':
             if(!id) throw new Error(`${type.slice(0, -1).replace(/^./, c => c.toUpperCase())} não encontrado (a)!`)
+            if(id === auth.currentUser.uid) return await setDoc(doc(db, 'usuarios', auth.currentUser.uid), payload)
             return await setDoc(getUserDocRef(type, id), payload)
             
         case 'updatebalance':
@@ -82,7 +83,7 @@ export const firestore = async (type, method, id, payload) => {
     }
 }
 
-const subscribeMoviments = dispatch => {
+const subscribeMovements = dispatch => {
     if(!auth.currentUser) return
     onSnapshot(collection(db, 'usuarios', auth.currentUser.uid, 'movimentações'), (snapshot) => {
         const movimentacoes = snapshot.docs.map(async document => {
@@ -165,6 +166,7 @@ const signUpUser = async (usuario) => {
 
     
     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+    console.log(usuario)
     firestore('usuarios', 'update', userCredential.user?.uid, usuario)
     firestore('categorias', 'save', null, { nome: 'Alimentação' })
     firestore('categorias', 'save', null, { nome: 'Moradia' })
@@ -191,7 +193,7 @@ const firebase = {
     getUserData, 
     updatePassword,
     subscribeAccounts, 
-    subscribeMoviments,
+    subscribeMovements,
     subscribeCategories
 }
 
