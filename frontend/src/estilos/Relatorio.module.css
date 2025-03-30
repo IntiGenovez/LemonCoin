@@ -4,40 +4,67 @@
     justify-content: center;
     align-items: center;
     gap: 20px;
+
+    & .titulo {
+        display: flex;
+        width: 100%;
+
+        & > * {
+            text-align: center;
+            flex: 1;
+        }
+    }
     
-    height: 100%;
-
-
     & .alinharRelatorio {
         height: 100%;
+        width: 100%;
         display: flex;
         gap: 20px;
-        max-width: 100%;
-        width: fit-content;
+
+        padding: 20px 5px 0;
         overflow-x: scroll;
     }
 
     & .dado {
         display: flex;
         flex-direction: column;
-        justify-content: flex-end;
         align-items: center;
 
-        height: 100%;
-        min-width: fit-content;
-        width: 70px;
-        padding-bottom: 10px;
+        min-width: 70px;
 
         & .coluna {
             display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
+            flex-direction: row;
+            align-items: end;
+            justify-content: center;
             
             flex-grow: 1;
             width: 100%;
             
             & .colunaPreenchida {
-                background-color: aqua;
+                position: relative;
+                width: 50%;
+                background-color: var(--cor-fonte-principal);
+                cursor: pointer;
+
+                display: flex;
+                justify-content: center;
+            }
+
+            & .tip {
+                position: absolute;
+                top: -20px;
+                width: 200%;
+                text-align: center;
+                background-color: #fdfcda99;
+                border-radius: 5px;
+                opacity: 0%;
+
+                transition: opacity 0.2s ease-in;
+            }
+
+            & .colunaPreenchida.outraCor {
+                background-color: var(--background-botoes);
             }
         }
     }
@@ -81,14 +108,4 @@
             }
         }
     }
-}
-
-.mudarTelas {
-    display: block;
-    height: fit-content;
-    padding: 10px;
-    cursor: pointer;
-    left: 0;
-    background-color: #0000;
-    align-self: start;
 }

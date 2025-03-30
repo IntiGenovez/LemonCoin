@@ -59,6 +59,7 @@ const movementsActions = {
             delete movimentacaoToFetch.usuario
 
             await firestore('movimentações', 'save', null, movimentacaoToFetch)
+            await firestore('contas', 'updatebalance', movimentacao.contaId, transacao)
             dispatch({ type: 'exibirMensagem', payload: { mensagem: `${movimentacao.tipo} cadastrada com sucesso.`, titulo: 'Sucesso', tipo: 'success', link: `/${movimentacao.tipo.toLowerCase()}s` } })
             return true
         } catch (error) {
