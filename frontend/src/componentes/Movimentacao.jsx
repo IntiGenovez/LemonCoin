@@ -27,13 +27,13 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
 
     const navigate = useNavigate()
     const [ categoriaSelecionada, setCategoriaSelecionada ] = useState({ 
-        nome: movimentacao.categoria ?? contexto.state.categorias[0].nome,
-        id: movimentacao.categoria?  movimentacao.categoriaId : contexto.state.categorias[0].id,
+        nome: movimentacao.categoria ?? contexto.state.categorias[0]?.nome ?? '',
+        id: movimentacao.categoria?  movimentacao.categoriaId : contexto.state.categorias[0]?.id ?? '',
     })
 
     const [ contaSelecionada, setContaSelecionada ] = useState({ 
-        nome: movimentacao.conta ?? contexto.state.contas[0].nome,
-        id: movimentacao.conta ? movimentacao.contaId : contexto.state.contas[0].id,
+        nome: movimentacao.conta ?? contexto.state.contas[0]?.nome ?? '',
+        id: movimentacao.conta ? movimentacao.contaId : contexto.state.contas[0]?.id ?? '',
     })
 
     useEffect(() => {

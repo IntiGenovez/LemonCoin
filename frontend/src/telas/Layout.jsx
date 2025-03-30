@@ -30,7 +30,7 @@ export default function Layout() {
         <>
             <Cabecalho />
             {
-                titulo === '/' ? 
+                titulo === '/' ||  titulo === '/cadastro' ||  titulo === '/login' ? 
                     (
                         
                         <></>
