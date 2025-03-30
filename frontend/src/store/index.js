@@ -20,7 +20,7 @@ export const initialState = {
     },
     historico: ['/home'],
     loading: true,
-    relatorio: 'Movimentações'
+    relatorio: 'Categorias'
 }
 
 

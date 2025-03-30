@@ -26,6 +26,10 @@ export default function Cabecalho() {
     }, [])
 
     useEffect(() => {
+        if(location.pathname === '/relatorios') {
+            setTitulo('Relatórios')
+            return
+        }
         if(location.pathname === '/'){
             setTitulo('')
         } else {

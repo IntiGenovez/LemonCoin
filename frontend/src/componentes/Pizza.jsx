@@ -12,16 +12,6 @@ export default function Pizza({ dados, cemPorcento }) {
         )
         setPorcentagemPorCategoria(porcentagens)
     }, [cemPorcento, dados])
-    
-    // useEffect(() =>{
-    //     console.log(`conic-gradient(
-    //             pink ${porcentagemPorCategoria[0] || 0}deg,
-    //             lightblue 0 ${porcentagemPorCategoria[1] || 0}deg,
-    //             orange 0 ${porcentagemPorCategoria[2] || 0}deg,
-    //             aquamarine 0 ${porcentagemPorCategoria[3] || 0}deg,
-    //             chartreuse 0 ${porcentagemPorCategoria[4] || 0}deg
-    //         )`)
-    // }, [porcentagemPorCategoria, dados, cemPorcento])
 
     return (
         <div className={ styles.graficoPizza } style={{
