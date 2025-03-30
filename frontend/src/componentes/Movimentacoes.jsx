@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from 'react'
 import Movimentacao from '../componentes/Movimentacao'
 import Seletor from '../componentes/Seletor'
+import InputFiltro from '../componentes/InputFiltro'
 import BotaoNavegar from '../componentes/BotaoNavegar'
 import styles from '../estilos/Movimentacoes.module.css'
 import { useLocation } from 'react-router-dom'
@@ -12,7 +13,9 @@ import { movementsActions } from '../store/actionFirebase'
 export default function Movimentacoes({ tipo }) {
     const [ seletorAtivo, setSeletorAtivo ] = useState(null)
     const [ isUp, setIsUp ] = useState(false)
+    const [ filtroOpen, setFiltroOpen ] = useState(false)
     const [ movimentacaoEditavel, setMovimentacaoEditavel ] = useState(null)
+    const [filtragem, setFiltragem] = useState(() => () => true)
     const seletores = ['data', 'nome', 'valor', 'categoria', 'conta', 'Filtro']
 
     const location = useLocation()
@@ -42,8 +45,7 @@ export default function Movimentacoes({ tipo }) {
     useEffect(() => 
         movementsActions.ordenarMovimentacoes(contexto.dispatch, seletorAtivo, isUp), 
         [isUp, seletorAtivo]
-    )
-    
+    )    
 
     const handleClick = (seletor) => {
         if (seletor === seletorAtivo) {
@@ -65,14 +67,27 @@ export default function Movimentacoes({ tipo }) {
                         isAtivo={ seletorAtivo === seletor }
                         isUp= { isUp && seletorAtivo === seletor }
                         setAtivo={ handleClick }
+                        setFiltroOpen={ () => {
+                            setFiltroOpen(prev => !prev)
+                            setFiltragem(() => () => true)
+                        }} 
                     />)
                 )}
             </div>
+                <InputFiltro 
+                    open={ filtroOpen } 
+                    setFiltroOpen={ () => {
+                        setFiltroOpen(prev => !prev)
+                        setFiltragem(() => () => true)
+                    }} 
+                    filtragem={ setFiltragem }
+                />
 
             <ul>
                 { contexto.state.movimentacoes.length > 0 ?
                     contexto.state.movimentacoes
                         .filter(movimentacao => movimentacao.tipo === tipo)
+                        .filter( filtragem )
                         .map(movimentacao => {
                             return (<Movimentacao  
                                 tipo={ tipo } 
@@ -92,6 +107,7 @@ export default function Movimentacoes({ tipo }) {
             <div className={styles.total}>
                 <p>Total: <span>{ contexto.state.movimentacoes
                     .filter(movimentacao => movimentacao.tipo === tipo)
+                    .filter( filtragem )
                     .reduce((acc, atual) => +acc + +atual.valor, 0)
                     .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }) }</span></p>
                 <BotaoNavegar link={ linkAdicionar }>Adicionar { tipo }</BotaoNavegar>
