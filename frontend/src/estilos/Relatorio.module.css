@@ -95,43 +95,87 @@
             }
         }
     }
+}
 
-    & .graficoPizza {
-        width: 300px;
-        align-self: center;
-        aspect-ratio: 1 / 1;
-        border-radius: 50%;
-    }
+.relatorioPizzas {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
 
-    & ul {
+    & .viewPizza {
+        width: 100%;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 10px;
+        justify-content: space-around;
 
-        & li {
+        & .dadoPizza {
+            height: 100%;
             display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             gap: 10px;
-        
-            & div {
-                width: 20px;
-                aspect-ratio: 1 / 1;
+        }
+
+        & .graficoPizza {
+            width: 300px;
+            align-self: center;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+        }
+
+        & .legenda {
+            display: flex;
+            width: 100%;
+            align-items: stretch;
+            justify-content: space-between;
+            border: 1px solid var(--background-botoes);
+            padding: 5px;
+
+            & > p:first-child {
+                padding: 10px;
             }
-         
-            .cor1 {
-                background-color: pink;
+            & > p {
+                flex: 1;
+                display: block;
+                border-right: 1px solid var(--background-botoes);
             }
-            .cor2 {
-                background-color: lightblue;
+
+            & > p:last-child {
+                border-right: none;
             }
-            .cor3 {
-                background-color: orange;
-            }
-            .cor4 {
-                background-color: aquamarine;
-            }
-            .cor5 {
-                background-color: chartreuse;
+        }
+    
+        & ul {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+    
+            & li {
+                display: flex;
+                gap: 10px;
+            
+                & div {
+                    width: 20px;
+                    aspect-ratio: 1 / 1;
+                }
+             
+                .cor1 {
+                    background-color: pink;
+                }
+                .cor2 {
+                    background-color: lightblue;
+                }
+                .cor3 {
+                    background-color: orange;
+                }
+                .cor4 {
+                    background-color: aquamarine;
+                }
+                .cor5 {
+                    background-color: chartreuse;
+                }
             }
         }
     }

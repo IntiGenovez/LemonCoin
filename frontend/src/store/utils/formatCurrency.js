@@ -1,5 +1,6 @@
 function formatarValor (valor) {
     if (typeof valor === 'number') {
+        valor = valor.toFixed(2)
         valor = valor.toString()
         let centavos = valor.split('.')[1]
         if (!centavos) 
