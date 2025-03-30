@@ -53,7 +53,16 @@ export default function RelatorioMovimentacao({ mudarRelatorio }) {
             <div className={ styles.titulo } >
                 <div></div>
                 <h1>Movimentações</h1>
-                <div></div>
+                <div className={ styles.legenda }>
+                    <div>
+                        <div></div>
+                        <p>Receitas</p>
+                    </div>
+                    <div>
+                        <div></div>
+                        <p>Despesas</p>
+                    </div>
+                </div>
             </div>
             <div className={ styles.alinharRelatorio }>
                 { movimentacoesPorMes.map((movimentacao, i) => {

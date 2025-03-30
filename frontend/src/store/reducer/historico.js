@@ -18,6 +18,12 @@ function historicoReducer(estado, action) {
                         }) 
                 }
                 break
+            case 'mudarRelatorio':
+                novoEstado = { 
+                    ...estado, 
+                    relatorio: action.payload
+                }
+                break
         default:
             novoEstado = estado      
     }
