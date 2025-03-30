@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    position: relative;
 
     & ul {
         display: flex;
@@ -26,6 +27,10 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+.seletores, .seletores * {
+    cursor: pointer;
 }
 
 .seletores {

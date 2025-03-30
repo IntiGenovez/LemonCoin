@@ -26,6 +26,7 @@
 }
 
 .btnVoltar {
+    z-index: 2;
     background-color: #809c34;
     border: 0;
     color: white;
@@ -47,7 +48,9 @@
     }
 }
 
-.btnVoltar2 {    background-color: #809c34;
+.btnVoltar2 {   
+    z-index: 2;
+    background-color: #809c34;
     border: 0;
     color: white;
     font-size: 18px;

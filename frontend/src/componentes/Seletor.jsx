@@ -1,6 +1,6 @@
 import styles from '../estilos/Movimentacoes.module.css'
 
-export default function Seletor({ nome, isAtivo, isUp, setAtivo }) {
+export default function Seletor({ nome, isAtivo, isUp, setAtivo, setFiltroOpen }) {
     return (
         <>
         {
@@ -11,7 +11,7 @@ export default function Seletor({ nome, isAtivo, isUp, setAtivo }) {
             </div>)
             :
             (<div>
-                <i className='bx bx-filter-alt'></i>
+                <i className='bx bx-filter-alt' onClick={ setFiltroOpen }></i>
             </div>)
         }
         </>

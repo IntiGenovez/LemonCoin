@@ -1,0 +1,48 @@
+.filtro {
+    background-color: var(--cor-fonte-secundaria);
+    padding: 20px 10px;
+    gap: 5vw;
+    width: 80%;
+    align-self: end;
+    border-radius: 15px;
+
+    & select {
+        width: 20%;
+        min-width: 150px;
+        font-size: 16px;
+    }
+
+    & input {
+        width: 30%;
+        max-width: 300px;
+    }
+
+    
+    & .close {
+        display: none;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        font-size: 25px;
+    }
+}
+
+.filtroOpen {
+    display: flex;
+}
+
+.filtroClose {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .filtro {
+        flex-direction: column;
+        width: 100%;
+        position: relative;
+
+        & .close {
+            display: block;
+        }
+    }
+}
