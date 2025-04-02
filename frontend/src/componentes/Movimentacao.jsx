@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState, forwardRef, useImperativeHandle } from 'react'
 import { DadosContexto } from "../store"
 import { movementsActions, errorMessageActions } from "../store/actionFirebase"
 import { useNavigate } from 'react-router-dom'
@@ -8,7 +8,7 @@ import styles from "../estilos/Movimentacoes.module.css"
 import formatDateToInputDate from '../store/utils/formatDateToInputDate'
 
 
-export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel, setMovimentacaoEditavel }) {
+const Movimentacao = forwardRef(function Movimentacao({ movimentacaoListada, movimentacaoEditavel, setMovimentacaoEditavel }, ref) {
     const contexto = useContext(DadosContexto)
     const [ movimentacao, setMovimentacao ] = useState({ 
         ...movimentacaoListada, 
@@ -24,6 +24,7 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
             formatDateToInputDate(false, movimentacaoListada.data.toDate()) : 
             movimentacaoListada.data
     })
+    const [ movimentacaoMemento, setMovimentacaoMemento ] = useState()
 
     const navigate = useNavigate()
     const [ categoriaSelecionada, setCategoriaSelecionada ] = useState({ 
@@ -35,6 +36,12 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
         nome: movimentacao.conta ?? contexto.state.contas[0]?.nome ?? '',
         id: movimentacao.conta ? movimentacao.contaId : contexto.state.contas[0]?.id ?? '',
     })
+
+    useImperativeHandle(ref, () => ({
+        atualizarMovimentacao: e => {
+            handleAtualizar(e)
+        }
+    }))
 
     useEffect(() => {
         setMovimentacao(prev => ({ ...prev, valor: formatarValor(movimentacaoInput.valor) }))
@@ -69,7 +76,15 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
         setMovimentacaoInput(prev => ({ ...prev, valor: formatarValor(valor) }));
     }
 
-    const handleAtualizar = () => {
+    const handleAtualizar = e => {
+        if(e && e.type === 'keydown' && e.key !== 'Escape' && e.key !== 'Enter') return
+        if(e && e.type === 'keydown' && e.key === 'Escape') {
+            setMovimentacao(movimentacaoMemento)
+            setMovimentacaoInput(movimentacaoMemento)
+            setMovimentacaoEditavel(null)
+            return
+        }
+
         const movimentacaoToFetch = { ...movimentacaoInput }
         movimentacaoToFetch.valor = desformatarValor(movimentacaoToFetch.valor)
 
@@ -111,12 +126,12 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
             })
             return
         }
-
+        setMovimentacaoMemento(movimentacao)
         setMovimentacaoEditavel(movimentacao.id)
     }
 
     return (
-        <li className={ styles.movimentacao }>
+        <li className={ styles.movimentacao } onKeyDown={ e => handleAtualizar(e) } tabIndex={0}>
             { movimentacaoEditavel ? 
                 (<> 
                     <input type='date' value={ movimentacaoInput.data } 
@@ -138,7 +153,7 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
                     <span>
                         <i 
                             className='bx bx-check'
-                            onClick={ handleAtualizar }
+                            onClick={ e => handleAtualizar(e) }
                         ></i>
                         <i 
                             className='bx bx-trash' 
@@ -169,4 +184,6 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
                 </>)
         }</li>
     )
-}
+})
+
+export default Movimentacao

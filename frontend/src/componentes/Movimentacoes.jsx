@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect, useRef } from 'react'
 import Movimentacao from '../componentes/Movimentacao'
 import Seletor from '../componentes/Seletor'
 import InputFiltro from '../componentes/InputFiltro'
@@ -17,6 +17,7 @@ export default function Movimentacoes({ tipo }) {
     const [ movimentacaoEditavel, setMovimentacaoEditavel ] = useState(null)
     const [filtragem, setFiltragem] = useState(() => () => true)
     const seletores = ['data', 'nome', 'valor', 'categoria', 'conta', 'Filtro']
+    const ref = useRef(null)
 
     const location = useLocation()
     let linkAdicionar = location.pathname
@@ -47,6 +48,10 @@ export default function Movimentacoes({ tipo }) {
         [isUp, seletorAtivo]
     )    
 
+    const handleKeyDown = e => {
+        ref.current?.atualizarMovimentacao(e)
+    }
+
     const handleClick = (seletor) => {
         if (seletor === seletorAtivo) {
             setIsUp(prev => !prev)
@@ -58,7 +63,7 @@ export default function Movimentacoes({ tipo }) {
     }
 
     return (
-        <section className={ styles.containerMovimentacoes }>            
+        <section className={ styles.containerMovimentacoes } tabIndex={ 0 } onKeyDown={ e => handleKeyDown(e) }>            
             <div className={ styles.seletores }>
                 { seletores.map((seletor) =>
                     (<Seletor  
@@ -95,6 +100,7 @@ export default function Movimentacoes({ tipo }) {
                                 movimentacaoListada={ movimentacao }
                                 movimentacaoEditavel={ movimentacaoEditavel === movimentacao.id }
                                 setMovimentacaoEditavel={ setMovimentacaoEditavel }
+                                ref={ ref }
                             />)
                         })
                 :

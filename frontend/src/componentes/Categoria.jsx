@@ -27,8 +27,8 @@ const Categoria = forwardRef(function Categoria({ id, nome, adicionar, naoAdicio
 
     const handleConfirmar = e => {
         if(e && e.type === 'keyup' && e.key === 'Escape') {
-            setCategoriaEditavel(null)
-            naoAdicionar()  
+            setCategoriaEditavel ? setCategoriaEditavel(null) : null
+            naoAdicionar ? naoAdicionar() : null  
             return
         }
         if(e && e.type === 'keyup' && e.key != 'Enter') return
@@ -37,7 +37,6 @@ const Categoria = forwardRef(function Categoria({ id, nome, adicionar, naoAdicio
             categoriesActions.adicionarCategoria(contexto.dispatch, newCategoria)
             naoAdicionar()  
         } else {
-            console.log(newCategoria)
             setNewCategoria(prev => ({ ...prev, id}))
             categoriesActions.atualizarCategoria(contexto.dispatch, newCategoria)
             setCategoriaEditavel(null)
