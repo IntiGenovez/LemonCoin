@@ -1,6 +1,6 @@
 import lapis from '../assets/lapis.png'
 import iconeMap from '../store/utils/iconeMap'
-import formatarValor from '../store/utils/formatCurrency'
+import { formatarValor } from '../store/utils'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -8,7 +8,7 @@ import styles from '../estilos/CardConta.module.css'
 
 export default function CardConta({ id, nome, saldo }) {
     const iconeSrc = iconeMap[nome] || lapis 
-    let saldoFormatado = saldo ? formatarValor(saldo) : ''
+    let saldoFormatado = saldo || saldo === 0 ? formatarValor(saldo) : ''
 
     const navigate = useNavigate()
     const handleClick = () => {
