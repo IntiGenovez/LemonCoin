@@ -13,14 +13,29 @@ export default function Categorias() {
     const ref = useRef(null)
 
     const adicionarCategoria = () => {
-        setCategoriaEditavel(null)
-        setAdicionar(prev => !prev)
+        if(!adicionar && !categoriaEditavel) {
+            setAdicionar(prev => !prev)
+        } else 
+            ref.current?.adicionarCategoria()
+    }
 
-        if(adicionar) ref.current?.adicionarCategoria()
+    const handleKeyDown = e => {
+        if(e.key === 'Escape') {
+            setAdicionar(false)
+            setCategoriaEditavel(null)
+        }
+
+        if(e.key === 'Enter') {
+            adicionarCategoria()
+        }
     }
 
     return (
-        <div className='tela-padrao'>
+        <div 
+            className='tela-padrao'
+            onKeyDown={ e => handleKeyDown(e) }
+            tabIndex={ 0 }
+        >
             <div className={ styles.container }>
                 { (contexto.state.categorias.length > 0 || adicionar)?
                         contexto.state.categorias.map((categoria, i) => 
