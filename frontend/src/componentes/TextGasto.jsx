@@ -1,6 +1,6 @@
 
 import { useNavigate } from 'react-router-dom'
-import formatarValor from '../store/utils/formatCurrency'
+import { formatarValor } from '../store/utils'
 
 export default function TextGasto({nome, valor, tipo}){
     const navigate = useNavigate()

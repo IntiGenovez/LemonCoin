@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
 import styles from "../estilos/Relatorio.module.css"
-import formatarValor from "../store/utils/formatCurrency"
+import { formatarValor } from "../store/utils"
 
 export default function Coluna({ movimentacao, cemPorcento }) {
     const [ porcentagemDespesa, setPorcentagemDespesa ] = useState()

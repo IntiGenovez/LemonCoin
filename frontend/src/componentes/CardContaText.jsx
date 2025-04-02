@@ -1,5 +1,5 @@
 import styles from '../estilos/CardContaText.module.css'
-import formatarValor from '../store/utils/formatCurrency'
+import { formatarValor } from '../store/utils'
 
 import { useNavigate } from 'react-router-dom'
 

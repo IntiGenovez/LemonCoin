@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { DadosContexto } from '../store'
 import { accountsActions } from '../store/actionFirebase'
-import formatarValor from '../store/utils/formatCurrency'
+import { formatarValor, desformatarValor } from '../store/utils'
 import iconeMap from '../store/utils/iconeMap'
 
 import lapis from '../assets/lapis.png'
@@ -43,10 +43,7 @@ export default function CrudConta({ tipo }) {
         e.preventDefault()
         let sucesso
 
-        let NovoSaldo = conta.saldo.replace('R$ ', '').replace(',', '.')
-        NovoSaldo = +NovoSaldo
-
-        const novaConta = { ...conta, saldo: NovoSaldo }
+        const novaConta = { ...conta, saldo: desformatarValor(conta.saldo) }
 
         if (tipo === 'Adicionar')
             sucesso = await accountsActions.adicionarConta(contexto.dispatch, novaConta)

@@ -3,7 +3,7 @@ import { useState, useContext, useEffect } from 'react'
 
 import { DadosContexto } from '../store'
 import { movementsActions, errorMessageActions } from '../store/actionFirebase'
-import formatarMoeda from '../store/utils/formatCurrency'
+import { formatarValor, desformatarValor} from '../store/utils'
 
 import styles from '../estilos/AdicionarMovimentacao.module.css'
 import BotaoNavegar from './BotaoNavegar'
@@ -89,10 +89,8 @@ export default function AdicionarMovimentacao({ tipo }){
             data: `${movimentacao.data} 00:00:00`
         }
 
-        if (novaMovimentacao.valor) {
-            novaMovimentacao.valor = novaMovimentacao.valor.replace('R$ ', '').replace(',', '.')
-            novaMovimentacao.valor = +novaMovimentacao.valor
-        }
+        if (novaMovimentacao.valor) 
+            novaMovimentacao.valor = desformatarValor(novaMovimentacao.valor)
         
         const sucesso = await movementsActions.adicionarMovimentacao(contexto.dispatch, novaMovimentacao)
         if(sucesso) navigate(`/${tipo}s`)
@@ -119,7 +117,7 @@ export default function AdicionarMovimentacao({ tipo }){
                             id='valor' 
                             placeholder='Valor: R$' 
                             value={movimentacao.valor} 
-                            onChange={e => setMovimentacao(prev => ({ ...prev, valor: formatarMoeda(e.target.value) }))}
+                            onChange={e => setMovimentacao(prev => ({ ...prev, valor: formatarValor(e.target.value) }))}
                         />
                         <select value={ categoriaSelecionada.nome } onChange={ handleChangeCategoria }>
                             <option value={null}>Categoria</option>

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { DadosContexto } from "../store"
 import { movementsActions, errorMessageActions } from "../store/actionFirebase"
 import { useNavigate } from 'react-router-dom'
-import formatarValor from '../store/utils/formatCurrency'
+import { formatarValor, desformatarValor } from '../store/utils'
 
 import styles from "../estilos/Movimentacoes.module.css"
 import formatDateToInputDate from '../store/utils/formatDateToInputDate'
@@ -71,8 +71,7 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
 
     const handleAtualizar = () => {
         const movimentacaoToFetch = { ...movimentacaoInput }
-        movimentacaoToFetch.valor = movimentacaoToFetch.valor.replace('R$ ', '').replace(',', '.')
-        movimentacaoToFetch.valor = +movimentacaoToFetch.valor
+        movimentacaoToFetch.valor = desformatarValor(movimentacaoToFetch.valor)
 
         movimentacaoToFetch.categoria = categoriaSelecionada.nome
         movimentacaoToFetch.categoriaId = categoriaSelecionada.id
@@ -88,8 +87,7 @@ export default function Movimentacao({ movimentacaoListada, movimentacaoEditavel
 
     const handleDeletar = () => {
         const newMovimentacao = { ...movimentacao }
-        newMovimentacao.valor = newMovimentacao.valor.replace('R$ ', '').replace(',', '.')
-        newMovimentacao.valor = +newMovimentacao.valor
+        newMovimentacao.valor = desformatarValor(newMovimentacao.valor)
         movementsActions.deletarMovimentacao(contexto.dispatch, newMovimentacao)
     }
 
