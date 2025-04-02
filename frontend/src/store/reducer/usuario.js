@@ -20,6 +20,7 @@ function usuarioReducer(estado, action) {
             break
         case 'loaded': {
             novoEstado = { ...estado, loading: false }
+            break
         }
         default:
             novoEstado = estado      

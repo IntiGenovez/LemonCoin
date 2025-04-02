@@ -17,6 +17,7 @@ export default function Layout() {
 
     useEffect(() => {
         userActions.obterDadosUsuario(contexto.dispatch)
+        
     }, [])
 
 
