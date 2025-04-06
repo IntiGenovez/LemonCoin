@@ -4,7 +4,6 @@ import { objetoValido, handleError } from '../utils'
 const accountsActions = {
     atualizarConta: async (dispatch, conta) => {
         try {
-            console.log({nome: conta.nome, saldo: conta.saldo})
             objetoValido({ nome: conta.nome, saldo: conta.saldo })
             await firestore('contas', 'update', conta.id, conta)
             dispatch({ type: 'exibirMensagem', payload: { mensagem: "Conta atualizada.", titulo: 'Sucesso', tipo: 'success', link: '/contas' } })

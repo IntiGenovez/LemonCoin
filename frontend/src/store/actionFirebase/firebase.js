@@ -24,6 +24,7 @@ const analytics = getAnalytics(app)
 const getUserDocRef = (type, id) => doc(db, 'usuarios', auth.currentUser.uid, type, id)
 
 const getCategoryOrAccountName = async (userId, type, itemId) => {
+    if (type === 'categorias' && itemId === 0) return 'Atualização de Conta'
     const docRef = doc(db, 'usuarios', userId, type, itemId)
     const docSnap = await getDoc(docRef)
         return docSnap.exists() ? docSnap.data().nome : null

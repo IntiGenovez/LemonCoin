@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { DadosContexto } from '../store'
-import { accountsActions } from '../store/actionFirebase'
+import { accountsActions, movementsActions } from '../store/actionFirebase'
 import { formatarValor, desformatarValor } from '../store/utils'
 import iconeMap from '../store/utils/iconeMap'
 
@@ -25,6 +25,7 @@ export default function CrudConta({ tipo }) {
         descricao: ''
     })
     const [open, setOpen] = useState(false)
+    const [contaMemento, setContaMemento] = useState()
 
     // Obtém a imagem correspondente ao nome da variavel icone, ou ícone lápis padrão se não for encontrado
     const iconeSrc = iconeMap[conta.nome] || lapis
@@ -35,6 +36,7 @@ export default function CrudConta({ tipo }) {
             if (contaParaAtualizar) {
                 contaParaAtualizar.saldo = formatarValor(contaParaAtualizar.saldo)
                 setConta(contaParaAtualizar)
+                setContaMemento(contaParaAtualizar)
             } else navigate('/adicionar-conta')
         } else navigate('/adicionar-conta')
     }, [contexto.state.contas])
@@ -45,9 +47,35 @@ export default function CrudConta({ tipo }) {
 
         const novaConta = { ...conta, saldo: desformatarValor(conta.saldo) }
 
-        if (tipo === 'Adicionar')
+        if (tipo === 'Adicionar') {
             sucesso = await accountsActions.adicionarConta(contexto.dispatch, novaConta)
+        }
         else if (tipo === 'Atualizar') {
+            const transacao = novaConta.saldo - desformatarValor(contaMemento.saldo)
+            if(!isNaN(transacao) && transacao > 0) {
+                await movementsActions.adicionarMovimentacao(contexto.dispatch, {
+                    categoria: 'Atualização de Conta',
+                    categoriaId: 0,
+                    conta: novaConta.nome,
+                    contaId: novaConta.id,
+                    data: new Date(),
+                    nome: 'Adição de Valor',
+                    tipo: 'Receita',
+                    valor: transacao
+                })
+            }
+            if(!isNaN(transacao) && transacao < 0) {
+                await movementsActions.adicionarMovimentacao(contexto.dispatch, {
+                    categoria: 'Atualização de Conta',
+                    categoriaId: 0,
+                    conta: novaConta.nome,
+                    contaId: novaConta.id,
+                    data: new Date(),
+                    nome: 'Remoção de Valor',
+                    tipo: 'Despesa',
+                    valor: -transacao
+                })
+            }
             sucesso = await accountsActions.atualizarConta(contexto.dispatch, novaConta)
         }
         if (sucesso) navigate('/contas')

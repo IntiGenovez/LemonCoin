@@ -107,7 +107,6 @@ const Movimentacao = forwardRef(function Movimentacao({ movimentacaoListada, mov
     }
 
     const handleEditar = () => {
-        
         if(contexto.state.contas.length <= 0) {
             errorMessageActions.exibirMensagem(contexto.dispatch, {
                 mensagem: "Adicione uma conta antes de seguir.", 
@@ -172,10 +171,15 @@ const Movimentacao = forwardRef(function Movimentacao({ movimentacaoListada, mov
                         { movimentacao.conta ?? 'Sem Conta' }
                     </span>
                     <span>
-                        <i
-                            className='bx bx-edit-alt'
-                            onClick={ handleEditar }
-                        ></i>
+                        { movimentacao.categoriaId !== 0 ?
+                            <i  display={movimentacao.categoriaId === 0 ? 'none' : 'block'}
+                                className='bx bx-edit-alt'
+                                onClick={ handleEditar }
+                            ></i>
+                        :
+                            null
+                        }
+                        
                         <i
                             className='bx bx-trash'
                             onClick={ handleDeletar }

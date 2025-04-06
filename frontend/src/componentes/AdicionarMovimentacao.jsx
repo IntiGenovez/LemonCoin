@@ -44,7 +44,6 @@ export default function AdicionarMovimentacao({ tipo }){
     }, [])
 
     useEffect(() => {
-        console.log(contexto.state)
         if(contexto.state.loading) return
         if(contexto.state.contas.length <= 0) {
             errorMessageActions.exibirMensagem(contexto.dispatch, {
