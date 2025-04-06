@@ -67,7 +67,7 @@ export default function Home(){
                                         );
                                     })
                             :
-                                    'Suas movimentações apareceram aqui'
+                                    'Suas movimentações aparecerão aqui'
                             }
                         </div>
                     </div> 
