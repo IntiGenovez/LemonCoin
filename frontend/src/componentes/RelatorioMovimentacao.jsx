@@ -20,18 +20,18 @@ export default function RelatorioMovimentacao({ mudarRelatorio }) {
         contexto.state.movimentacoes
             .sort((a, b) => a.data.toDate() - b.data.toDate())
             .forEach(movimentacao => {
-            const dataMovimentacao = movimentacao.data.toDate().toLocaleString('pt-BR').split(',')[0] 
-            const mes = dataMovimentacao.split('/')[1]
-            const ano = dataMovimentacao.split('/')[2]
-            const chaveMes = `${mes}/${ano}`
+                const dataMovimentacao = movimentacao.data.toDate().toLocaleString('pt-BR').split(',')[0] 
+                const mes = dataMovimentacao.split('/')[1]
+                const ano = dataMovimentacao.split('/')[2]
+                const chaveMes = `${mes}/${ano}`
 
-            if (!agrupamento[chaveMes]) {
-                agrupamento[chaveMes] = [0, 0]
-            }
+                if (!agrupamento[chaveMes]) {
+                    agrupamento[chaveMes] = [0, 0]
+                }
 
-            if(movimentacao.tipo === 'Receita') agrupamento[chaveMes][0] += movimentacao.valor
-            if(movimentacao.tipo === 'Despesa') agrupamento[chaveMes][1] += movimentacao.valor
-        })
+                if(movimentacao.tipo === 'Receita') agrupamento[chaveMes][0] += movimentacao.valor
+                if(movimentacao.tipo === 'Despesa') agrupamento[chaveMes][1] += movimentacao.valor
+            })
 
         const resultado = Object.entries(agrupamento).map(([mes, valor]) => ({
             mes,

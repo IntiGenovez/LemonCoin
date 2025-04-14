@@ -1,17 +1,21 @@
-.contas{
+.contas {
+    min-height: calc(100vh - 106px - 37px);
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    overflow-y: scroll;
 }
+
 .container {
-    /* border: solid red; */
     width: 90%;
-    margin-top: 80px;
-    margin-bottom: 40px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 150px;
-    justify-content: space-between;
+    padding: 70px 0;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr 1fr;
+    place-items: center;
+    row-gap: 50px;
+
 
     & .semConta {
         width: 100%;
@@ -19,13 +23,6 @@
         justify-content: center;
         align-items: center;
     }
-}
-
-.container::after {
-    content: '';
-    /* flex: auto;  */
-    flex-grow: 1;
-    /* border: red solid 1px; */
 }
 
 @media (max-width: 768px) {

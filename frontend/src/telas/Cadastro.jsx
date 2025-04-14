@@ -78,19 +78,19 @@ export default function Cadastro(){
                 <h2>Gênero</h2>
                 <div className={styles.genero}>
                     <label className={styles.margin} style={{fontWeight: '600'}}>
-                        Masculino 
+                        <span>Masculino</span> 
                         <input type='radio' value='M' 
                             checked={ usuario.genero === 'M'} 
                             onChange={ e => setUsuario(prev => ({ ...prev, genero: e.target.value })) }/>
                     </label>
                     <label className={styles.margin} style={{fontWeight: '600'}}>
-                        Feminino 
+                        <span>Feminino</span> 
                         <input type='radio' value='F' 
                             checked={ usuario.genero === 'F'} 
                             onChange={ e => setUsuario(prev => ({ ...prev, genero: e.target.value })) }/>
                     </label>
                     <label className={styles.margin} style={{fontWeight: '600'}}>
-                        Outro 
+                        <span>Outro</span> 
                         <input type='radio' value='O' 
                             checked={ usuario.genero === 'O'} 
                             onChange={ e => setUsuario(prev => ({ ...prev, genero: e.target.value })) }/>
@@ -98,12 +98,16 @@ export default function Cadastro(){
                 </div>
                 
                 <div className={styles.divSenha}>
-                    <span>Senha</span>
-                    <input type='password' name='Senha' id='Senha' value={usuario.senha} 
-                        onChange={ e => setUsuario({ ...usuario, senha: e.target.value}) } />                
-                    <span>Confirmar Senha</span>
-                    <input type='password' name='Confirm-senha' id='Confirm-senha' value={usuario.confirmarSenha} 
-                        onChange={ e => setUsuario({ ...usuario, confirmarSenha: e.target.value}) } />
+                    <div>
+                        <span>Senha</span>
+                        <input type='password' name='Senha' id='Senha' value={usuario.senha}
+                            onChange={ e => setUsuario({ ...usuario, senha: e.target.value}) } />
+                    </div>               
+                    <div>
+                        <span>Confirmar Senha</span>
+                        <input type='password' name='Confirm-senha' id='Confirm-senha' value={usuario.confirmarSenha}
+                            onChange={ e => setUsuario({ ...usuario, confirmarSenha: e.target.value}) } />
+                    </div>
                 </div>
                 <BotaoAcao onClick={ handleClick }>Cadastrar</BotaoAcao>
             </div>
