@@ -57,7 +57,7 @@ export default function Login() {
         <form>
 
             <div className={globalStyle.formulario}>
-                <h1>Usuário</h1>
+                <h1>Email</h1>
                 <input 
                     type='text' 
                     value={ usuario.email } 

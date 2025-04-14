@@ -24,6 +24,7 @@ export default function RelatorioCategoria() {
         const agrupamentoDespesas = {}
 
         contexto.state.movimentacoes.forEach(movimentacao => {
+            if (movimentacao.categoriaId === 0) return
             let categoria = movimentacao.categoria
             if(categoria?.length > 10) categoria = categoria.substring(0, 9) + '...'
             if (movimentacao.tipo !== "Receita") {

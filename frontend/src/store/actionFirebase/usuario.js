@@ -79,6 +79,7 @@ const userActions = {
     recuperarSenha: async (dispatch, usuario) => {
         try {
             await firebase.resetPassword(usuario.email)
+            dispatch({ type: 'exibirMensagem', payload: { mensagem: 'Email de recuperação enviado. Verifique sua caixa de entrada!', tipo: 'success', titulo: 'Recuperação de Senha', link: '/login' } })
             return true
         } catch (error) {
             handleError(dispatch, error, `/login`)
