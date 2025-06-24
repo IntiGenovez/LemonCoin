@@ -34,11 +34,11 @@ const Categoria = forwardRef(function Categoria({ id, nome, adicionar, naoAdicio
         if(e && e.type === 'keyup' && e.key != 'Enter') return
         
         if (adicionar) {
-            categoriesActions.adicionarCategoria(contexto.dispatch, newCategoria)
+            categoriesActions.adicionarCategoria(contexto.dispatch, contexto.state, newCategoria)
             naoAdicionar()  
         } else {
             setNewCategoria(prev => ({ ...prev, id}))
-            categoriesActions.atualizarCategoria(contexto.dispatch, newCategoria)
+            categoriesActions.atualizarCategoria(contexto.dispatch, contexto.state, newCategoria)
             setCategoriaEditavel(null)
         }
     }

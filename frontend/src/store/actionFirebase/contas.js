@@ -1,5 +1,5 @@
 import firebase, { firestore } from "./firebase"
-import { objetoValido, handleError } from '../utils'
+import { objetoValido, handleError, jaExiste } from '../utils'
 
 const accountsActions = {
     atualizarConta: async (dispatch, conta) => {
