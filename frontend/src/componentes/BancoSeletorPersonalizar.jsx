@@ -1,28 +1,14 @@
 import { useState, useEffect, useRef, useContext } from 'react'
 import { DadosContexto } from '../store'
 
-import iconeMap from '../store/utils/iconeMap'
+import iconeMapPersonalizar from '../store/utils/iconeMapPersonalizar'
 import lapis from '../assets/lapis.png'
 
 import styles from '../estilos/BancoSeletor.module.css'
 
-export default function BancoSeletor({ open, closeBancoSeletor, selecionarBanco, contaSelecionada, abrirPersonalizar, setPersonalizada }) {
+export default function BancoSeletor({ open, closeBancoSeletor, selecionarBanco, setPersonalizada }) {
     const contexto = useContext(DadosContexto) 
     const refBancoSeletor = useRef(null) 
-
-    const nomeContasExistentes = new Set(contexto.state.contas.map(conta => conta.nome))
-    const [icones, setIcones] = useState({})
-
-    useEffect(() => {
-        const iconesFiltrados = {}
-        for (const bancoNome in iconeMap) {
-            if (bancoNome === contaSelecionada) continue
-            if (!nomeContasExistentes.has(bancoNome)) {
-                iconesFiltrados[bancoNome] = iconeMap[bancoNome]
-            }
-        }
-        setIcones(iconesFiltrados)
-    }, [contaSelecionada])
 
     const handleClick = e => {
         let bancoSelecionado
@@ -30,7 +16,7 @@ export default function BancoSeletor({ open, closeBancoSeletor, selecionarBanco,
             bancoSelecionado = e.target.parentElement.getAttribute('data-banco')
         else
             bancoSelecionado = e.target.getAttribute('data-banco')
-        setPersonalizada(false)
+        setPersonalizada(true)
         selecionarBanco(bancoSelecionado)
         closeBancoSeletor()
     }
@@ -41,11 +27,6 @@ export default function BancoSeletor({ open, closeBancoSeletor, selecionarBanco,
 
     const handleKeyDown = e => {
         if (e.code === 'Escape') closeBancoSeletor()
-    }
-
-    const personalizar = () => {
-        abrirPersonalizar()
-        closeBancoSeletor()
     }
 
     useEffect(() => {
@@ -64,10 +45,11 @@ export default function BancoSeletor({ open, closeBancoSeletor, selecionarBanco,
             tabIndex={ 0 }
         >
             <div className={styles.popup}>
+            <h2>Escolha um Ícone</h2>
                 <div className={styles.scroll}>
                     {
                         Object
-                            .entries(icones)
+                            .entries(iconeMapPersonalizar)
                                 .map(banco =>
                                     <div
                                         className={ styles.imagem }
@@ -76,17 +58,9 @@ export default function BancoSeletor({ open, closeBancoSeletor, selecionarBanco,
                                         data-banco={ banco[0] }
                                     >
                                         <img src={banco[1]} />
-                                        <p>{ banco[0] }</p>
                                     </div>
                                 )
                     }
-                    <div
-                        className={ styles.imagem }
-                        onClick={ personalizar }
-                    >
-                        <img src={lapis} />
-                        <p>Personalizar</p>
-                    </div>
                 </div>
             </div>
         </div>

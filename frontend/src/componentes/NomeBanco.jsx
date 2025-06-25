@@ -1,9 +1,14 @@
 import styles from '../estilos/CrudConta.module.css'
 
-export default function NomeBanco({ valor, onClick }) {
+export default function NomeBanco({ valor, onClick, onChange, personalizada }) {
     return(
         <>
-            <p onClick={ onClick } className={valor ? '' : styles.naoSelecionado} >{ valor || 'Conta' }</p>
+            <input 
+                onClick={ onClick } 
+                className={styles.nomeConta}
+                value={ personalizada ? valor || '' : valor || 'Conta' }
+                onChange={ onChange }
+                ></input>
         </>
     )
 }

@@ -20,6 +20,7 @@ export default function Contas() {
                                     key={conta.id} 
                                     id={conta.id}
                                     nome={conta.nome} 
+                                    imgId={conta.imgId} 
                                     saldo={conta.saldo}                             
                                 />
                             )

@@ -66,6 +66,7 @@ export const firestore = async (type, method, id, payload) => {
             return await deleteDoc(getUserDocRef(type, id))
         
         case 'update':
+            delete payload.id
             if(!id) throw new Error(`${type.slice(0, -1).replace(/^./, c => c.toUpperCase())} não encontrado (a)!`)
             if(id === auth.currentUser.uid) return await setDoc(doc(db, 'usuarios', auth.currentUser.uid), payload)
             return await setDoc(getUserDocRef(type, id), payload)

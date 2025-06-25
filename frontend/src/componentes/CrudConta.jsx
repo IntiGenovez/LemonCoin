@@ -4,10 +4,12 @@ import { DadosContexto } from '../store'
 import { accountsActions, movementsActions } from '../store/actionFirebase'
 import { formatarValor, desformatarValor } from '../store/utils'
 import iconeMap from '../store/utils/iconeMap'
+import iconeMapPersonalizar from '../store/utils/iconeMapPersonalizar'
 
 import lapis from '../assets/lapis.png'
 
 import BancoSeletor from './BancoSeletor.jsx'
+import BancoSeletorPersonalizar from './BancoSeletorPersonalizar.jsx'
 import NomeBanco from './NomeBanco.jsx'
 import BotaoAcao from './BotaoAcao'
 
@@ -25,15 +27,18 @@ export default function CrudConta({ tipo }) {
         descricao: ''
     })
     const [open, setOpen] = useState(false)
+    const [openPersonalizar, setOpenPersonalizar] = useState(false)
+    const [personalizada, setPersonalizada] = useState(false)
     const [contaMemento, setContaMemento] = useState()
 
     // Obtém a imagem correspondente ao nome da variavel icone, ou ícone lápis padrão se não for encontrado
-    const iconeSrc = iconeMap[conta.nome] || lapis
+    const iconeSrc = personalizada ? iconeMapPersonalizar[conta.imgId] : iconeMap[conta.nome] || lapis
 
     useEffect(() => {
         if (tipo === 'Atualizar' && id) {
             const contaParaAtualizar = contexto.state.contas.find(conta => conta.id === id)
             if (contaParaAtualizar) {
+                if (contaParaAtualizar.imgId) setPersonalizada(true)
                 contaParaAtualizar.saldo = formatarValor(contaParaAtualizar.saldo)
                 setConta(contaParaAtualizar)
                 setContaMemento(contaParaAtualizar)
@@ -91,6 +96,10 @@ export default function CrudConta({ tipo }) {
         setOpen(prev => !prev)
     }
 
+    const abrirPersonalizar = () => {
+        setOpenPersonalizar(prev => !prev)
+    }
+
     return (
         <form className={styles}>
             <h1>{tipo} Conta</h1>
@@ -105,8 +114,11 @@ export default function CrudConta({ tipo }) {
                 <div className={styles.containerForm}>
                     <div className={styles.dados}>
                         <div className={styles.cabecalho}>
-                            <NomeBanco valor={conta.nome}
-                                onClick={ selecionarBanco }
+                            <NomeBanco 
+                                personalizada={ personalizada }
+                                valor={conta.nome}
+                                onClick={ !personalizada ? selecionarBanco : null }
+                                onChange={e => setConta(prev => ({ ...prev, nome: e.target.value }))} 
                             />
                             <input
                                 className={styles.saldo}
@@ -115,7 +127,10 @@ export default function CrudConta({ tipo }) {
                                 id='saldo'
                                 placeholder='Saldo: R$'
                                 value={conta.saldo}
-                                onChange={e => setConta(prev => ({ ...prev, saldo: formatarValor(e.target.value) }))} 
+                                onChange={e => {
+                                    setConta(prev => ({ ...prev, saldo: formatarValor(e.target.value) }))
+                                    console.log(conta)
+                                }}
                             />
                         </div>
                         <hr />
@@ -152,9 +167,28 @@ export default function CrudConta({ tipo }) {
             </div>
             <BancoSeletor 
                 open={ open }
-                selecionarBanco={ nome => setConta(prev => ({ ...prev, nome })) }
+                selecionarBanco={ nome => {
+                    const contaSemImgId = {}
+                    for (let [chave, valor] of Object.entries(conta)) {
+                        if (chave === 'nome') {
+                            contaSemImgId[chave] = nome
+                            continue
+                        }
+                        if (chave !== 'imgId') 
+                            contaSemImgId[chave] = valor
+                    }
+                    setConta(contaSemImgId) 
+                }}
                 closeBancoSeletor={ () => setOpen(prev => !prev) }
                 contaSelecionada={ conta.nome }
+                abrirPersonalizar={ abrirPersonalizar }
+                setPersonalizada={ setPersonalizada }
+            />
+            <BancoSeletorPersonalizar
+                open={ openPersonalizar }
+                selecionarBanco={ imgId => setConta(prev => ({ ...prev, imgId: +imgId  })) }
+                closeBancoSeletor={ () => setOpenPersonalizar(prev => !prev) }
+                setPersonalizada={ setPersonalizada }
             />
         </form>
     )

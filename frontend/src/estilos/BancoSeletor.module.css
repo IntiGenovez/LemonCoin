@@ -26,6 +26,10 @@
         & img {
             max-width: 150px;
         }
+
+        & h2 {
+            text-align: center;
+        }
     }
 }
 
@@ -33,14 +37,11 @@
     overflow-y: scroll;
     height: 100%;
 
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
 
     & .imagem {
-        padding: 15px 5px 15px 5px;
-        width: 30%;
+        padding: 15px;
         display: flex;
         flex-direction: column;
         align-items: center;

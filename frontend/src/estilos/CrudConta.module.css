@@ -70,6 +70,13 @@ form h1{
     font-weight: bold;
 }
 
+.nomeConta {
+    font-size: 20px;
+    background-color: rgba(255, 0, 0, 0);
+    border: none;
+    font-weight: bold;
+}
+
 .cabecalho p {
     color: inherit;
     cursor: pointer;

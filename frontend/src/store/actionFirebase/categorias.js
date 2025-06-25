@@ -4,11 +4,10 @@ import { objetoValido, handleError, jaExiste } from '../utils'
 const categoriesActions = {
     atualizarCategoria: async (dispatch, state, categoria) => {
         try {
-            if (state.categorias.some(cat => cat.id === categoria.id && cat.nome === categoria.nome)) {
-                return
+            if (!state.categorias.some(cat => cat.id === categoria.id && cat.nome.toLowerCase() === categoria.nome.toLowerCase())) {
+                jaExiste(state, categoria.nome)
             }
             objetoValido({ nome: categoria.nome })
-            jaExiste(state, categoria.nome)
             await firestore('categorias', 'update', categoria.id, { nome: categoria.nome })
         } catch (error) {
             handleError(dispatch, error, '/categorias')

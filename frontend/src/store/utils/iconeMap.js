@@ -10,6 +10,8 @@ import mercadoPago from '../../assets/Mercado-Pago.png'
 import inter from '../../assets/inter.png'
 import stone from '../../assets/stone.png'
 import wise from '../../assets/wise.png'
+import rico from '../../assets/rico.png'
+import cofre from '../../assets/cofre.png'
 
 const iconeMap = {
     'Nubank': nubank,
@@ -23,7 +25,9 @@ const iconeMap = {
     'Mercado Pago': mercadoPago,
     'Inter': inter,
     'Stone': stone,
-    'Wise': wise
+    'Wise': wise,
+    'Rico': rico,
+    'Cofre Pessoal': cofre
 }
 
 export default iconeMap
