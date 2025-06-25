@@ -154,6 +154,7 @@ export default function CrudConta({ tipo }) {
                 open={ open }
                 selecionarBanco={ nome => setConta(prev => ({ ...prev, nome })) }
                 closeBancoSeletor={ () => setOpen(prev => !prev) }
+                contaSelecionada={ conta.nome }
             />
         </form>
     )

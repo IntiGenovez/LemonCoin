@@ -1,12 +1,30 @@
-import { useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
+import { DadosContexto } from '../store'
 
 import iconeMap from '../store/utils/iconeMap'
 
 import styles from '../estilos/BancoSeletor.module.css'
 
-export default function BancoSeletor({ open, closeBancoSeletor, selecionarBanco }) {
+export default function BancoSeletor({ open, closeBancoSeletor, selecionarBanco, contaSelecionada }) {
+    const contexto = useContext(DadosContexto) 
     const refBancoSeletor = useRef(null) 
+
+    const nomeContasExistentes = new Set(contexto.state.contas.map(conta => conta.nome))
+    const iconesFiltrados = {}
+    for (const bancoNome in iconeMap) {
+        if (!nomeContasExistentes.has(bancoNome)) {
+            iconesFiltrados[bancoNome] = iconeMap[bancoNome]
+        }
+    }
+
+    const [icones, setIcones] = useState(iconesFiltrados)
+
     const handleClick = e => {
+        setIcones(prev => {
+            prev[contaSelecionada] = iconeMap[contaSelecionada]
+            delete prev[e.target.getAttribute('banco')]
+            return prev
+        })
         selecionarBanco(e.target.getAttribute('banco'))
         closeBancoSeletor()
     }
@@ -18,6 +36,7 @@ export default function BancoSeletor({ open, closeBancoSeletor, selecionarBanco 
     useEffect(() => {
         refBancoSeletor.current.focus()
     }, [open])
+
 
     return (
         <div 
@@ -32,7 +51,7 @@ export default function BancoSeletor({ open, closeBancoSeletor, selecionarBanco 
                 <div className={styles.scroll}>
                     {
                         Object
-                            .entries(iconeMap)
+                            .entries(icones)
                                 .map(banco =>
                                     <div
                                         className={ styles.imagem }
