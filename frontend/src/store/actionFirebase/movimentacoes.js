@@ -29,7 +29,7 @@ const movementsActions = {
         try {
             const transacao = movimentacao.tipo === 'Receita' ?
                 movimentacao.valor - movimentacao.valorAnterior :
-                movimentacao.valorAnterior + movimentacao.valor
+                movimentacao.valorAnterior - movimentacao.valor
 
             movimentacao.data = new Date(movimentacao.data)
             objetoValido(movimentacao)
