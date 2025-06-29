@@ -1,21 +1,27 @@
 
 import { DadosContexto } from '../store'
-import { useContext, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { userActions } from '../store/actionFirebase'
 import { utils, writeFileXLSX } from "xlsx"
 
 import styles from '../estilos/Perfil.module.css'
 
 export default function Perfil() {
+    const contexto = useContext(DadosContexto)
     const [open, setOpen] = useState(false)
     const [senha, setSenha] = useState('')
-    const contexto = useContext(DadosContexto)
+    const [criarMovimentacao, setCriarMovimentacao] = useState(null)
+    useEffect(() => 
+        setCriarMovimentacao(contexto.state.usuario.criarMovimentacao === undefined || contexto.state.usuario.criarMovimentacao),
+    [contexto.state.usuario.criarMovimentacao])
+
     const tabelaRef = useRef(null)
 
     const handleClickExcluir = () => setOpen(true)
     const handleClickNao = () => setOpen(false)
 
     const exportarExcel = () => {
+        console.log(contexto.state)
         const dados = contexto.state.movimentacoes.map(mov => ({
             Tipo: mov.tipo,
             Valor: parseFloat(mov.valor),
@@ -55,6 +61,17 @@ export default function Perfil() {
                 <div>
                     <p>Nome do Usuário: <span  className={ styles.nomeUsuario }>{ contexto.state.usuario.nome }</span></p>
                     <p className={ styles.link } onClick={ exportarExcel }>Exportar Movimentações</p>
+                    <label className={ styles.switch }>
+                        Criar Movimentação ao Editar Conta
+                        <button
+                            onClick={() => {
+                                userActions.atualizarCriarMovimentacao(contexto.dispatch, contexto.state.usuario, !criarMovimentacao)
+                                setCriarMovimentacao(prev => !prev) 
+                            }
+                        }>
+                            <span className={ criarMovimentacao ? styles.ativo : '' }></span>
+                        </button>
+                    </label>
                 </div>
                 <div>
                     <button className={ styles.botao } onClick={ () => userActions.signout(contexto.dispatch) }>Sair</button>
@@ -88,7 +105,6 @@ export default function Perfil() {
                 </thead>
                 <tbody>{ contexto.state.movimentacoes
                     .map((movimentacao, i) => {
-                        console.log(movimentacao)
                         return (
                             <tr key={i}>
                                 <td>{movimentacao.nome}</td>

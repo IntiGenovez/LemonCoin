@@ -1,4 +1,4 @@
-import firebase from './firebase'
+import firebase, { firestore } from './firebase'
 import { handleError, objetoValido, emailValido, senhasValidas, telefoneValido } from '../utils'
 
 const userActions = {
@@ -11,6 +11,9 @@ const userActions = {
     ouvirCategorias: dispatch => {
         return firebase.subscribeCategories(dispatch)
     },
+    ouvirUsuario: dispatch => {
+        return firebase.subscribeUser(dispatch)
+    },
     obterDadosUsuario: async (dispatch) => {
         try {
             const data = await firebase.getUserData()
@@ -21,6 +24,8 @@ const userActions = {
             userActions.ouvirMovimentacoes(dispatch)
             userActions.ouvirContas(dispatch)
             userActions.ouvirCategorias(dispatch)
+            userActions.ouvirUsuario(dispatch)
+            
         } catch (error) {
             console.error('Erro no cadastro: ', error.code || error.message)
             handleError(dispatch, error, `/login`)
@@ -46,6 +51,8 @@ const userActions = {
             userActions.ouvirMovimentacoes(dispatch)
             userActions.ouvirContas(dispatch)
             userActions.ouvirCategorias(dispatch)
+            userActions.ouvirUsuario(dispatch)
+            
             return true
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') error.message = 'Esse endereço de email já foi utilizado'
@@ -65,6 +72,8 @@ const userActions = {
             userActions.ouvirMovimentacoes(dispatch)
             userActions.ouvirContas(dispatch)
             userActions.ouvirCategorias(dispatch)
+            userActions.ouvirUsuario(dispatch)
+            
             return true
         } catch (error) {
             handleError(dispatch, error, `/login`)
@@ -101,7 +110,12 @@ const userActions = {
             console.error('Erro ao recuperar senha: ', error)
             return false
         }
-    }   
+    },
+    atualizarCriarMovimentacao: async (dispatch, usuario, novoValor) => {
+        console.log(usuario)
+        await firestore('usuario', 'update', usuario.id, { ...usuario, criarMovimentacao: novoValor })
+        dispatch({ type: 'signin', payload: { ...usuario, criarMovimentacao: novoValor } })
+    }
 }
 
 export default userActions

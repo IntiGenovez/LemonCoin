@@ -57,7 +57,8 @@ export default function CrudConta({ tipo }) {
         }
         else if (tipo === 'Atualizar') {
             const transacao = novaConta.saldo - desformatarValor(contaMemento.saldo)
-            if(!isNaN(transacao) && transacao > 0) {
+            const criarMovimentacao =  contexto.state.usuario.criarMovimentacao === undefined || contexto.state.usuario.criarMovimentacao
+            if(!isNaN(transacao) && transacao > 0 && criarMovimentacao) {
                 await movementsActions.adicionarMovimentacao(contexto.dispatch, {
                     categoria: 'Atualização de Conta',
                     categoriaId: 0,
@@ -69,7 +70,7 @@ export default function CrudConta({ tipo }) {
                     valor: transacao
                 })
             }
-            if(!isNaN(transacao) && transacao < 0) {
+            if(!isNaN(transacao) && transacao < 0 && criarMovimentacao) {
                 await movementsActions.adicionarMovimentacao(contexto.dispatch, {
                     categoria: 'Atualização de Conta',
                     categoriaId: 0,
@@ -129,7 +130,6 @@ export default function CrudConta({ tipo }) {
                                 value={conta.saldo}
                                 onChange={e => {
                                     setConta(prev => ({ ...prev, saldo: formatarValor(e.target.value) }))
-                                    console.log(conta)
                                 }}
                             />
                         </div>

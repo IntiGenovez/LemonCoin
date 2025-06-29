@@ -118,3 +118,44 @@ div.popup {
         font-size: 16px;
     }
 }
+
+.switch {
+    font-size: 20px;
+    display: flex;
+    align-items: stretch;
+    gap: 20px;
+
+    & button {
+        height: 100%;
+        aspect-ratio: 2 / 1;
+        cursor: pointer;
+
+        background-color: #d8e6aa;
+
+        border: 2px solid var(--cor-fonte-principal);
+        border-radius: 20px;
+
+        position: relative;
+
+        & span {
+            display: block;
+            background-color: var(--cor-fonte-principal);
+            height: 100%;
+            aspect-ratio: 1 / 1;
+
+            border: 2px solid #d8e6aa;
+            border-radius: 50%;
+
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            transition: left 0.3s ease-in-out;
+        }
+        
+        & span.ativo {
+            left: calc(100% - 20px);
+        }
+    }
+
+}

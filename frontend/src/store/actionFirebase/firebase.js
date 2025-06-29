@@ -114,6 +114,14 @@ const subscribeCategories = dispatch => {
     })
 }
 
+const subscribeUser = dispatch => {
+    if(!auth.currentUser) return
+    onSnapshot(doc(db, 'usuarios', auth.currentUser.uid), (snapshot) => {
+        const usuario = { id: auth.currentUser.uid, ...snapshot.data() }
+        dispatch({ type: 'atualizarUsuario', payload: usuario })
+    })
+}
+
 const subscribeAccounts = dispatch => {
     if(!auth.currentUser) return
     onSnapshot(collection(db, 'usuarios', auth.currentUser.uid, 'contas'), (snapshot) => {
@@ -129,7 +137,8 @@ export const isUserSignedIn = (callback) => {
 const signInUser = async (email, password) => {
     await signInWithEmailAndPassword(auth, email, password)
     const usuario = await getUserData()
-    usuario.email = auth.currentUser.email
+    usuario.usuario.email = auth.currentUser.email
+    usuario.usuario.id = auth.currentUser.uid
     return usuario
 }
 
@@ -147,6 +156,7 @@ const getUserData = async () => {
             const movimentacoes = await firestore('movimentações', 'read', user.uid)
             const usuario = await firestore('usuarios', 'readbyid', user.uid)
             usuario.email = auth.currentUser.email
+            usuario.id = auth.currentUser.uid
 
             resolve({
                 usuario,
@@ -207,6 +217,7 @@ const firebase = {
     subscribeAccounts, 
     subscribeMovements,
     subscribeCategories,
+    subscribeUser,
     removeUser
 }
 

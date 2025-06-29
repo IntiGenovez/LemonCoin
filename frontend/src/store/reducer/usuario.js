@@ -22,6 +22,9 @@ function usuarioReducer(estado, action) {
             novoEstado = { ...estado, loading: false }
             break
         }
+        case 'atualizarUsuario':
+            novoEstado = { ...estado, usuario: action.payload }
+            break
         default:
             novoEstado = estado      
     }
