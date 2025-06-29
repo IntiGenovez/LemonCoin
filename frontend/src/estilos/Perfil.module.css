@@ -1,0 +1,120 @@
+.conteiner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    align-items: stretch;
+
+    justify-content: space-between;
+
+    & p {
+        font-size: 20px;
+    }
+
+    & > div {
+        display: flex;
+        flex-direction: column;
+
+        align-items: baseline;
+        gap: 20px;
+    }
+}
+
+.nomeUsuario {
+    font-size: 25px;
+    border-bottom: 1px solid var(--cor-fonte-principal);
+}
+
+.botao {
+    background-color: #1d3a1e33;
+    border: none;
+    outline: none;
+
+    font-size: 20px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    transition: background-color 200ms, scale 200ms;
+}
+
+.botao:hover {
+    background-color: #1d3a1e4e;
+    scale: 110%;
+}
+
+.botaoExcluir {
+    background-color: #f6616161;
+    color: #a01111;
+    border: none;
+    outline: none;
+
+    font-size: 20px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    transition: background-color 200ms, scale 200ms;
+}
+
+.botaoExcluir:hover {
+    background-color: #f661619f;
+    scale: 110%;
+}
+
+.link {
+    color: var(--cor-fonte-principal);
+    cursor: pointer;
+
+    transition: background-color 200ms, scale 200ms;
+}
+
+.link:hover {
+    scale: 110%;
+}
+
+div.popup {
+    position: absolute;
+    background-color: var(--cor-fonte-secundaria);
+
+    padding: 10px 15px;
+    border-radius: 10px;
+
+    width: 70%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    & div {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        width: 100%;
+        justify-content: flex-end;
+
+        & button {
+            border: none;
+            padding: 5px 10px;
+            font-size: 16px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        & button:nth-child(1) {
+            background-color: #f6616161;
+            color: #a01111;
+        }
+
+        & button:nth-child(2) {
+            background-color: #1d3a1e4e;
+        }
+        
+    }
+    & input {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        padding: 0px 5px;
+        font-size: 16px;
+    }
+}

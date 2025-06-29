@@ -33,6 +33,7 @@ body {
     background-color: var(--cor-fonte-secundaria);
     padding: 20px 0;
     overflow-y: hidden;
+    position: relative;
 
     display: flex;
     flex-direction: row;

@@ -1,12 +1,19 @@
 
 import { DadosContexto } from '../store'
-import { useContext, useRef } from 'react'
+import { useContext, useRef, useState } from 'react'
 import { userActions } from '../store/actionFirebase'
 import { utils, writeFileXLSX } from "xlsx"
 
+import styles from '../estilos/Perfil.module.css'
+
 export default function Perfil() {
+    const [open, setOpen] = useState(false)
+    const [senha, setSenha] = useState('')
     const contexto = useContext(DadosContexto)
     const tabelaRef = useRef(null)
+
+    const handleClickExcluir = () => setOpen(true)
+    const handleClickNao = () => setOpen(false)
 
     const exportarExcel = () => {
         const dados = contexto.state.movimentacoes.map(mov => ({
@@ -43,13 +50,31 @@ export default function Perfil() {
     }
 
     return (
-        <div className="tela-padrao">
-            <p onClick={ () => userActions.signout(contexto.dispatch) }>logout</p>
-            <p onClick={ exportarExcel }>exportar Excel</p>
+        <div className="tela-padrao" style={{ alignItems: 'center' }}>
+            <div className={ styles.conteiner }>
+                <div>
+                    <p>Nome do Usuário: <span  className={ styles.nomeUsuario }>{ contexto.state.usuario.nome }</span></p>
+                    <p className={ styles.link } onClick={ exportarExcel }>Exportar Movimentações</p>
+                </div>
+                <div>
+                    <button className={ styles.botao } onClick={ () => userActions.signout(contexto.dispatch) }>Sair</button>
+                    <button className={ styles.botaoExcluir } onClick={ handleClickExcluir }>Excluir Conta</button>
+                </div>
+            </div>
+            <div className={ styles.popup } style={ open ? { display: 'flex' } : { display: 'none' }} >
+                <h1>Deseja realmente excluir a conta?</h1>
+                <p>Você está excluindo sua conta, todas as suas informações serão deletas de maneira irreversível.</p>
+                <p>Para excluir sua conta insira sua senha novamente:</p>
+                <input type="password" value={ senha } onChange={ e => setSenha(e.target.value) } />
+                <div>
+                    <button onClick={ handleClickNao }>Não</button>
+                    <button onClick={ () => userActions.removeUser(contexto.dispatch, senha) }>Sim</button>
+                </div>
+            </div>
 
 
 
-            
+
             <table ref={ tabelaRef } style={{ display: 'none' }}>
                 <thead>
                     <tr>

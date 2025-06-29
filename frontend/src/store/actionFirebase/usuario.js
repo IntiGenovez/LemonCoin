@@ -76,6 +76,10 @@ const userActions = {
         await firebase.signOutUser()
         dispatch({ type: 'signout' })
     },
+    removeUser: async (dispatch, senha) => {
+        await firebase.removeUser(senha)
+        dispatch({ type: 'signout' })
+    },
     recuperarSenha: async (dispatch, usuario) => {
         try {
             await firebase.resetPassword(usuario.email)

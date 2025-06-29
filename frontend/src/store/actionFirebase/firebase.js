@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, confirmPasswordReset } from 'firebase/auth'
+import { getAuth, reauthenticateWithCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, confirmPasswordReset, deleteUser, AuthCredential, EmailAuthProvider } from 'firebase/auth'
 import { getFirestore, collection, addDoc, getDocs, getDoc, deleteDoc, setDoc, doc, onSnapshot, query, where } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
 
@@ -129,6 +129,7 @@ export const isUserSignedIn = (callback) => {
 const signInUser = async (email, password) => {
     await signInWithEmailAndPassword(auth, email, password)
     const usuario = await getUserData()
+    usuario.email = auth.currentUser.email
     return usuario
 }
 
@@ -136,6 +137,7 @@ const getUserData = async () => {
     return new Promise((resolve) => {
         isUserSignedIn(async (user) => {
             if(!user) {
+                console.log(user)
                 resolve(null) // Retorna null se o usuário não estiver logado
                 return
             }
@@ -144,6 +146,7 @@ const getUserData = async () => {
             const contas = await firestore('contas', 'read', user.uid)
             const movimentacoes = await firestore('movimentações', 'read', user.uid)
             const usuario = await firestore('usuarios', 'readbyid', user.uid)
+            usuario.email = auth.currentUser.email
 
             resolve({
                 usuario,
@@ -175,6 +178,7 @@ const signUpUser = async (usuario) => {
     firestore('categorias', 'save', null, { nome: 'Transporte' })
     firestore('categorias', 'save', null, { nome: 'Lazer' })
     firestore('categorias', 'save', null, { nome: 'Saúde' })
+    userCredential.user.email = auth.currentUser.email
     return userCredential.user
 }
 
@@ -187,6 +191,12 @@ const updatePassword = async (oobCode, password) => {
     await confirmPasswordReset(auth, oobCode, password)
 }
 
+const removeUser = async password => {
+    if(!auth.currentUser) return
+    await reauthenticateWithCredential(auth.currentUser, EmailAuthProvider.credential(auth.currentUser.email, password))
+    await deleteUser(auth.currentUser)
+}
+
 const firebase = { 
     signInUser, 
     signOutUser, 
@@ -196,7 +206,8 @@ const firebase = {
     updatePassword,
     subscribeAccounts, 
     subscribeMovements,
-    subscribeCategories
+    subscribeCategories,
+    removeUser
 }
 
 export default firebase 
