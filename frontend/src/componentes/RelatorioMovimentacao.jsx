@@ -1,11 +1,14 @@
 import { useContext, useEffect, useState } from "react"
 
+import InputFiltro from "./InputFiltro"
+import Seletor from "./Seletor"
+
 import { DadosContexto } from "../store"
 import Coluna from "./Coluna"
 
 import styles from "../estilos/Relatorio.module.css"
 
-export default function RelatorioMovimentacao({ mudarRelatorio }) {
+export default function RelatorioMovimentacao() {
     const contexto = useContext(DadosContexto)
     const [ movimentacoesPorMes, setMovimentacoesPorMes ] = useState([{
         mes: '',
@@ -14,11 +17,16 @@ export default function RelatorioMovimentacao({ mudarRelatorio }) {
     }])
     const [ maiorValor, setMaiorValor ] = useState(0)
 
+    /* regras para filtragem */
+    
+    const [filtragem, setFiltragem] = useState(() => () => true)
+    const [ filtroOpen, setFiltroOpen ] = useState(false)
+
     useEffect(() => {
         const agrupamento = {}
 
         contexto.state.movimentacoes
-            .sort((a, b) => a.data.toDate() - b.data.toDate())
+            .sort((a, b) => a.data.toDate() - b.data.toDate()).filter( filtragem )
             .forEach(movimentacao => {
                 const dataMovimentacao = movimentacao.data.toDate().toLocaleString('pt-BR').split(',')[0] 
                 const mes = dataMovimentacao.split('/')[1]
@@ -39,7 +47,7 @@ export default function RelatorioMovimentacao({ mudarRelatorio }) {
         }))
 
         setMovimentacoesPorMes(resultado)
-    }, [contexto.state.movimentacoes])
+    }, [contexto.state.movimentacoes, filtragem])
 
     useEffect(() => {
         setMaiorValor(movimentacoesPorMes.reduce((acc, { valor }) => {
@@ -63,6 +71,21 @@ export default function RelatorioMovimentacao({ mudarRelatorio }) {
                         <p>Despesas</p>
                     </div>
                 </div>
+                <Seletor  
+                    nome={ 'Filtro' }
+                    setFiltroOpen={ () => {
+                        setFiltroOpen(prev => !prev)
+                        setFiltragem(() => () => true)
+                    }} 
+                />
+                <InputFiltro 
+                    open={ filtroOpen } 
+                    setFiltroOpen={ () => {
+                        setFiltroOpen(prev => !prev)
+                        setFiltragem(() => () => true)
+                    }} 
+                    filtragem={ setFiltragem }
+                />
             </div>
             <div className={ styles.alinharRelatorio }>
                 { movimentacoesPorMes.map((movimentacao, i) => {

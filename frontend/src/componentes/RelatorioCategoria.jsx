@@ -1,5 +1,8 @@
 import { useContext, useEffect, useState } from "react"
 
+import InputFiltro from "./InputFiltro"
+import Seletor from "./Seletor"
+
 import { DadosContexto } from "../store"
 import { formatarValor } from "../store/utils"
 import Pizza from "./Pizza"
@@ -19,11 +22,14 @@ export default function RelatorioCategoria({ home = false }) {
     const [ saldoTotalReceitas, setSaldoTotalReceitas ] = useState(0)
     const [ saldoTotalDespesas, setSaldoTotalDespesas ] = useState(0)
 
+    const [filtragem, setFiltragem] = useState(() => () => true)
+    const [ filtroOpen, setFiltroOpen ] = useState(false)
+
     useEffect(() => {
         const agrupamentoReceitas = {}
         const agrupamentoDespesas = {}
 
-        contexto.state.movimentacoes.forEach(movimentacao => {
+        contexto.state.movimentacoes.filter(filtragem).forEach(movimentacao => {
             if (movimentacao.categoriaId === 0) return
             let categoria = movimentacao.categoria
             if(categoria?.length > 10) categoria = categoria.substring(0, 9) + '...'
@@ -91,7 +97,7 @@ export default function RelatorioCategoria({ home = false }) {
 
         setDespesasPorCategoria(quatroMaioresCategoriasDespesa)
         setReceitasPorCategoria(quatroMaioresCategoriasReceita)
-    }, [contexto.state.movimentacoes])
+    }, [contexto.state.movimentacoes, filtragem])
 
     useEffect(() => {
         setSaldoTotalReceitas(
@@ -108,7 +114,27 @@ export default function RelatorioCategoria({ home = false }) {
 
     return (
         <div className={ styles.relatorioPizzas }>
-            { home ? null : <h1>Categorias</h1> } 
+            { home ? null : 
+            <>
+                <h1>Categorias</h1>
+                <Seletor  
+                nome={ 'Filtro' }
+                setFiltroOpen={ () => {
+                    setFiltroOpen(prev => !prev)
+                    setFiltragem(() => () => true)
+                }} 
+                />
+                <InputFiltro 
+                    open={ filtroOpen } 
+                    setFiltroOpen={ () => {
+                        setFiltroOpen(prev => !prev)
+                        setFiltragem(() => () => true)
+                    }} 
+                    filtragem={ setFiltragem }
+                />
+            </>
+            }
+            
             <div className={styles.viewPizza}>
                 { receitasPorCategoria.length === 0 && despesasPorCategoria.length === 0 ? <p>Adicione movimentações para acompanhar os relatórios!</p> : <>
                 { receitasPorCategoria.length === 0 || home ? null :
