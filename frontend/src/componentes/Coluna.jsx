@@ -40,7 +40,7 @@ export default function Coluna({ movimentacao, cemPorcento }) {
                 >
                     <div className={styles.tip}>{ 
                         movimentacao.valor[1] ? 
-                        formatarValor(movimentacao.valor[0]) : null }</div>
+                        formatarValor(movimentacao.valor[1]) : null }</div>
                 </div>
             </div>
             <div className={ styles.legenda }>{ movimentacao.mes }</div>
