@@ -68,7 +68,7 @@ export default function RelatorioMovimentacao({ mudarRelatorio }) {
                 { movimentacoesPorMes.map((movimentacao, i) => {
                     return <Coluna key={i} movimentacao={ movimentacao } cemPorcento={ maiorValor } />
                 }) }
-                
+                { movimentacoesPorMes.length === 0 ? <p>Adicione movimentações para acompanhar os relatórios!</p> : null }
             </div>
         </div>
     )

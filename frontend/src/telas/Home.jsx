@@ -25,7 +25,7 @@ export default function Home(){
         <div className={styles.container}>
             <div className={styles.divGrafico}>
                 <div className={styles.grafico}>
-                    <RelatorioCategoria />
+                    <RelatorioCategoria home={ true }/>
                 </div>
 
             </div>
