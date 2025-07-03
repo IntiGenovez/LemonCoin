@@ -6,7 +6,8 @@
     gap: 20px;
 
     & .titulo {
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
         width: 100%;
 
         & > * {
@@ -15,11 +16,14 @@
         }
 
         & .legenda {
+            grid-column: 2;
             display: flex; 
-            flex-direction: column;
-            align-items: start;
+            gap: 10px;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
             
-            & > div {
+            & > div > div {
                 display: flex;
                 gap: 5px;
                 & div {
@@ -28,13 +32,13 @@
                 }
             }
 
-            & > div:first-child {
+            & > div > div:not(last-child) {
                 & div {
                     background-color: var(--cor-fonte-principal);
                 }
             }
 
-            & > div:last-child {
+            & > div > div:last-child {
                 & div {
                     background-color: var(--background-botoes);
                 }
@@ -101,14 +105,37 @@
             }
         }
     }
+
+    & i {
+        color: var(--background-botoes);
+        font-size: 20px;
+    }
 }
 
 .relatorioPizzas {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    align-items: center;
+    align-items: stretch;
     gap: 20px;
+    overflow-y: scroll;
+
+        & .titulo {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            width: 100%;
+
+            & h1 {
+                grid-column: 2;
+                display: flex; 
+                justify-content: center;
+            }
+
+            & i { 
+                color: var(--background-botoes);
+                font-size: 20px;
+            }
+    }
 
     & .viewPizza {
         height: 100%;

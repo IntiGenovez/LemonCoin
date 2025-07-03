@@ -1,10 +1,13 @@
 .filtro {
+    display: flex;
+
     background-color: var(--cor-fonte-secundaria);
     padding: 20px 10px;
     gap: 5vw;
     width: 80%;
     align-self: end;
     border-radius: 15px;
+    position: relative;
 
     & select {
         width: 20%;
@@ -13,6 +16,7 @@
     }
 
     & input {
+        min-width: 140px;
         width: 30%;
         max-width: 300px;
     }
@@ -27,8 +31,16 @@
     }
 }
 
-.filtroOpen {
-    display: flex;
+.filtroRelatorio {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch; 
+    place-self: flex-end;
+    & > input, & > select {
+        width: 80%;
+        max-width: initial;
+        min-width: initial;
+    }
 }
 
 .filtroClose {

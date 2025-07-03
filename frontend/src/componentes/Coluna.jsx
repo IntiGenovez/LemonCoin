@@ -9,7 +9,7 @@ export default function Coluna({ movimentacao, cemPorcento }) {
     useEffect(() => {
         setPorcentagemReceita(((movimentacao.valor[0] / cemPorcento) * 100).toFixed(2))
         setPorcentagemDespesa(((movimentacao.valor[1] / cemPorcento) * 100).toFixed(2))
-    }, [cemPorcento])
+    }, [cemPorcento, movimentacao])
 
     const handleMouseOver = e => {
         if(e.target.firstChild.style) e.target.firstChild.style.opacity = '100%'
@@ -17,7 +17,7 @@ export default function Coluna({ movimentacao, cemPorcento }) {
 
     const handleMouseOut = e => {
         if (e.target.firstChild.style) e.target.firstChild.style.opacity = '0%'
-      }
+    }
 
     return (
         <div className={ styles.dado }>

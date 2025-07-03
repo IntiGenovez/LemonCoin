@@ -1,6 +1,6 @@
 import styles from '../estilos/Movimentacoes.module.css'
 
-export default function Seletor({ nome, isAtivo, isUp, setAtivo, setFiltroOpen }) {
+export default function Seletor({ nome, isAtivo, isUp, setAtivo, setFiltroOpen, esconder, style }) {
     return (
         <>
         {
@@ -10,7 +10,7 @@ export default function Seletor({ nome, isAtivo, isUp, setAtivo, setFiltroOpen }
                 <i className={`bx ${isUp ? 'bx-chevron-up' : 'bx-chevron-down'} ${isAtivo ? styles.selecionado : ''}`}></i>  
             </div>)
             :
-            (<div>
+            (<div style={ style ? { ...style } : { display: 'block' } } className={ esconder ? styles.esconder : null }>
                 <i className='bx bx-filter-alt' onClick={ setFiltroOpen }></i>
             </div>)
         }

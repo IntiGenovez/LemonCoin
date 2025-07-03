@@ -5,7 +5,7 @@ import styles from '../estilos/InputFiltro.module.css'
 import { formatarValor } from '../store/utils'
 import { DadosContexto } from '../store'
 
-export default function InputFiltro({ open, setFiltroOpen, filtragem }) {
+export default function InputFiltro({ open, setFiltroOpen, filtragem, relatorio }) {
     const contexto = useContext(DadosContexto)
     const [filtro, setFiltro] = useState('Data')
 
@@ -96,7 +96,11 @@ export default function InputFiltro({ open, setFiltroOpen, filtragem }) {
     }
 
     return (
-        <div className={ `${styles.filtro} ${open ? styles.filtroOpen : styles.filtroClose}` } >
+        <div className={ `
+            ${ styles.filtro } 
+            ${ relatorio ? styles.filtroRelatorio : null } 
+            ${ !open ? styles.filtroClose : null  }
+        ` } >
             <select name='filtro' id='' value={ filtro } onChange={ e => setFiltro(e.target.value)}>
                 <option value='Data'>Data</option>
                 <option value='Nome'>Nome</option>
@@ -159,7 +163,7 @@ export default function InputFiltro({ open, setFiltroOpen, filtragem }) {
             :
                 null
         }
-            <i className={`bx bx-x ${styles.close}`} onClick={ setFiltroOpen }></i>
+            <i className={`bx bx-x ${styles.close}`} style={ relatorio ? { display: 'block' } : null} onClick={ setFiltroOpen }></i>
         </div>
     )
 }

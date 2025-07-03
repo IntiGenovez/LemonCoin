@@ -162,6 +162,10 @@
     }
 }
 
+.esconder {
+    display: none !important;
+}
+
 @media (max-width: 768px) {
     .seletores {
         display: none;

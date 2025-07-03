@@ -115,16 +115,19 @@ export default function RelatorioCategoria({ home = false }) {
     return (
         <div className={ styles.relatorioPizzas }>
             { home ? null : 
-            <>
+            <div className={ styles.titulo }>
                 <h1>Categorias</h1>
-                <Seletor  
-                nome={ 'Filtro' }
-                setFiltroOpen={ () => {
-                    setFiltroOpen(prev => !prev)
-                    setFiltragem(() => () => true)
-                }} 
+                <Seletor
+                    style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}
+                    esconder={ filtroOpen }
+                    nome={ 'Filtro' }
+                    setFiltroOpen={ () => {
+                        setFiltroOpen(prev => !prev)
+                        setFiltragem(() => () => true)
+                    }} 
                 />
-                <InputFiltro 
+                <InputFiltro
+                    relatorio
                     open={ filtroOpen } 
                     setFiltroOpen={ () => {
                         setFiltroOpen(prev => !prev)
@@ -132,7 +135,7 @@ export default function RelatorioCategoria({ home = false }) {
                     }} 
                     filtragem={ setFiltragem }
                 />
-            </>
+            </div>
             }
             
             <div className={styles.viewPizza}>

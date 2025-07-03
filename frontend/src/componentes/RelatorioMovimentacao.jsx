@@ -32,11 +32,11 @@ export default function RelatorioMovimentacao() {
                 const mes = dataMovimentacao.split('/')[1]
                 const ano = dataMovimentacao.split('/')[2]
                 const chaveMes = `${mes}/${ano}`
-
+                
                 if (!agrupamento[chaveMes]) {
                     agrupamento[chaveMes] = [0, 0]
                 }
-
+                
                 if(movimentacao.tipo === 'Receita') agrupamento[chaveMes][0] += movimentacao.valor
                 if(movimentacao.tipo === 'Despesa') agrupamento[chaveMes][1] += movimentacao.valor
             })
@@ -50,35 +50,48 @@ export default function RelatorioMovimentacao() {
     }, [contexto.state.movimentacoes, filtragem])
 
     useEffect(() => {
-        setMaiorValor(movimentacoesPorMes.reduce((acc, { valor }) => {
+        const maior = movimentacoesPorMes.reduce((acc, { valor }) => {
             valor = valor[0] > valor[1] ? valor[0] : valor[1]
-            return acc > valor ? acc: valor
-        }, maiorValor))
+            return acc > valor ? acc : valor
+        }, 0)
+        setMaiorValor(maior)
     }, [movimentacoesPorMes])
+
+    // useEffect(() => {
+    //     console.log(maiorValor)
+    // }, [maiorValor])
+    // 
+    // useEffect(() => {
+    //     console.log('mudou: ' + maiorValor)
+    // }, [filtragem])
 
     return (
         <div className={ styles.relatorio }>
             <div className={ styles.titulo } >
-                <div></div>
-                <h1>Movimentações</h1>
                 <div className={ styles.legenda }>
+                    <h1>Movimentações</h1>
                     <div>
-                        <div></div>
-                        <p>Receitas</p>
-                    </div>
-                    <div>
-                        <div></div>
-                        <p>Despesas</p>
+                        <div>
+                            <div></div>
+                            <p>Receitas</p>
+                        </div>
+                        <div>
+                            <div></div>
+                            <p>Despesas</p>
+                        </div>
                     </div>
                 </div>
-                <Seletor  
+                <Seletor
+                    style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}
+                    esconder={ filtroOpen }
                     nome={ 'Filtro' }
                     setFiltroOpen={ () => {
                         setFiltroOpen(prev => !prev)
                         setFiltragem(() => () => true)
                     }} 
                 />
-                <InputFiltro 
+                <InputFiltro
+                    relatorio
                     open={ filtroOpen } 
                     setFiltroOpen={ () => {
                         setFiltroOpen(prev => !prev)
