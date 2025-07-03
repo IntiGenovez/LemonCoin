@@ -2,7 +2,7 @@ function historicoReducer(estado, action) {
     let novoEstado
     switch (action.type) {
             case 'atualizarHistorico':
-                if(estado.historico[estado.historico.length - 1] === action.payload || action.payload === '/') {
+                if(estado.historico[estado.historico.length - 1] === action.payload || action.payload === '/' || action.payload === '/login') {
                     novoEstado = estado   
                     break
                 }

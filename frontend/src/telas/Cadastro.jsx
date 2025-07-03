@@ -1,7 +1,8 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { DadosContexto } from '../store'
 import { userActions } from '../store/actionFirebase'
+import { isUserSignedIn } from "../store/actionFirebase/firebase"
 
 import InputDia from '../componentes/InputDia'
 
@@ -21,7 +22,21 @@ export default function Cadastro(){
     })
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
-    const navigate = useNavigate()
+    const navigate = useNavigate()   
+    const [usuarioAutenticado, setUsuarioAutenticado] = useState(null)
+    
+    useEffect(() => {
+        const unsubscribe = isUserSignedIn(user => {
+            setUsuarioAutenticado(user)
+            setLoading(false)
+        })
+        
+        return () => unsubscribe()
+    }, [])
+
+    useEffect(() => {
+        if (usuarioAutenticado) navigate('/home')
+    }, [usuarioAutenticado])
 
     const handleClick = async e => {
         e.preventDefault()

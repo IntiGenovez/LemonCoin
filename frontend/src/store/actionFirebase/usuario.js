@@ -112,7 +112,6 @@ const userActions = {
         }
     },
     atualizarCriarMovimentacao: async (dispatch, usuario, novoValor) => {
-        console.log(usuario)
         await firestore('usuario', 'update', usuario.id, { ...usuario, criarMovimentacao: novoValor })
         dispatch({ type: 'signin', payload: { ...usuario, criarMovimentacao: novoValor } })
     }

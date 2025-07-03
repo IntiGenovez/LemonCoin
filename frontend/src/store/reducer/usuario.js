@@ -10,6 +10,7 @@ function usuarioReducer(estado, action) {
                 movimentacoes: [],
                 contas: [],
                 categorias: [],
+                historico: [],
                 usuario: {
                     id: null,
                     nome: '',

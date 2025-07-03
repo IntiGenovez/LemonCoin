@@ -4,7 +4,6 @@
     background-color: #fffcf4;
     text-align: center;
     margin: auto;
-    padding-top: 5%;
 
     input[type="text"]{
         width: 70%;
@@ -38,21 +37,21 @@
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             width: 70%;
 
             & div {
                 display: flex;  
                 flex-direction: column;
                 align-items: baseline;
-                width: 48%;
                 min-width: 200px;
+                width: 48%;
                 margin-bottom: 10px;
             }
 
             & input[type="password"] {
                 /* border: solid red 1px; */
-                width: 95%;
+                width: 100%;
                 font-size: 15px;
                 padding: 5px 4px;
                 margin-top: 5px;
@@ -141,6 +140,7 @@
 .divSenha span {
     font-weight: 700;
 }
+
 .tituloSenha{
     font-size: 20px;
     display: flex;
@@ -150,13 +150,11 @@
 }
 
 @media screen and (max-width: 816px) {
-    .formulario{    
-        & > div:last-of-type {
-            .divSenha {
-                & div {
-                    width: 100%;
-                }
-            }
+    .formulario {    
+        width: 100%;
+
+        & > div:last-of-type > .divSenha > div {
+            width: 100%;
         }
     }
     

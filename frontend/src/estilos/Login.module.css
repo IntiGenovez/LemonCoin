@@ -7,35 +7,40 @@
 
     background-color: #fffcf4;
     text-align: center;
-    width: 350px;
+    min-width: 350px;
+    width: 60%;
     height: 400px;
+
+    & a {
+        cursor: pointer;
+        color: var(--background-botoes);
+        text-decoration: underline;
+    }
+
+    & input[type="text"], & input[type="password"]{
+        /* border: solid red 1px; */
+        min-width: 260px;
+        width: 30%;
+        height: 25px;
+        font-size: 16px;
+
+        margin-bottom: 10px;
+    }
+
+    
+    & button {
+        background-color: #809c34;
+        border: 0;
+        width: 28%;
+        height: 30px;
+        font-weight: bolder;
+        color: white;
+        font-size: 18px;
+        border-radius: 10px;
+    }
 }
 
-.formulario h1 {
-    margin: 10px;
-    /* border: red solid 1px; */
-}
 
-.formulario a {
-    cursor: pointer;
-    color: var(--background-botoes);
-    text-decoration: underline;
-}
 
-.formulario input[type="text"] input[type="password"]{
-    /* border: solid red 1px; */
-    width: 70%;
-    height: 7%;
-    margin-bottom: 5px;
-}
 
-.formulario button{
-    background-color: #809c34;
-    border: 0;
-    width: 28%;
-    height: 30px;
-    font-weight: bolder;
-    color: white;
-    font-size: 18px;
-    border-radius: 10px;
-}
+

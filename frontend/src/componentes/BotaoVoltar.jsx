@@ -11,7 +11,6 @@ export default function BotaoVoltar({ home }) {
     const location = useLocation()
 
     const handleClick = () => {
-        console.log(home)
         if(home) {
             navigate('/home')
             return
@@ -28,6 +27,7 @@ export default function BotaoVoltar({ home }) {
         if(home)
             return <button className={styles.btnVoltar} onClick={ handleClick }><i className='bx bx-home-alt-2'></i></button>
 
+        console.log(contexto.state.historico)
         if(contexto.state.historico.length > 1) 
             return <button className={styles.btnVoltar2} onClick={ handleClick }><i className='bx bx-chevron-left'></i></button>
 

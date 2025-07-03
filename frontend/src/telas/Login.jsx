@@ -6,6 +6,7 @@ import globalStyle from '../estilos/Login.module.css'
 
 import { DadosContexto } from '../store'
 import { userActions } from '../store/actionFirebase'
+import { isUserSignedIn } from "../store/actionFirebase/firebase"
 
 export default function Login() {
     const contexto = useContext(DadosContexto)
@@ -17,6 +18,20 @@ export default function Login() {
         email: '',
         senha: ''
     })
+    const [usuarioAutenticado, setUsuarioAutenticado] = useState(null)
+
+    useEffect(() => {
+        const unsubscribe = isUserSignedIn(user => {
+            setUsuarioAutenticado(user)
+            setLoading(false)
+        })
+        
+        return () => unsubscribe()
+    }, [])
+
+    useEffect(() => {
+        if (usuarioAutenticado) navigate('/home')
+    }, [usuarioAutenticado])
 
     const handleClick = async e => {
         e.preventDefault()
