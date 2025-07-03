@@ -9,3 +9,12 @@
     cursor: pointer;   
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 }
+
+.opacidadeBaixa {
+    opacity: 60%;
+    transition: opacity 200ms;
+}
+
+.opacidadeBaixa:hover {
+    opacity: 100%;
+}

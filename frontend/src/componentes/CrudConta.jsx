@@ -46,6 +46,14 @@ export default function CrudConta({ tipo }) {
         } else navigate('/adicionar-conta')
     }, [contexto.state.contas])
 
+    useEffect(() => {
+        if (
+            tipo !== 'Atualizar' && 
+            contexto.state.contas.some(contaAtual => conta.nome === contaAtual.nome) &&
+            !contexto.state.mensagemErro.openDialog
+        ) navigate('/contas')
+    }, [contexto.state.mensagemErro.openDialog])
+
     const handleConfirmar = async (e) => { //quando o botão de confirmar é precionado
         e.preventDefault()
         let sucesso

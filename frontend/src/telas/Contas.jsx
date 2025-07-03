@@ -32,7 +32,7 @@ export default function Contas() {
                 }
                 
             </div>
-            <BotaoAdicionar path="/adicionar-conta" />
+            <BotaoAdicionar path="/adicionar-conta" opacidadeBaixa />
         </div>
     )
 }

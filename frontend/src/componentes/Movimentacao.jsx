@@ -56,6 +56,24 @@ const Movimentacao = forwardRef(function Movimentacao({ movimentacaoListada, mov
                 movimentacaoListada.data })
     }, [movimentacaoListada])
 
+    useEffect(() => {
+        setCategoriaSelecionada({ 
+            nome: movimentacao.categoria ?? contexto.state.categorias[0]?.nome ?? '',
+            id: movimentacao.categoria?  movimentacao.categoriaId : contexto.state.categorias[0]?.id ?? '',
+        })
+        setContaSelecionada(({ 
+            nome: movimentacao.conta ?? contexto.state.contas[0]?.nome ?? '',
+            id: movimentacao.conta ? movimentacao.contaId : contexto.state.contas[0]?.id ?? '',
+        }))
+        setMovimentacaoInput({ 
+            ...movimentacaoListada,
+            valor: formatarValor(+movimentacaoListada.valor.toFixed(2)),
+            data: movimentacaoListada.data.toDate ? 
+                formatDateToInputDate(false, movimentacaoListada.data.toDate()) : 
+                movimentacaoListada.data
+        })
+    }, [movimentacaoEditavel])
+
     const handleChangeCategoria = e => {
         setCategoriaSelecionada({
             nome: e.target.value,

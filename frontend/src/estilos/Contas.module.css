@@ -25,10 +25,21 @@
     }
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
     .container {
-        margin-top: 40px;
         width: 80%;
-        gap: 60px;
+        gap: 50px;
+    }
+}
+
+@media screen and (max-width: 660px) {
+    .container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .container {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
