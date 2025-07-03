@@ -102,6 +102,7 @@ export default function CrudConta({ tipo }) {
     }
 
     const selecionarBanco = () => {
+        location.hash = 'seletor'
         setOpen(prev => !prev)
     }
 
@@ -109,8 +110,18 @@ export default function CrudConta({ tipo }) {
         setOpenPersonalizar(prev => !prev)
     }
 
+    useEffect(() => {
+        const botaoVoltar = e => {
+            if (e.oldURL.split('#')[1] !== 'seletor') return
+            e.preventDefault()
+            setOpen(prev => !prev)
+        }
+        window.addEventListener('hashchange', botaoVoltar, false)
+        return () => window.removeEventListener('hashchange', botaoVoltar, false)
+    }, [])
+
     return (
-        <form className={styles}>
+        <form className={styles.form} >
             <h1>{tipo} Conta</h1>
             <div className={styles.formulario}>
                 <img
@@ -164,9 +175,8 @@ export default function CrudConta({ tipo }) {
                                 :
                                 (
                                     <>
-                                        <BotaoAcao onClick={() => navigate('/relatorios')}>Relatório de conta</BotaoAcao>
-                                        <BotaoAcao onClick={handleExcluir}>Excluir conta</BotaoAcao>
-                                        <BotaoAcao onClick={handleConfirmar}>Editar conta</BotaoAcao>
+                                        <BotaoAcao onClick={handleExcluir}>Excluir</BotaoAcao>
+                                        <BotaoAcao onClick={handleConfirmar}>Salvar</BotaoAcao>
                                     </>
                                 )
                         }

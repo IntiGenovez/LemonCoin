@@ -52,8 +52,7 @@ export default function BancoSeletor({ open, closeBancoSeletor, selecionarBanco,
         if (open && refBancoSeletor.current)
             refBancoSeletor.current.focus()
     }, [open])
-
-
+    
     return (
         <div 
             className={styles.bancoSeletor} 
@@ -64,7 +63,7 @@ export default function BancoSeletor({ open, closeBancoSeletor, selecionarBanco,
             tabIndex={ 0 }
         >
             <div className={styles.popup}>
-                <div className={styles.scroll}>
+                <div className={styles.scroll} >
                     {
                         Object
                             .entries(icones)
