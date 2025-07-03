@@ -72,8 +72,8 @@
 }
 
 @media (max-width: 768px) {
-    .btnVoltar {
-        display: none;
+    .btnVoltar, .btnVoltar2 {
+        display: none !important;
     }
 }
 

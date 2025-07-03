@@ -241,4 +241,7 @@
         display: none !important;
     }
 
+    .relatorioPizzas .graficoPizza {
+        width: 250px !important;
+    }
 }

@@ -126,7 +126,7 @@ div.popup {
     gap: 20px;
 
     & button {
-        height: 100%;
+        height: 24px;
         aspect-ratio: 2 / 1;
         cursor: pointer;
 
