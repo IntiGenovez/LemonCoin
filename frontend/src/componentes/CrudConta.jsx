@@ -43,7 +43,7 @@ export default function CrudConta({ tipo }) {
                 setConta(contaParaAtualizar)
                 setContaMemento(contaParaAtualizar)
             } else navigate('/adicionar-conta')
-        } else navigate('/adicionar-conta')
+        }
     }, [contexto.state.contas])
 
     useEffect(() => {
@@ -114,7 +114,8 @@ export default function CrudConta({ tipo }) {
         const botaoVoltar = e => {
             if (e.oldURL.split('#')[1] !== 'seletor') return
             e.preventDefault()
-            setOpen(prev => !prev)
+            setOpen(false)
+            setOpenPersonalizar(false)
         }
         window.addEventListener('hashchange', botaoVoltar, false)
         return () => window.removeEventListener('hashchange', botaoVoltar, false)
@@ -169,7 +170,7 @@ export default function CrudConta({ tipo }) {
                                 (
                                     <>
                                         <BotaoAcao onClick={() => navigate('/contas')}>Cancelar</BotaoAcao>
-                                        <BotaoAcao onClick={handleConfirmar}>Confirmar</BotaoAcao>
+                                        <BotaoAcao onClick={handleConfirmar}>Salvar</BotaoAcao>
                                     </>
                                 )
                                 :

@@ -2,10 +2,10 @@ import firebase, { firestore } from './firebase'
 import { objetoValido, handleError, jaExiste } from '../utils'
 
 const categoriesActions = {
-    atualizarCategoria: async (dispatch, state, categoria) => {
+    atualizarCategoria: async (dispatch, estado, categoria) => {
         try {
-            if (!state.categorias.some(cat => cat.id === categoria.id && cat.nome.toLowerCase() === categoria.nome.toLowerCase())) {
-                jaExiste(state, categoria.nome)
+            if (!estado.categorias.some(cat => cat.id === categoria.id && cat.nome.toLowerCase() === categoria.nome.toLowerCase())) {
+                jaExiste(estado, categoria.nome, 'categoria')
             }
             objetoValido({ nome: categoria.nome })
             await firestore('categorias', 'update', categoria.id, { nome: categoria.nome })
@@ -24,10 +24,11 @@ const categoriesActions = {
             handleError(dispatch, error, '/categorias')
         }
     },
-    adicionarCategoria: async (dispatch, state, categoria) => {
+    adicionarCategoria: async (dispatch, estado, categoria) => {
         try {
             objetoValido({ nome: categoria.nome })
-            jaExiste(state, categoria.nome)
+            console.log(estado.categorias)
+            jaExiste(estado, categoria.nome, 'categoria')
             await firestore('categorias', 'save', categoria.id, { nome: categoria.nome })
         } catch (error) {
             handleError(dispatch, error, '/categorias')

@@ -20,6 +20,24 @@ export default function Cabecalho() {
     const navigate = useNavigate()
 
     useEffect(() => {
+        const handleResize = () => {
+            setTamanho({
+                largura: innerWidth,
+                altura: innerHeight
+            })
+        }
+
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
+
+
+    const [tamanho, setTamanho] = useState({
+        largura: innerWidth,
+        altura: innerHeight
+    })
+
+    useEffect(() => {
         const unsubscribe = isUserSignedIn(setUsuario)
 
         return () => unsubscribe()
@@ -75,6 +93,7 @@ export default function Cabecalho() {
                             <Link to='/receitas' onClick={ () => setMenuOpen(prev => !prev) }>Receitas</Link>
                             <Link to='/categorias' onClick={ () => setMenuOpen(prev => !prev) }>Categorias</Link>
                             <Link to='/contas' onClick={ () => setMenuOpen(prev => !prev) }>Contas</Link>
+                            { tamanho.largura > 768 ?
                             <nav onClick={ () => setMenuOpen(prev => !prev) } className={ styles.subNav }
                                 onMouseOver={ handleMouseOver}
                                 onMouseOut={ handleMouseOut} 
@@ -91,7 +110,20 @@ export default function Cabecalho() {
                                         navigate('/relatorios')
                                     } } >Categorias</a>
                                 </div>
-                            </nav>
+                            </nav> :
+                                <>
+                                <Link to='/relatorios' onClick={ () => {
+                                    setMenuOpen(prev => !prev)
+                                    historyActions.mudarRelatorio(contexto.dispatch, 'Movimentações')
+                                    navigate('/relatorios')
+                                } }>Relatório Movimentação</Link>
+                                <Link to='/relatorios' onClick={ () => {
+                                    setMenuOpen(prev => !prev)
+                                    historyActions.mudarRelatorio(contexto.dispatch, 'Categorias')
+                                    navigate('/relatorios')
+                                } }>Relatório Categoria</Link>
+                                </>
+                            }
                         </nav>
                     </>
             }
