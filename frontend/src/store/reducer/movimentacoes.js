@@ -11,6 +11,18 @@ function movimentacoesReducer(estado, action) {
         case 'atualizarMovimentacoes':
             novoEstado = { ...estado, movimentacoes: action.payload }
             break
+        case 'atualizarMovimentacao':
+            novoEstado = { ...estado, movimentacoes: estado.movimentacoes
+                .map(movimentacao => {
+                    if (action.payload.tipo === 'categoria' && movimentacao.categoriaId === action.payload.id)
+                        movimentacao.categoria = action.payload.nome
+                    console.log(action.payload)
+                    if (action.payload.tipo === 'conta' && movimentacao.contaId === action.payload.id)
+                        movimentacao.conta = action.payload.nome
+                    return movimentacao
+                }) }
+            console.log(novoEstado.movimentacoes)
+            break
         default:
             novoEstado = estado      
     }

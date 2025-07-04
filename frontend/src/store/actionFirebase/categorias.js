@@ -9,6 +9,7 @@ const categoriesActions = {
             }
             objetoValido({ nome: categoria.nome })
             await firestore('categorias', 'update', categoria.id, { nome: categoria.nome })
+            dispatch({ type: 'atualizarMovimentacao', payload: { tipo: 'categoria', id: categoria.id, nome: categoria.nome } })
         } catch (error) {
             handleError(dispatch, error, '/categorias')
         }
