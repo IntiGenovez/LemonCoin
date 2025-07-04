@@ -13,6 +13,7 @@
     cursor: pointer;
     & .icone {
         width: var(--tamanho-CardConta);
+        border-radius: 12px;
     }
 
     & .divTexto{

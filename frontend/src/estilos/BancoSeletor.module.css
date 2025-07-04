@@ -26,6 +26,11 @@
         & img {
             width: 100%;
             max-width: 150px;
+            border-radius: 11px;
+        }
+
+        & img.personalizar {
+            border-radius: 0;
         }
 
         & h2 {

@@ -83,7 +83,7 @@ export default function BancoSeletor({ open, closeBancoSeletor, selecionarBanco,
                         className={ styles.imagem }
                         onClick={ personalizar }
                     >
-                        <img src={lapis} />
+                        <img src={ lapis } className={ styles.personalizar } />
                         <p>Personalizar</p>
                     </div>
                 </div>
